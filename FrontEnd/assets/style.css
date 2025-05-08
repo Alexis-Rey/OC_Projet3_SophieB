@@ -175,7 +175,7 @@ margin: auto;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
 
-input[type="submit"]{
+input[type="submit"], .btn-maj{
 	font-family: 'Syne';
 	font-weight: 700;
 	color: white;
@@ -214,6 +214,7 @@ nav li a:hover{
 /* Modif de la size des textes pour les imgs */
 .gallery figcaption{
 	font-size: 13px;
+	margin-top: 7px;
 }
 
 /* Mise en place de l'effet au survol pour les boutons */
@@ -252,4 +253,8 @@ footer{
 
 #contact{
 	margin-top: 57px;
+}
+
+.btn-maj{
+	display: block;
 }
