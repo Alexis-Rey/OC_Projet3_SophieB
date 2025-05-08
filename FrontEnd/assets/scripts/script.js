@@ -7,6 +7,7 @@ let works;
 let worksStorage = window.localStorage.getItem(key);
 
 if (worksStorage === null){
+    
     // Appelle à la fonction de récupération des travaux de l'API, gestion de l'erreur et 
     // initialisation d'un tableau vide jamais une erreur est survenu.
     works = await recupererTravaux().catch(e=>{ console.error(e);
