@@ -58,8 +58,10 @@ header {
 	justify-content: space-between;
 	margin: 50px 0
 }
-section {
-	margin: 50px 0
+
+/* Modif du margin pour correspondre à la maquette */
+#introduction {
+	margin: 139px 0
 }
 
 h1{
@@ -88,6 +90,7 @@ nav ul {
 	display: flex;
 	align-items: center;
 	list-style-type: none;
+	gap: 44px;
 
 }
 nav li {
@@ -95,20 +98,21 @@ nav li {
 	font-size: 1.2em;
 }
 
-li:hover {
-	color: #B1663C;
-}
+/* Rajout du gap entre l'image et l'article */
 #introduction {
 	display: flex;
 	align-items: center;
+	gap: 72px;
 }
 #introduction figure {
 	flex: 1
 }
+
+/* Modif de la taille img pour correpondre à la maquette */
 #introduction img {
 	display: block;
 	margin: auto;
-	width: 80%;
+	width: 474px;
 }
 
 #introduction article {
@@ -186,3 +190,64 @@ footer nav ul {
 	margin: 2em
 }
 
+
+/************************************* Modifs apportées au css de base *****************************************/
+/* Correction dimensions logo */
+.liste-nav img {
+	width: 22px;
+	height: 22px;
+}
+
+/* Suppresion design des liens par défault */
+nav li a{
+	text-decoration: none;
+	color: black;
+}
+
+/* Animation au survol pour le menu  */
+nav li a:hover{
+	font-weight: 700;
+}
+
+/* Modif de la size des textes pour les imgs */
+.gallery figcaption{
+	font-size: 13px;
+}
+
+/* Mise en place de l'effet au survol pour les boutons */
+input[type="submit"]:hover{
+	background-color: #0E2F28;
+}
+
+/* Ajustement des tailles image comme maquette */
+.gallery figure{
+	width: 305px;
+	height: 407px;
+}
+
+/* Rajout d'une largeur fixe pour correpondre à la maquette  */
+main{
+	width: 83.35%;
+	margin: auto;
+}
+
+/* Mise en place de la couleur de fond du site */
+body{
+	background-color: rgba(255,248,220,0.3);
+}
+
+/* Mise en place du fond blanc pour le footer */
+footer{
+	background-color: white;
+	height: 60px;
+	display: flex;
+	justify-content: flex-end;
+	align-items:center;
+	margin-left: -150px;
+	margin-right: -150px;
+	margin-top: 45px;
+}
+
+#contact{
+	margin-top: 57px;
+}
