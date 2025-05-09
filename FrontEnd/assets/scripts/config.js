@@ -16,7 +16,6 @@ export async function recupererTravaux(){
     const r = await fetch(config.Host + config.Works);
     if (r.ok === true){
         const data = await r.json();
-        console.log(data);
         return data;
     }else {
         throw new Error("Erreur de communication avec l'API - Vérifier les config sur les travaux");
@@ -27,7 +26,6 @@ export async function recupererCategories(){
     const r = await fetch(config.Host + config.Categories);
     if (r.ok === true){
         const data = await r.json();
-        console.log(data);
         return data;
     }else {
         throw new Error("Erreur de communication avec l'API - Vérifier les config sur les catégories");

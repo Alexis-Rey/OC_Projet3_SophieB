@@ -175,7 +175,7 @@ margin: auto;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
 
-input[type="submit"], .btn-maj{
+input[type="submit"]{
 	font-family: 'Syne';
 	font-weight: 700;
 	color: white;
@@ -255,6 +255,32 @@ footer{
 	margin-top: 57px;
 }
 
+/***************************** Menu Filtrer ************************/
+.menu-filter{
+	display: flex;
+	gap: 10px;
+  	margin: 51px 180px 51px 180px;
+	justify-content: space-around;
+}
+
+.btn-filter{
+	font-family: 'Syne';
+	font-weight: 700;
+	color: #1D6154;
+	background-color: rgba(255,248,220,0);
+	text-align: center;
+	border-radius: 60px ;
+	border: 1px solid #1D6154;;
+	font-size: 16px;
+	padding: 9px;
+}
+
 .btn-maj{
-	display: block;
+	font-family: 'Syne';
+	font-weight: 700;
+	width: 100px;
+	color: white;
+	background-color: #1D6154;
+	border: none;
+	border-radius: 60px ;
 }
