@@ -284,3 +284,7 @@ footer{
 	border: none;
 	border-radius: 60px ;
 }
+
+button{
+	cursor: pointer;
+}

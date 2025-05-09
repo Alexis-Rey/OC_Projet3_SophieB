@@ -1,12 +1,19 @@
 // Import des fonctions issus de config.js
 import { recupererTravaux, recupererCategories } from "./config.js";
-
-
-// Initialisation des variables globales.
+import { filterWorks } from "./filtre.js";
+ 
+/**
+ * Initialisation des variables globales.
+ * @param {string} key : la clé du localStorage
+ * @param {object} works : les données des travaux
+ * @param {object} categories : les données des catégories
+ * @param {array} buttons : un tableau pour les boutons
+ */
 const key = "mes-travaux";
-const key2 = "mes-catégories";
 let works;
 let categories; 
+const buttons = [];
+
 
 
 function genererPage(works, categories){
@@ -14,7 +21,7 @@ function genererPage(works, categories){
     genererGallery(works); 
     genererFilter(categories);
     }catch{
-        console.log("Aucune gallery à générer, préciser les travaux en cours")
+        console.log("Problème dans la génération de la page: voir error console")
     };
 }
 
@@ -87,29 +94,74 @@ function genererFilter(Filtres){
     const menuFilter = document.querySelector(".menu-filter");
 
     // Initialisation d'une boucle qui va parcourir l'ensemble de nos catégories un à un pour créer nos boutons filtres 
-    for ( let i = 0; i < categories.length; i++){
+    for ( let i = 0; i < Filtres.length; i++){
         // Création d'une balise button dédié à un filtre
         const buttonCategories = document.createElement("button");
         // Création des informations de chaque catégories grâce aux données issues de l'API
-        buttonCategories.dataset.id = categories[i].id;
-        buttonCategories.innerText = categories[i].name
+        buttonCategories.dataset.id = Filtres[i].id;
+        buttonCategories.innerText = Filtres[i].name
         // Ajout d'une classe pour la partie design CSS
         buttonCategories.classList = "btn-filter"
 
+        // Ajout des boutons dans le DOM 
         menuFilter.appendChild(buttonCategories);
-
+        //  Stockage des boutons pour un accès en dehors de la fonction en créant un tableau
+        buttons.push(buttonCategories);
     };
+    
 };
 
-
+// Première Génération de la page d'accueil du Site, on test d'abord si les données sont issus de l'API
+// ou du localStorage puis on génère la page à partir de ces données
 const worksEtCategories = await localOuApi();
 genererPage(worksEtCategories.works, worksEtCategories.categories);
 
 
-// Ajout du listener pour mettre à jour des données du localStorage
+//*********** GESTION DES TRAVAUX EN FONCTION DU FILTRE sélectioné par l'utilisateur ****************************//
+// On utilise ici une boucle for pour parcourir le tableau de boutons issu de la fonction qui génère dynamiquement les catégories reçu par API
+for ( let b = 0; b < buttons.length; b++){
+
+    /**  @param {string} buttonClicked : le bouton qui est cliqué */
+    /**  @param {array} worksFiltered : tableau contenant les travaux filtés issu de filtre.js suivant le choix utilisateur */
+    let buttonClicked;
+    const gallery =  document.querySelector(".gallery");
+    let worksFiltered;
+
+    // Ajout d'un écouter d'évènement au click sur chaque bouton
+    buttons[b].addEventListener("click",(e) => { 
+        // Lorsqu'un' bouton est cliqué, on affecte le data-id du bouton à la variable
+        buttonClicked = buttons[b].dataset.id;
+        // Gestion suivant la valeur data-id de la variable avec :
+        // Cas 1 : recherche des travaux correpondant à la catégorie "Objets"
+        // Cas 2 : recherche des travaux correpondant à la catégorie "Appartements"
+        // Cas 3 : recherche des travaux correpondant à la catégorie "Hotels & restaurants"
+        switch(buttonClicked){
+            case "1": 
+            worksFiltered = filterWorks(worksEtCategories.works,"Objets");
+            break;
+            case "2": 
+            worksFiltered = filterWorks(worksEtCategories.works,"Appartements");
+            break;
+            case "3": 
+            worksFiltered = filterWorks(worksEtCategories.works,"Hotels & restaurants");
+            break;
+            default: console.log("aucun appuie bouton");
+            break;
+        }
+        // Rafraichissement de la page et nouvelle génération dynamique des travaux en fonction du choix effectuer par l'utilisateur
+        gallery.innerHTML="";
+        genererGallery(worksFiltered)
+    });
+};
+
+// Ajout du listener sur le boutton Tous des filtres  pour mettre à jour les données du localStorage
+// Nouvelle Génération des travaux à l'appuie du bouton 
 const boutonMettreAJour = document.querySelector(".btn-maj");
+const gallery =  document.querySelector(".gallery");
 boutonMettreAJour.addEventListener("click", function () {
-  window.localStorage.removeItem(key);
+    window.localStorage.removeItem(key);
+    gallery.innerHTML="";
+    genererGallery(worksEtCategories.works);
 });
 
 
