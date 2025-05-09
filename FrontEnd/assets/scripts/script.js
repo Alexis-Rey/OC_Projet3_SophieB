@@ -1,6 +1,7 @@
 // Import des fonctions issus de config.js
-import { recupererTravaux } from "./config.js";
+import { recupererTravaux, recupererCategories } from "./config.js";
 
+recupererCategories(); 
 
 const key = "mes-travaux";
 let works;
@@ -9,7 +10,7 @@ let worksStorage = window.localStorage.getItem(key);
 if (worksStorage === null){
     
     // Appelle à la fonction de récupération des travaux de l'API, gestion de l'erreur et 
-    // initialisation d'un tableau vide jamais une erreur est survenu.
+    // initialisation d'un tableau vide si jamais une erreur est survenu.
     works = await recupererTravaux().catch(e=>{ console.error(e);
     return [];
     });
@@ -21,6 +22,7 @@ if (worksStorage === null){
 else {
     // Récupération des données du localStorage mise en JSON
     works = JSON.parse(worksStorage)
+    console.log(works);
 };
 
 

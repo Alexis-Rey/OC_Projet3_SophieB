@@ -9,19 +9,29 @@ const config = {
     "Bearer-Token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTY1MTg3NDkzOSwiZXhwIjoxNjUxOTYxMzM5fQ.JGN1p8YIfR-M-5eQ-Ypy6Ima5cKA4VbfL2xMr2MgHm4"
 };
 
+/**
+ * Fonction permettant de communiquer en envoyant une requête à l'API afin de recevoir les travaux.
+ */
 export async function recupererTravaux(){
     const r = await fetch(config.Host + config.Works);
     if (r.ok === true){
         const data = await r.json();
+        console.log(data);
         return data;
     }else {
-        throw new Error("Erreur de communication avec l'API - Vérifier les config");
+        throw new Error("Erreur de communication avec l'API - Vérifier les config sur les travaux");
     }  
 };
 
 export async function recupererCategories(){
     const r = await fetch(config.Host + config.Categories);
-    const data = await r.json();
+    if (r.ok === true){
+        const data = await r.json();
+        console.log(data);
+        return data;
+    }else {
+        throw new Error("Erreur de communication avec l'API - Vérifier les config sur les catégories");
+    }  
 };
 
 export async function envoyerTravaux(){
