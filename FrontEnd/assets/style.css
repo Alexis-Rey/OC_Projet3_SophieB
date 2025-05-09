@@ -48,15 +48,15 @@ table {
 }
 /** end reset css**/
 body {
-	max-width: 1140px;
-	margin:auto;
+	max-width: 100%;
 	font-family: 'Work Sans' ;
 	font-size: 14px;
 }
 header {
 	display: flex;
 	justify-content: space-between;
-	margin: 50px 0
+	margin: 50px 0;
+	align-items: center;
 }
 
 /* Modif du margin pour correspondre à la maquette */
@@ -145,7 +145,7 @@ nav li {
 }
 #contact {
 	width: 50%;
-margin: auto;
+	margin: auto;
 }
 #contact > * {
 	text-align: center;
@@ -194,6 +194,12 @@ footer nav ul {
 
 
 /************************************* Modifs apportées au css de base *****************************************/
+/* Sizing de la div de contenu principale à 1140px et centrage, permet de faire la diff avec le footer */
+.contenuP{
+	max-width: 1140px;
+	margin: auto;
+}
+
 /* Correction dimensions logo */
 .liste-nav img {
 	width: 22px;
@@ -207,7 +213,7 @@ nav li a{
 }
 
 /* Animation au survol pour le menu  */
-nav li a:hover{
+.liste-nav li a:hover{
 	font-weight: 700;
 }
 
@@ -240,14 +246,12 @@ body{
 }
 
 /* Mise en place du fond blanc pour le footer */
-footer{
+.footerContent{
 	background-color: white;
 	height: 60px;
 	display: flex;
 	justify-content: flex-end;
 	align-items:center;
-	margin-left: -150px;
-	margin-right: -150px;
 	margin-top: 45px;
 }
 
@@ -256,6 +260,8 @@ footer{
 }
 
 /***************************** Menu Filtrer ************************/
+/* Mise en disposition flex des élements boutons filter, avec espacement de 10px
+marge extérieur pour positioner comme sur la maquette   */ 
 .menu-filter{
 	display: flex;
 	gap: 10px;
@@ -263,6 +269,8 @@ footer{
 	justify-content: space-around;
 }
 
+/* Mise en forme des boutons rajouter dynamiquement depuis l'API avec suppresion du backgroud-color
+une mise en couleur verte pour les textes, sizing à 16px et ajout des marges intérieur */
 .btn-filter{
 	font-family: 'Syne';
 	font-weight: 700;
@@ -275,6 +283,7 @@ footer{
 	padding: 9px;
 }
 
+/* Mise en forme du bouton Tous pour correspondre à son propre style maquette avec fond vert et couleur de texte blanche */
 .btn-maj{
 	font-family: 'Syne';
 	font-weight: 700;
@@ -285,6 +294,9 @@ footer{
 	border-radius: 60px ;
 }
 
-button{
+/* Changement du curseur souris au survol des boutons du site  */
+button:hover{
 	cursor: pointer;
 }
+
+
