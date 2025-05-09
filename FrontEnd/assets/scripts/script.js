@@ -28,25 +28,28 @@ function genererPage(works, categories){
 async function localOuApi(){
     // Récupération d'info du localStroage correpondant à la clé
     let worksStorage = window.localStorage.getItem(key);
+    // Tets API
+    // Appelle à la fonction de récupération des travaux de l'API, gestion de l'erreur et 
+    // retourner null si jamais une erreur est survenu.
+    works = await recupererTravaux().catch(e=>{ console.error(e);
+        console.error("Connexion API échoué, récupération des données du cache . . . ")
+        return null;
+    });
 
-    // Si le localStorage est vide, on fait appel à l'api sinon on utilise ses données
-    if (worksStorage === null){
-        
-        // Appelle à la fonction de récupération des travaux de l'API, gestion de l'erreur et 
-        // initialisation d'un tableau vide si jamais une erreur est survenu.
-        works = await recupererTravaux().catch(e=>{ console.error(e);
-        return [];
-        });
-
-        // Transformation des données de JSON en valeurs JS et enregistrement en localStrorage
+    if (works) {
+        // Si l'API a répondu, on enregistre et utilise ses données
         const worksValues = JSON.stringify(works);
-        window.localStorage.setItem(key,worksValues);
-    } 
-    else {
-        // Récupération des données du localStorage mise en JSON
-        works = JSON.parse(worksStorage)
-    };
+        window.localStorage.setItem(key, worksValues);
+    } else if (worksStorage !== null) {
+        // Si l'API a échoué mais qu'on a quelque chose en localStorage
+        works = JSON.parse(worksStorage);
+    } else {
+        // Rien dans l'API et rien dans le localStorage
+        works = [];
+        console.error("Le cache est vide, nous travaillons sur le problème, revenez vers nous dans quelques temps")
+    }
 
+    // Test API - Récupération des catégories 
     categories = await recupererCategories().catch(e=>{ console.error(e)});
     return {works, categories}; 
 };
