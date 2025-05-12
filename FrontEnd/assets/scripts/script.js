@@ -1,5 +1,5 @@
 // Import des fonctions issus de config.js
-import { recupererTravaux, recupererCategories } from "./config.js";
+import { recupererTravaux, recupererCategories} from "./config.js";
 import { filterWorks } from "./filtre.js";
  
 /**

@@ -1,12 +1,11 @@
-// Paramètrage de la config API en créant un objet JSON contenant l'URI des différentes collection, le nom de domaine (Host)
-// et le token d'identification afin de permettre une stabilité de la connexion API si un des élements venaient à changer. 
+// Paramètrage de la config API en créant un objet JSON contenant l'URI des différentes collection et le nom de domaine (Host)
+//  afin de permettre une stabilité de la connexion API si un des élements venaient à changer. 
 // Bonne habitude pour des éventuels futures projets plus conséquent.
 const config = {
     "Host": "http://localhost:5678/api",
     "Works": "/works",
     "Categories": "/categories",
-    "Users": "/users/login",
-    "Bearer-Token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTY1MTg3NDkzOSwiZXhwIjoxNjUxOTYxMzM5fQ.JGN1p8YIfR-M-5eQ-Ypy6Ima5cKA4VbfL2xMr2MgHm4"
+    "Users": "/users/login"
 };
 
 /**
@@ -14,6 +13,7 @@ const config = {
  */
 export async function recupererTravaux(){
     const r = await fetch(config.Host + config.Works);
+    // Si le requête c'est bien passé on renvoie les données en format js sinon on informe de l'erreur
     if (r.ok === true){
         const data = await r.json();
         return data;
@@ -22,8 +22,12 @@ export async function recupererTravaux(){
     }  
 };
 
+/**
+ * Fonction permettant de communiquer en envoyant une requête à l'API afin de recevoir les catégories.
+ */
 export async function recupererCategories(){
     const r = await fetch(config.Host + config.Categories);
+    // Si le requête c'est bien passé on renvoie les données en format js sinon on informe de l'erreur
     if (r.ok === true){
         const data = await r.json();
         return data;
@@ -32,6 +36,28 @@ export async function recupererCategories(){
     }  
 };
 
-export async function envoyerTravaux(){
-
+/**
+ * Fonction permettant de communiquer en envoyant une requête à l'API afin de s'identifier en tant qu'administrateur.
+ * @param  {JSON} auth : les infos mail et password provenant du formulaire.
+ */
+export async function authentication(auth){
+    // Initialisation d'une clé pour la sessionStorage
+    const keyAuth = "admin";
+    // Tentative d'envoie des informations à l'API
+    const r = await fetch(config.Host + config.Users,{
+            method: "POST",
+            headers: { "Content-type": "application/json" },
+            body: auth
+    });
+    // Si le requête c'est bien passé et que les identifiants sont les bons on enregistre le token reçu dans la sessionStorage 
+    // et on renvoie sur la page d'accueil sinon on gère les erreurs.
+    if (r.ok === true && r.status === 200) {
+        const data = await r.json();
+        window.sessionStorage.setItem(keyAuth, data.token);
+        window.location.href= "././index.html";
+    } else if (r.status >= 500) {
+        throw new Error("Erreur de communication avec l'API - Vérifier les config sur les users");
+    } else {
+        throw new Error("Erreur d'identification, veuillez recommencer.");
+    } ;
 };

@@ -13,6 +13,8 @@
           crossorigin="anonymous" referrerpolicy="no-referrer" />
 	<link rel="stylesheet" href="./assets/formStyle.css">
 	<link rel="icon" type="image/x-icon" href="/Portfolio-architecte-sophie-bluel/FrontEnd/assets/images/oc-icon.png">
+	<script type="module" src="./assets/scripts/admin.js" defer></script>
+	<script type="module" src="./assets/scripts/config.js" defer></script>
 	
 </head>
 
@@ -35,10 +37,10 @@
 		<h2>Log In</h2>
 		<form action="#" method="post">
 			<label for="email">E-mail</label>
-			<input type="email" name="email" id="email">
+			<input type="email" name="email" id="email" required>
 
             <label for="pass-word">Mot de passe</label>
-			<input type="password" name="pass-word" id="pass-word">
+			<input type="password" name="pass-word" id="pass-word" required>
 			
 			<input type="submit" value="Se connecter">
 		</form>
