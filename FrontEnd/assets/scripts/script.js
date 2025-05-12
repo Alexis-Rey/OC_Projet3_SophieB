@@ -169,13 +169,23 @@ boutonMettreAJour.addEventListener("click", function () {
 
 
 //********************************** GESTION ADMIN ****************************************************//
-// On vérifie qu'on est bien en admin
+// On vérifie qu'on est bien en admin et on active les privilèges
 function isAdmin(){
     const modify = document.querySelector("#portfolio i");
+    const editionMode = document.querySelector(".editionMode");
+    const log = document.querySelector(".login");
     const admin = window.sessionStorage.getItem("admin");
+    // Si on est en admin
     if(admin){
-        console.log("yes");
+        // Activation des privilèges en faisant apparaitre les élements invisible et en modifiant d'autres
         modify.classList.toggle("active");
+        editionMode.classList.toggle("active");
+        log.innerText = "logout";
+
+        log.addEventListener("click", (e) => {
+            e.target.innerText = "login";
+            window.sessionStorage.removeItem("admin");
+        })
     }
 }
 isAdmin();
