@@ -294,9 +294,38 @@ une mise en couleur verte pour les textes, sizing à 16px et ajout des marges in
 	border-radius: 60px ;
 }
 
+/*************************************** PARTIE ADMIN **************************************************/
+
 /* Changement du curseur souris au survol des boutons du site  */
-button:hover{
+button:hover, #portfolio i{
 	cursor: pointer;
 }
 
+/* Mise en disposition flex et centrage des élements ici le titre h2*/
+.titleMore{
+	display: flex;
+	justify-content: center;
+}
 
+/* Mise en forme de l'icone pour l'admin */
+.fa-regular{
+	font-weight: 400;
+	position: relative;
+	bottom: 50px;
+	left: 600px;
+}
+
+/* Sizing et police pour le texte modifier en admin */
+#modif{
+	font-size: 14px;
+  	font-family: "Work Sans";
+	padding-left: 10px;
+}
+
+#portfolio i {
+	display: none;
+}
+
+#portfolio i.active{
+	display:flex;
+}

@@ -168,4 +168,14 @@ boutonMettreAJour.addEventListener("click", function () {
 });
 
 
-
+//********************************** GESTION ADMIN ****************************************************//
+// On vérifie qu'on est bien en admin
+function isAdmin(){
+    const modify = document.querySelector("#portfolio i");
+    const admin = window.sessionStorage.getItem("admin");
+    if(admin){
+        console.log("yes");
+        modify.classList.toggle("active");
+    }
+}
+isAdmin();
