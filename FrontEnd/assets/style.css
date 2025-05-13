@@ -352,5 +352,6 @@ button:hover, #portfolio i{
 	position: relative;
 	bottom: 50px;
 	left: 600px;
+	width: fit-content;
 }
 

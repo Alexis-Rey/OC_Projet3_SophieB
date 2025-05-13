@@ -5,6 +5,7 @@
 // Import des fonctions issus de config.js
 import { recupererTravaux, recupererCategories} from "./config.js";
 import { filterWorks } from "./filtre.js";
+import { showModal } from "./modal.js";
  
 /**
  * Initialisation des variables globales.
@@ -178,12 +179,22 @@ boutonMettreAJour.addEventListener("click", function () {
 
 
 //********************************** GESTION ADMIN ****************************************************//
-// On vérifie qu'on est bien en admin et on active les privilèges
+
+/** Fonction qui vérifie qu'on est bien en admin et  active les privilèges
+*/
 function isAdmin(){
+    /**   Séléction des différents élements qui apparait en mode Admin
+    * @const {DOM Element} modify : correponds au bouton modifier de la galerie
+    * @const {DOM Element} editionMode : correponds à l'en-tête du mode édition en admin
+    * @const {DOM Element} log : correspond au lien login du menu nav 
+    */
     const modify = document.querySelector("#portfolio i");
     const editionMode = document.querySelector(".editionMode");
     const log = document.querySelector(".login");
+
+    // Récupération de la clé Admin dans la sessionStorage définit dans la fonction authentication sous config.js 
     const admin = window.sessionStorage.getItem("admin");
+  
     // Si on est en admin
     if(admin){
         // Activation des privilèges en faisant apparaitre les élements invisible et en modifiant leur comportement pour les sr
@@ -193,13 +204,17 @@ function isAdmin(){
         editionMode.toggleAttribute("aria-hidden");
         log.innerText = "logout";
 
+        modify.addEventListener("click", showModal());
+
         // Modification de logout à login une fois que l'on clique pour se déconnecter avec clear du sessionStorage
         // et de l'eventListener et remis en place des aria grâce au toogle précédant
         log.addEventListener("click", (e) => {
             e.target.innerText = "login";
-            window.sessionStorage.removeItem("admin");
+            window.sessionStorage.removeItem("admin");        
             log.removeEventListener(e);
-        })
-    }
-}
+            // Pour la sécurité on enlève le listenerEvent du modal à la deconnexion
+            modify.removeEventListener("click", showModal());
+        });
+    };
+};
 isAdmin();
