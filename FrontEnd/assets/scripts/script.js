@@ -207,6 +207,13 @@ function isAdmin(){
         // Attention, ici il est important de transmettre showModal en tant que fonction de rappel (callback) sinon
         // le fonction se lance directement même sans le click
         modify.addEventListener("click", showModal);
+        // Rajout de la même foncitonnalité mais à la pression au clavier pour l'accésibilité sr
+        modify.addEventListener("keydown",(e)=>{
+            if(e.key === "Enter"){
+                showModal();
+            }
+        })
+
        
         // Modification de logout à login une fois que l'on clique pour se déconnecter avec clear du sessionStorage
         // et de l'eventListener et remis en place des aria grâce au toogle précédant

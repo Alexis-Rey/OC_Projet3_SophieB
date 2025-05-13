@@ -65,7 +65,7 @@
 				<h2>Mes projets</h2>
 				</div>
 				<!-- Contenu de modification de la galerie est d'ouverture du modale et ajout informaiton pour les screen reader -->
-				<i class=" fa-regular fa-pen-to-square" aria-hidden="true"><span class="sr-only">Modifier le contenu</span><span id="js-modif">modifier</span></i>
+				<i class=" fa-regular fa-pen-to-square" aria-hidden="true"><span class="sr-only">Modifier le contenu</span><span id="js-modif" tabindex="0">modifier</span></i>
 				<!-- Div qui permet de regrouper, délimiter et agencer la partie contenant les différents boutons de filtrage galerie photo -->
 				<div class="menu-filter">
 					<button class="js-btn-maj">Tous</button>
@@ -156,7 +156,7 @@
   - 1 role dialog pour informer à son apparition qu'une fenêtre s'est ouverte par dessus le contenu principal au sr
   - 1 aria-modal true pour indiquer au sr un modal et que le contenu princiapl n'est plus accessible durant ce temps
 -->
-<div id="js-modal-wrapper" class="modalWrapper" style="display: none;" aria-hidden="true" role="dialog" aria-modal="true">
+<div id="js-modal-wrapper" class="modalWrapper" style="display: none;" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="js-modal-title1">
 
 	<!-- Contenu du modal avec role sur document pour indiquer au sr qu'il peut lire normalement avec les commandes standard le contenu -->
 	<div class="modalContent" role="document">

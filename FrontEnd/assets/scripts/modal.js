@@ -4,16 +4,24 @@
 
 // Initialisation d'une variable pour contrôler que la modale est toujours ouverte
 let isModalClose = false;
-// On récupère l'élement DOM de la modale, du contenu modale et du bouton de fermeture
+// On récupère l'élement DOM de la modale, du contenu modale, du bouton de fermeture et du titre
 const modal = document.getElementById("js-modal-wrapper");
 const modalContent = document.querySelector(".modalContent");
 const xMark = document.querySelector(".closeModalWrapper");
 
 /** Fonction qui affiche la modale */
 export function showModal(){
+
+    // Si la boite pour une raison quelconque est déja ouverte on quitte la fonction
+    if(isModalClose) return;
+
     // On modifie les attributs de la modale pour la rendre visible pour tous.
     modal.setAttribute("aria-hidden","false");
     modal.setAttribute("style","display:flex;");
+
+    // On récupère le titre est on met le focus dessus pour les utilisateurs de sr
+    const titleModal = document.getElementById("js-modal-title1");
+    titleModal.focus();
     
     // On écoute le bouton click sur la modale pour initier la première méthode de fermeture
     // Utilisation de l'écoute double-click, plus stable d'un point de vue UX, permet d'être sûre que c'est la volonté 
