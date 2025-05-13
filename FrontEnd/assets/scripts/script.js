@@ -5,7 +5,7 @@
 // Import des fonctions issus de config.js
 import { recupererTravaux, recupererCategories} from "./config.js";
 import { filterWorks } from "./filtre.js";
-import { showModal } from "./modal.js";
+import { showModal} from "./modal.js";
  
 /**
  * Initialisation des variables globales.
@@ -204,8 +204,10 @@ function isAdmin(){
         editionMode.toggleAttribute("aria-hidden");
         log.innerText = "logout";
 
-        modify.addEventListener("click", showModal());
-
+        // Attention, ici il est important de transmettre showModal en tant que fonction de rappel (callback) sinon
+        // le fonction se lance directement même sans le click
+        modify.addEventListener("click", showModal);
+       
         // Modification de logout à login une fois que l'on clique pour se déconnecter avec clear du sessionStorage
         // et de l'eventListener et remis en place des aria grâce au toogle précédant
         log.addEventListener("click", (e) => {
@@ -213,7 +215,7 @@ function isAdmin(){
             window.sessionStorage.removeItem("admin");        
             log.removeEventListener(e);
             // Pour la sécurité on enlève le listenerEvent du modal à la deconnexion
-            modify.removeEventListener("click", showModal());
+            modify.removeEventListener("click", showModal);
         });
     };
 };
