@@ -23,6 +23,18 @@ time, mark, audio, video {
 	font: inherit;
 	vertical-align: baseline;
 }
+
+/* Mise en place d'une charte graphique pour les couleur et taille police récurente */
+:root {
+    --main-bg-color: rgba(255,248,220,0.3);
+    --filter-bg-color: #1D6154;
+	--filter-hover: #0E2F28;
+
+    --main-size: 30px;
+    --normal-size: 16px;
+    --info-size: 14px;
+}
+
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
@@ -50,7 +62,7 @@ table {
 body {
 	max-width: 100%;
 	font-family: 'Work Sans' ;
-	font-size: 14px;
+	font-size: var(--info-size);
 }
 header {
 	display: flex;
@@ -83,7 +95,7 @@ h1 > span {
 h2{
 	font-family: 'Syne';
 	font-weight: 700;
-	font-size: 30px;
+	font-size: var(--main-size);
 	color: #1D6154
 }
 nav ul {
@@ -179,7 +191,7 @@ input[type="submit"]{
 	font-family: 'Syne';
 	font-weight: 700;
 	color: white;
-	background-color: #1D6154;
+	background-color: var(--filter-bg-color);
 	margin : 2em auto ;
 	width: 180px;
 	text-align: center;
@@ -225,7 +237,7 @@ nav li a{
 
 /* Mise en place de l'effet au survol pour les boutons */
 input[type="submit"]:hover{
-	background-color: #0E2F28;
+	background-color: var(--filter-hover);
 }
 
 /* Ajustement des tailles image comme maquette */
@@ -242,7 +254,7 @@ main{
 
 /* Mise en place de la couleur de fond du site */
 body{
-	background-color: rgba(255,248,220,0.3);
+	background-color: var(--main-bg-color);
 }
 
 /* Mise en place du fond blanc pour le footer */
@@ -274,12 +286,12 @@ une mise en couleur verte pour les textes, sizing à 16px et ajout des marges in
 .btn-filter{
 	font-family: 'Syne';
 	font-weight: 700;
-	color: #1D6154;
+	color: var(--filter-bg-color);
 	background-color: rgba(255,248,220,0);
 	text-align: center;
 	border-radius: 60px ;
-	border: 1px solid #1D6154;;
-	font-size: 16px;
+	border: 1px solid var(--filter-bg-color);
+	font-size: var(--normal-size);
 	padding: 9px;
 }
 
@@ -289,7 +301,7 @@ une mise en couleur verte pour les textes, sizing à 16px et ajout des marges in
 	font-weight: 700;
 	width: 100px;
 	color: white;
-	background-color: #1D6154;
+	background-color: var(--filter-bg-color);
 	border: none;
 	border-radius: 60px ;
 }
@@ -322,7 +334,7 @@ une mise en couleur verte pour les textes, sizing à 16px et ajout des marges in
 
 /* Mise en forme de la couleur, taille et police du texte */
 .editionModeTxt{
-	font-size: 16px;
+	font-size: var(--normal-size);
   	font-family: "Work Sans";
 	color: white;
 }
@@ -340,7 +352,7 @@ button:hover, #portfolio i{
 
 /* Sizing et police pour le texte modifier en admin */
 #js-modif{
-	font-size: 14px;
+	font-size: var(--info-size);
   	font-family: "Work Sans";
 	padding-left: 10px;
 }
