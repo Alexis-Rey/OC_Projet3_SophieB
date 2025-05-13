@@ -1,3 +1,7 @@
+// ************************** FICHIER JS CONCERNANT LES CONNEXIONS API  ****************************************************
+// ************************************************************************************************************************
+// ************************************************************************************************************************
+
 // Paramètrage de la config API en créant un objet JSON contenant l'URI des différentes collection et le nom de domaine (Host)
 //  afin de permettre une stabilité de la connexion API si un des élements venaient à changer. 
 // Bonne habitude pour des éventuels futures projets plus conséquent.

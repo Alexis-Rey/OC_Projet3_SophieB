@@ -20,114 +20,126 @@
 <body>
 
 	<!-- Ajout de la partie déstiné à informer que le mode édition administrateur est accessible -->
-	<div class="editionMode">
-		<i class=" fa-regular fa-pen-to-square"></i>
+	<div class="editionMode" aria-hidden="true">
+		<i class=" fa-regular fa-pen-to-square" aria-hidden="true"></i>
 		<span class="editionModeTxt">Mode édition</span>
 	</div>
 
 	<div class="contenuP">
 
-	<header>
-		<h1><a href="#"><img src="./assets/images/Logo.png" alt=" Page d'accueil Sophie Bluel - Architecte d'intérieur"></a></h1>
-		<nav>
-			<ul class="liste-nav">
-				<li><a href="#portfolio">projets</a></li>
-				<li><a href="#contact">contact</a></li>
-				<li><a class="login" href="/Portfolio-architecte-sophie-bluel/FrontEnd/connexionFormulaire.html">login</a></li>
-				<li><a href="https://www.instagram.com/"><i class=" fa-lg fa-brands fa-instagram"></i></a></li>
-			</ul>
-		</nav>
-	</header>
+		<!-- Menu de navigation et logo du site qui sert notamment de h1 -->
+		<header>
+			<h1><a href="#"><img src="./assets/images/Logo.png" alt="Sophie Bluel - Page d'accueil"></a></h1>
+			<nav>
+				<ul class="liste-nav">
+					<li><a href="#portfolio">projets</a></li>
+					<li><a href="#contact">contact</a></li>
+					<li><a class="login" href="/Portfolio-architecte-sophie-bluel/FrontEnd/connexionFormulaire.html">login</a></li>
+					<li><a href="https://www.instagram.com/"><span class="sr-only">Lien Instagram de Sophie Bluel</span><i class=" fa-lg fa-brands fa-instagram" aria-hidden="true"></i></a></li>
+				</ul>
+			</nav>
+		</header>
 
-	<main>
-		<section id="introduction">
-			<figure>
-				<img src="./assets/images/sophie-bluel.png" alt="">
-			</figure>
-			<article>
-				<h2>Designer d'espace</h2>
-				<p>Je raconte votre histoire, je valorise vos idées. Je vous accompagne de la conception à la livraison finale du chantier.</p>
-				<p>Chaque projet sera étudié en commun, de façon à mettre en valeur les volumes, les matières et les couleurs dans le respect de l’esprit des lieux et le choix adapté des matériaux. Le suivi du chantier sera assuré dans le souci du détail, le respect du planning et du budget.</p>
-				<p>En cas de besoin, une équipe pluridisciplinaire peut-être constituée : architecte DPLG, décorateur(trice)</p>
-			</article>
-		</section>
+		<!-- Contenu Principal du Site -->
+		<main>
+			<!-- Première section concernant l'image de l'architecte et un paragaphe sur son travail -->
+			<section id="introduction">
+				<!-- Element permettant de representer un contenu autonome possiblement accompagné d'une légende, ici mettre en avant sophie bluel -->
+				<figure>
+					<img src="./assets/images/sophie-bluel.png" alt="Image de l'architecte et propriétaire du site 'Sophie Bluel'">
+				</figure>
+				<!-- Partie informative sur le travail et les services proposés par sophie bluel, contenu indépendant  -->
+				<article>
+					<h2>Designer d'espace</h2>
+					<p>Je raconte votre histoire, je valorise vos idées. Je vous accompagne de la conception à la livraison finale du chantier.</p>
+					<p>Chaque projet sera étudié en commun, de façon à mettre en valeur les volumes, les matières et les couleurs dans le respect de l’esprit des lieux et le choix adapté des matériaux. Le suivi du chantier sera assuré dans le souci du détail, le respect du planning et du budget.</p>
+					<p>En cas de besoin, une équipe pluridisciplinaire peut-être constituée : architecte DPLG, décorateur(trice)</p>
+				</article>
+			</section>
 
-		<section id="portfolio">
-			<div class="titleMore">
-			<h2>Mes projets</h2>
-			</div>
-			<i class=" fa-regular fa-pen-to-square"><span id="modif">modifier</span></i>
-			<div class="menu-filter">
-				<button class="btn-maj">Tous</button>
-			</div>
-			
+			<!-- Contenu principale du Site contenant les projets et composé du titre, des boutons de filtrage et de la galerie photo des travaux effectués -->
+			<section id="portfolio">
+				<div class="titleMore">
+				<h2>Mes projets</h2>
+				</div>
+				<!-- Contenu de modification de la galerie est d'ouverture du modale et ajout informaiton pour les screen reader -->
+				<i class=" fa-regular fa-pen-to-square" aria-hidden="true"><span class="sr-only">Modifier le contenu</span><span id="js-modif">modifier</span></i>
+				<!-- Div qui permet de regrouper, délimiter et agencer la partie contenant les différents boutons de filtrage galerie photo -->
+				<div class="menu-filter">
+					<button class="js-btn-maj">Tous</button>
+				</div>
+				
+				<!-- Conteneur parent pour la mise en dispotion Grid qui sera utilisée en CSS par l'agencement des photos mise en place avec figure -->
+				<div class="gallery">
+					<figure>
+						<img src="assets/images/abajour-tahina.png" alt="Abajour Tahina">
+						<figcaption>Aba-jour Tahina</figcaption>
+					</figure>
+					<figure>
+						<img src="assets/images/appartement-paris-v.png" alt="Appartement Paris V">
+						<figcaption>Appartement Paris V</figcaption>
+					</figure>
+					<figure>
+						<img src="assets/images/restaurant-sushisen-londres.png" alt="Restaurant Sushisen - Londres">
+						<figcaption>Restaurant Sushisen - Londres</figcaption>
+					</figure>
+					<figure>
+						<img src="assets/images/la-balisiere.png" alt="Villa “La Balisiere” - Port Louis">
+						<figcaption>Villa “La Balisiere” - Port Louis</figcaption>
+					</figure>
+					<figure>
+						<img src="assets/images/structures-thermopolis.png" alt="Structures Thermopolis">
+						<figcaption>Structures Thermopolis</figcaption>
+					</figure>
+					<figure>
+						<img src="assets/images/appartement-paris-x.png" alt="Appartement Paris X">
+						<figcaption>Appartement Paris X</figcaption>
+					</figure>
+					<figure>
+						<img src="assets/images/le-coteau-cassis.png" alt="Pavillon “Le coteau” - Cassis">
+						<figcaption>Pavillon “Le coteau” - Cassis</figcaption>
+					</figure>
+					<figure>
+						<img src="assets/images/villa-ferneze.png" alt="Villa Ferneze - Isola d’Elba">
+						<figcaption>Villa Ferneze - Isola d’Elba</figcaption>
+					</figure>
+					<figure>
+						<img src="assets/images/appartement-paris-xviii.png" alt="Appartement Paris XVIII">
+						<figcaption>Appartement Paris XVIII</figcaption>
+					</figure>
+					<figure>
+						<img src="assets/images/bar-lullaby-paris.png" alt="Bar “Lullaby” - Paris">
+						<figcaption>Bar “Lullaby” - Paris</figcaption>
+					</figure>
+					<figure>
+						<img src="assets/images/hotel-first-arte-new-delhi.png" alt="Hotel First Arte - New Delhi">
+						<figcaption>Hotel First Arte - New Delhi</figcaption>
+					</figure>
+				</div>
+			</section>
 
-			<div class="gallery">
-				<figure>
-					<img src="assets/images/abajour-tahina.png" alt="Abajour Tahina">
-					<figcaption>Aba-jour Tahina</figcaption>
-				</figure>
-				<figure>
-					<img src="assets/images/appartement-paris-v.png" alt="Appartement Paris V">
-					<figcaption>Appartement Paris V</figcaption>
-				</figure>
-				<figure>
-					<img src="assets/images/restaurant-sushisen-londres.png" alt="Restaurant Sushisen - Londres">
-					<figcaption>Restaurant Sushisen - Londres</figcaption>
-				</figure>
-				<figure>
-					<img src="assets/images/la-balisiere.png" alt="Villa “La Balisiere” - Port Louis">
-					<figcaption>Villa “La Balisiere” - Port Louis</figcaption>
-				</figure>
-				<figure>
-					<img src="assets/images/structures-thermopolis.png" alt="Structures Thermopolis">
-					<figcaption>Structures Thermopolis</figcaption>
-				</figure>
-				<figure>
-					<img src="assets/images/appartement-paris-x.png" alt="Appartement Paris X">
-					<figcaption>Appartement Paris X</figcaption>
-				</figure>
-				<figure>
-					<img src="assets/images/le-coteau-cassis.png" alt="Pavillon “Le coteau” - Cassis">
-					<figcaption>Pavillon “Le coteau” - Cassis</figcaption>
-				</figure>
-				<figure>
-					<img src="assets/images/villa-ferneze.png" alt="Villa Ferneze - Isola d’Elba">
-					<figcaption>Villa Ferneze - Isola d’Elba</figcaption>
-				</figure>
-				<figure>
-					<img src="assets/images/appartement-paris-xviii.png" alt="Appartement Paris XVIII">
-					<figcaption>Appartement Paris XVIII</figcaption>
-				</figure>
-				<figure>
-					<img src="assets/images/bar-lullaby-paris.png" alt="Bar “Lullaby” - Paris">
-					<figcaption>Bar “Lullaby” - Paris</figcaption>
-				</figure>
-				<figure>
-					<img src="assets/images/hotel-first-arte-new-delhi.png" alt="Hotel First Arte - New Delhi">
-					<figcaption>Hotel First Arte - New Delhi</figcaption>
-				</figure>
-			</div>
-		</section>
-		<section id="contact">
-			<h2>Contact</h2>
-			<p>Vous avez un projet ? Discutons-en !</p>
-			<form action="#" method="post">
-				<label for="name">Nom</label>
-				<input type="text" name="name" id="name">
-				<label for="email">Email</label>
-				<input type="email" name="email" id="email">
-				<label for="message">Message</label>
-				<textarea name="message" id="message" cols="30" rows="10"></textarea>
-				<input type="submit" value="Envoyer">
-			</form>
-		</section>
-	</main>
+			<!-- Section déstiné à representer le formulaire de contact et d'informations à déstination de sophie -->
+			<section id="contact">
+				<h2>Contact</h2>
+				<p>Vous avez un projet ? Discutons-en !</p>
+				<form action="#" method="post">
+					<label for="name">Nom</label>
+					<input type="text" name="name" id="name" required>
+					<label for="email">Email</label>
+					<input type="email" name="email" id="email" required>
+					<label for="message">Message</label>
+					<textarea name="message" id="message" cols="30" rows="10"></textarea>
+					<input type="submit" value="Envoyer">
+				</form>
+			</section>
+		</main>
 </div>
+
+<!-- Pied de page contenant uniquement les mentions légales -->
 <footer class="footerContent">
 	<nav>
 		<ul>
-			<li><a>Mentions Légales</a></li>
+			<li><a href="#">Mentions Légales</a></li>
 		</ul>
 	</nav>
 </footer>

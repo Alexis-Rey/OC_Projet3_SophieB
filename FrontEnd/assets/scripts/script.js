@@ -1,3 +1,7 @@
+// ************************** FICHIER JS CONCERNANT LE FONCTIONNEMENT GLOBALE DU SITE  ****************************************************
+// ************************************************************************************************************************
+// ************************************************************************************************************************
+
 // Import des fonctions issus de config.js
 import { recupererTravaux, recupererCategories} from "./config.js";
 import { filterWorks } from "./filtre.js";
@@ -15,7 +19,11 @@ let categories;
 const buttons = [];
 
 
-
+/**
+ * Fonction permettant de générer notre Page d'accueil dynamiquement pour l'architecte Sophie Bluel
+ * @param {array of object} works : les données des travaux issues de l'API reçu par la fonciton localOuApi
+ * * @param {array of object} categories : les données des catégories issues de l'API reçu par la fonciton localOuApi
+ */
 function genererPage(works, categories){
     try{
     genererGallery(works); 
@@ -25,6 +33,8 @@ function genererPage(works, categories){
     };
 }
 
+// Fonction permettant de récupérer nos travaux et catégories depuis l'API ou depuis le localStorage si cette dernière n'est
+// pas accessible
 async function localOuApi(){
     // Récupération d'info du localStroage correpondant à la clé
     let worksStorage = window.localStorage.getItem(key);
@@ -58,10 +68,9 @@ async function localOuApi(){
 
 /**
  * Fonction permettant de générer notre Gallery de travaux dynamiquement pour l'architecte Sophie Bluel
- * @param {JSON} travaux : les données des travaux issues de l'API
+ * @param {array of object} travaux : les données des travaux issues de l'API
  */
 function genererGallery(travaux){
-
     // Récupération de l'élément DOM parent nécessaire - ici la gallery qui va contenir les travaux
     // Suppresion dans un second temps de son contenu car l'affichage se fait dynamiquement.
     const gallery =  document.querySelector(".gallery");
@@ -90,7 +99,7 @@ function genererGallery(travaux){
 
 
 /** Fonction pour générer dynamiquement les filtres et les afficher
- * @param {JSON} Filtres : les données des catégories de filtre issues de l'API
+ * @param {array of object} Filtres : les données des catégories de filtre issues de l'API
  */
 function genererFilter(Filtres){
 
@@ -121,7 +130,7 @@ genererPage(worksEtCategories.works, worksEtCategories.categories);
 
 
 //*********** GESTION DES TRAVAUX EN FONCTION DU FILTRE sélectioné par l'utilisateur ****************************//
-// On utilise ici une boucle for pour parcourir le tableau de boutons issu de la fonction qui génère dynamiquement les catégories reçu par API
+// On utilise ici une boucle for pour parcourir le tableau de boutons issu de la fonction genererFilter qui génère dynamiquement les catégories reçu par API
 for ( let b = 0; b < buttons.length; b++){
 
     /**  @param {string} buttonClicked : le bouton qui est cliqué */
@@ -159,7 +168,7 @@ for ( let b = 0; b < buttons.length; b++){
 
 // Ajout du listener sur le boutton Tous des filtres  pour mettre à jour les données du localStorage
 // Nouvelle Génération des travaux à l'appuie du bouton 
-const boutonMettreAJour = document.querySelector(".btn-maj");
+const boutonMettreAJour = document.querySelector(".js-btn-maj");
 const gallery =  document.querySelector(".gallery");
 boutonMettreAJour.addEventListener("click", function () {
     window.localStorage.removeItem(key);
@@ -177,14 +186,19 @@ function isAdmin(){
     const admin = window.sessionStorage.getItem("admin");
     // Si on est en admin
     if(admin){
-        // Activation des privilèges en faisant apparaitre les élements invisible et en modifiant d'autres
+        // Activation des privilèges en faisant apparaitre les élements invisible et en modifiant leur comportement pour les sr
         modify.classList.toggle("active");
+        modify.toggleAttribute("aria-hidden");
         editionMode.classList.toggle("active");
+        editionMode.toggleAttribute("aria-hidden");
         log.innerText = "logout";
 
+        // Modification de logout à login une fois que l'on clique pour se déconnecter avec clear du sessionStorage
+        // et de l'eventListener et remis en place des aria grâce au toogle précédant
         log.addEventListener("click", (e) => {
             e.target.innerText = "login";
             window.sessionStorage.removeItem("admin");
+            log.removeEventListener(e);
         })
     }
 }

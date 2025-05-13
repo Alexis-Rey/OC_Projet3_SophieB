@@ -1,9 +1,14 @@
+// ************************** FICHIER JS CONCERNANT LE FORMULAIRE D'IDENTIFICATION LOGIN  ****************************************************
+// ************************************************************************************************************************
+// ************************************************************************************************************************
+
 import { authentication } from "./config.js";
 
 //  Ecoute du bouton de la page formulaire pour l'authentification d'utilisateur 
 const form = document.getElementById("contactForm");
     form.addEventListener("submit", (e) =>{
         e.preventDefault();
+        // On enregistre dans une variable la valeur des champs du formulaire.
         const user = {
             email: e.target.querySelector("#email").value,
             password: e.target.querySelector("#pass-word").value
@@ -20,8 +25,10 @@ const form = document.getElementById("contactForm");
 
         if (mailRegex === true && pwRegex === true){
             const auth = JSON.stringify(user)
-                authentication(auth);       
+            // Appelle de la fonction d'authentification pour contacter l'api et se connecter en tant que Admin
+            authentication(auth);       
         }else{
+            // On vide les champs
             e.target.querySelector("#email").value = "";
             e.target.querySelector("#pass-word").value ="";
         }
