@@ -172,7 +172,6 @@ for ( let b = 0; b < buttons.length; b++){
 const boutonMettreAJour = document.querySelector(".js-btn-maj");
 const gallery =  document.querySelector(".gallery");
 boutonMettreAJour.addEventListener("click", function () {
-    window.localStorage.removeItem(key);
     gallery.innerHTML="";
     genererGallery(worksEtCategories.works);
 });

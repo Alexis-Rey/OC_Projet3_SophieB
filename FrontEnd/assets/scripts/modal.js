@@ -40,6 +40,7 @@ export function showModal(){
 
 function genererModale(works){
     const modalGallery = document.getElementById("js-modal-bodyGallery");
+    const btnAjouterPhoto = document.getElementById("js-goto-page2");
     modalGallery.innerHTML= "";
      for(let i = 0; i<works.length; i++){
         // Création d'une balises figure dédié à un travail
@@ -62,7 +63,27 @@ function genererModale(works){
         figure.appendChild(imgRecycleBin);
         figure.appendChild(img);
         modalGallery.appendChild(figure);
-    }
+    };
+
+    btnAjouterPhoto.addEventListener("click", genererSecondeModale);
+
+};
+
+function genererSecondeModale(){
+    const modal1 = document.getElementById("js-modal-page1");
+    const modal2 = document.getElementById("js-modal-page2");
+    const btnPrev = document.getElementById("js-goto-page1");
+
+    btnPrev.setAttribute("style","display:block;");
+    btnPrev.setAttribute("aria-hidden","false");
+
+    modal1.style.display = "none";
+    modal1.setAttribute("aria-hidden","true");
+
+    modal2.style.display = "flex";
+    modal2.setAttribute("aria-hidden","false");
+
+
 };
 
 /** Fonction permettant de stopper la propagationa au parent donc ici le modalWrapper et éviter la fermeture sur le double-click sur le contenu */ 

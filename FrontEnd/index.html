@@ -180,10 +180,27 @@
 		<!-- Partie 2 : Formulaire Multipart/FormData -->
 		 <section id="js-modal-page2" class="modalPage" aria-labelledby="js-modal-title2" style="display: none;" aria-hidden="true">
 			<h2 id="js-modal-title2">Ajout Photo</h2>
-			<!-- Div qui contiendra la galerie photo généré dynamiquement -->
-			<div id="js-modal-bodyUpload" class="modalBodyUpload">
-				<!-- Contenu qui sera généré -->
-			</div>
+
+			<!-- Formulaire pour l'envoi d'un nouveau projet -->
+			<form id="js-modal-form" class="modalBodyForm" method="post" enctype="multipart/form-data">
+				<div id="dropbox" class="dropBox">
+					<img src="./assets/icons/picture-svgrepo-com 1.png" alt="Icone d'une répresentation d'image">
+					<label id="js-form-loadTitle" for="js-form-loadFile">+ Ajouter photo</label>
+					<input id="js-form-loadFile" class="modalFormLoad" name="js-form-loadFile" type="file" accept="image/png, image/jpeg" required>
+					<p>jpg, png: 4mo max</p>
+				</div>
+				<label for="js-form-title">Titre</label>
+				<input id="js-form-title" class="modalFormInput" name="js-form-title" type="text" required>
+				<label for="js-form-list">Catégorie</label>
+
+				<!-- Mise en place d'une div pour le comportement du select identique à la maquette et la même mise en page -->
+				<div class="dropList">
+				<select id="js-form-list" class="modalFormInput" name="choiceCategories" required></select>
+				<img class="dropdownMark" src="./assets/icons/chevron-down-solid 1.png" alt="Faire défiler le menu">
+				</div>
+
+			</form>
+
 			<input id="js-modal-btnValidate" class="btnForm" type="submit" value="Valider">
 		 </section>
 	</div>
