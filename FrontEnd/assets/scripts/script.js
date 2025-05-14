@@ -5,7 +5,7 @@
 // Import des fonctions issus de config.js
 import { recupererTravaux, recupererCategories} from "./config.js";
 import { filterWorks } from "./filtre.js";
-import { showModal} from "./modal.js";
+import { showModal } from "./modal.js";
  
 /**
  * Initialisation des variables globales.
@@ -137,8 +137,8 @@ for ( let b = 0; b < buttons.length; b++){
     /**  @param {string} buttonClicked : le bouton qui est cliqué */
     /**  @param {array} worksFiltered : tableau contenant les travaux filtés issu de filtre.js suivant le choix utilisateur */
     let buttonClicked;
-    const gallery =  document.querySelector(".gallery");
     let worksFiltered;
+    const gallery =  document.querySelector(".gallery");
 
     // Ajout d'un écouter d'évènement au click sur chaque bouton
     buttons[b].addEventListener("click",(e) => { 
@@ -180,8 +180,7 @@ boutonMettreAJour.addEventListener("click", function () {
 
 //********************************** GESTION ADMIN ****************************************************//
 
-/** Fonction qui vérifie qu'on est bien en admin et  active les privilèges
-*/
+/** Fonction qui vérifie qu'on est bien en admin et  active les privilèges*/
 function isAdmin(){
     /**   Séléction des différents élements qui apparait en mode Admin
     * @const {DOM Element} modify : correponds au bouton modifier de la galerie
@@ -194,7 +193,7 @@ function isAdmin(){
 
     // Récupération de la clé Admin dans la sessionStorage définit dans la fonction authentication sous config.js 
     const admin = window.sessionStorage.getItem("admin");
-  
+
     // Si on est en admin
     if(admin){
         // Activation des privilèges en faisant apparaitre les élements invisible et en modifiant leur comportement pour les sr
@@ -204,9 +203,9 @@ function isAdmin(){
         editionMode.toggleAttribute("aria-hidden");
         log.innerText = "logout";
 
-        // Attention, ici il est important de transmettre showModal en tant que fonction de rappel (callback) sinon
-        // le fonction se lance directement même sans le click
-        modify.addEventListener("click", showModal);
+        modify.addEventListener("click", (e)=>{
+            showModal();
+        });
         // Rajout de la même foncitonnalité mais à la pression au clavier pour l'accésibilité sr
         modify.addEventListener("keydown",(e)=>{
             if(e.key === "Enter"){
@@ -214,8 +213,7 @@ function isAdmin(){
             }
         })
 
-       
-        // Modification de logout à login une fois que l'on clique pour se déconnecter avec clear du sessionStorage
+        // Modification de logout à login une fois que l'on clique pour se déconnecter avec clear du sessionStorage admin
         // et de l'eventListener et remis en place des aria grâce au toogle précédant
         log.addEventListener("click", (e) => {
             e.target.innerText = "login";
@@ -226,4 +224,6 @@ function isAdmin(){
         });
     };
 };
+
 isAdmin();
+

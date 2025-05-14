@@ -1,9 +1,6 @@
 // ************************** FICHIER JS CONCERNANT LA MODALE  ****************************************************
 // ************************************************************************************************************************
 // ************************************************************************************************************************
-
-// Initialisation d'une variable pour contrôler que la modale est toujours ouverte
-let isModalClose = false;
 // On récupère l'élement DOM de la modale, du contenu modale, du bouton de fermeture et du titre
 const modal = document.getElementById("js-modal-wrapper");
 const modalContent = document.querySelector(".modalContent");
@@ -12,9 +9,6 @@ const xMark = document.querySelector(".closeModalWrapper");
 /** Fonction qui affiche la modale */
 export function showModal(){
 
-    // Si la boite pour une raison quelconque est déja ouverte on quitte la fonction
-    if(isModalClose) return;
-
     // On modifie les attributs de la modale pour la rendre visible pour tous.
     modal.setAttribute("aria-hidden","false");
     modal.setAttribute("style","display:flex;");
@@ -22,32 +16,64 @@ export function showModal(){
     // On récupère le titre est on met le focus dessus pour les utilisateurs de sr
     const titleModal = document.getElementById("js-modal-title1");
     titleModal.focus();
+
+    // On reprends les données works du localStorage et on les parse pour les mettre en info JS
+    const worksModale = window.localStorage.getItem("mes-travaux");
+    const works = JSON.parse(worksModale);
+    // Appel de la fonction de génération du modal dynamique
+    genererModale(works);
     
     // On écoute le bouton click sur la modale pour initier la première méthode de fermeture
     // Utilisation de l'écoute double-click, plus stable d'un point de vue UX, permet d'être sûre que c'est la volonté 
     // de l'utilisateur de vouloir fermer
-    // On vérifie que l'écoute double-click n'est pas déjà lancer
-    if(!isModalClose){
-        // Attention, ici il est important de transmettre showModal en tant que fonction de rappel (callback) sinon
-        // le fonction se lance directement même sans le double-click
-        modal.addEventListener("dblclick",closeModal);
-        // Appelle de la fonction propagationStop si on double-click sur le contenu
-        modalContent.addEventListener("dblclick", propagationStop);
-        xMark.addEventListener("click",closeModal);
-        isModalClose = true;
+    // Attention, ici il est important de transmettre showModal en tant que fonction de rappel (callback) sinon
+    // le fonction se lance directement même sans le double-click
+     modal.addEventListener("dblclick",closeModal);
+    // Appelle de la fonction propagationStop si on double-click sur le contenu
+    modalContent.addEventListener("dblclick", propagationStop);
+    // Ecoute du click sur le bouton fermeture
+    xMark.addEventListener("click",closeModal);
+};
+
+/** Fonction qui ferme la modale */
+/**  @param {array of object JS} works : données sur les travaux récupérées depuis le localStorage*/
+
+function genererModale(works){
+    const modalGallery = document.getElementById("js-modal-bodyGallery");
+    modalGallery.innerHTML= "";
+     for(let i = 0; i<works.length; i++){
+        // Création d'une balises figure dédié à un travail
+        const figure = document.createElement("figure");
+
+        // Création des informations de chaque travail grâce aux info issu du localStorage
+        const img = document.createElement("img");
+        img.src = works[i].imageUrl;
+        img.alt = works[i].title;
+        img.classList.add("imgWorks");
+
+        // Création de la corbeille de suppression propre à chaque travaux
+        const imgRecycleBin =  document.createElement("img");
+        imgRecycleBin.src = "./assets/icons/corbeille.png";
+        imgRecycleBin.alt = `Corbeille de ${works[i].title}`;
+        imgRecycleBin.classList.add("imgRecycleBin");
+        imgRecycleBin.dataset.id = works[i].id;
+        
+        // Rattachement des éléments créer et configurer dans le DOM
+        figure.appendChild(imgRecycleBin);
+        figure.appendChild(img);
+        modalGallery.appendChild(figure);
     }
 };
 
 /** Fonction permettant de stopper la propagationa au parent donc ici le modalWrapper et éviter la fermeture sur le double-click sur le contenu */ 
 const propagationStop = function (e){
     e.stopPropagation();
-}
+};
 
 /** Fonction qui ferme la modale */
 function closeModal(){
-        modal.setAttribute("aria-hidden","true");
-        modal.setAttribute("style","display:none;");
-        modal.removeEventListener("dblclick", closeModal);
-        xMark.removeEventListener("click", closeModal);
-        isModalClose = false;
-}
+    modal.setAttribute("aria-hidden","true");
+    modal.setAttribute("style","display:none;");
+    modal.removeEventListener("dblclick", closeModal);
+    xMark.removeEventListener("click", closeModal);
+};
