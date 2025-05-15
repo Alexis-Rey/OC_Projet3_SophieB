@@ -5,6 +5,7 @@
 const modal = document.getElementById("js-modal-wrapper");
 const modalContent = document.querySelector(".modalContent");
 const xMark = document.querySelector(".closeModalWrapper");
+const btnPrev = document.getElementById("js-goto-page1");
 
 /** Fonction qui affiche la modale */
 export function showModal(){
@@ -12,37 +13,78 @@ export function showModal(){
     // On modifie les attributs de la modale pour la rendre visible pour tous.
     modal.setAttribute("aria-hidden","false");
     modal.setAttribute("style","display:flex;");
+    
+    let page = 1;
+    const btnAjouterPhoto = document.getElementById("js-goto-page2");
 
     // On récupère le titre est on met le focus dessus pour les utilisateurs de sr
     const titleModal = document.getElementById("js-modal-title1");
     titleModal.focus();
 
-    // On reprends les données works du localStorage et on les parse pour les mettre en info JS
-    const worksModale = window.localStorage.getItem("mes-travaux");
-    const works = JSON.parse(worksModale);
-    // Appel de la fonction de génération du modal dynamique
-    genererModale(works);
-    
+    // Appel de la fonction de génération du contenu dynamique en origin
+    genererModale(page);
+
+    // En fonction de la page voulu "aller en page 2" ou "retour en page 1" on regenère le bonne page
+    btnAjouterPhoto.addEventListener("click",()=>{
+        page = 2;
+        genererModale(page)
+    });
+    btnPrev.addEventListener("click",()=>{
+        page = 1;
+        genererModale(page)
+    });
+
+    // Fermeture
     // On écoute le bouton click sur la modale pour initier la première méthode de fermeture
     // Utilisation de l'écoute double-click, plus stable d'un point de vue UX, permet d'être sûre que c'est la volonté 
     // de l'utilisateur de vouloir fermer
     // Attention, ici il est important de transmettre showModal en tant que fonction de rappel (callback) sinon
     // le fonction se lance directement même sans le double-click
-     modal.addEventListener("dblclick",closeModal);
+    modal.addEventListener("dblclick",closeModal);
     // Appelle de la fonction propagationStop si on double-click sur le contenu
     modalContent.addEventListener("dblclick", propagationStop);
     // Ecoute du click sur le bouton fermeture
     xMark.addEventListener("click",closeModal);
 };
 
-/** Fonction qui ferme la modale */
-/**  @param {array of object JS} works : données sur les travaux récupérées depuis le localStorage*/
+function genererModale(page){
+    // On reprends les données works du localStorage et on les parse pour les mettre en info JS
+    const worksModale = window.localStorage.getItem("mes-travaux");
+    const works = JSON.parse(worksModale);
+    const modal1 = document.getElementById("js-modal-page1");
+    const modal2 = document.getElementById("js-modal-page2");
 
-function genererModale(works){
+    if(page === 1){
+        btnPrev.setAttribute("style","display:none;");
+        btnPrev.setAttribute("aria-hidden","true");
+            
+        modal1.style.display = "flex";
+        modal1.setAttribute("aria-hidden","false");
+
+        modal2.style.display = "none";
+        modal2.setAttribute("aria-hidden","true");
+
+        galleryShow(works);  
+
+    } else{
+        btnPrev.setAttribute("style","display:block;");
+        btnPrev.setAttribute("aria-hidden","false");
+            
+        modal1.style.display = "none";
+        modal1.setAttribute("aria-hidden","true");
+
+        modal2.style.display = "flex";
+        modal2.setAttribute("aria-hidden","false");
+    }
+};
+
+/** Fonction qui genère la gallery photo */
+/**  @param {array of object JS} works : données sur les travaux récupérées depuis le localStorage*/
+function galleryShow(works){
     const modalGallery = document.getElementById("js-modal-bodyGallery");
-    const btnAjouterPhoto = document.getElementById("js-goto-page2");
     modalGallery.innerHTML= "";
-     for(let i = 0; i<works.length; i++){
+    
+    for(let i = 0; i<works.length; i++){
         // Création d'une balises figure dédié à un travail
         const figure = document.createElement("figure");
 
@@ -64,27 +106,7 @@ function genererModale(works){
         figure.appendChild(img);
         modalGallery.appendChild(figure);
     };
-
-    btnAjouterPhoto.addEventListener("click", genererSecondeModale);
-
-};
-
-function genererSecondeModale(){
-    const modal1 = document.getElementById("js-modal-page1");
-    const modal2 = document.getElementById("js-modal-page2");
-    const btnPrev = document.getElementById("js-goto-page1");
-
-    btnPrev.setAttribute("style","display:block;");
-    btnPrev.setAttribute("aria-hidden","false");
-
-    modal1.style.display = "none";
-    modal1.setAttribute("aria-hidden","true");
-
-    modal2.style.display = "flex";
-    modal2.setAttribute("aria-hidden","false");
-
-
-};
+}
 
 /** Fonction permettant de stopper la propagationa au parent donc ici le modalWrapper et éviter la fermeture sur le double-click sur le contenu */ 
 const propagationStop = function (e){

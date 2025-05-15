@@ -116,7 +116,7 @@ mise en overflow scroll pour permettre une barre de défilement pour la présenc
     margin-bottom: 36px;
 }
 
-#js-modal-form label{
+label[for="js-form-title"], label[for="js-form-list"]{
     font-weight: 500;
     margin-bottom: 10px;
 }
@@ -129,6 +129,8 @@ mise en overflow scroll pour permettre une barre de défilement pour la présenc
     padding-bottom: 47px;
 }
 
+/* Initialisation d'une zone de dépot qui servira de relai et de nouveau input file une fois paramétré ! 
+Mise en disposition colonne de ses enfants, espacement, marge inférieur, hauteur de la boite et design */
 .dropBox{
     display: flex;
     flex-direction: column;
@@ -140,31 +142,51 @@ mise en overflow scroll pour permettre une barre de défilement pour la présenc
     height: 169px;
 }
 
+/* Mise en position asbolut pour retirer l'input file du flux de la page et visibility sur hidden pour le 
+masquer */
 .dropBox input{
     visibility: hidden;
+    position: absolute;
 }
 
-.dropBox label{
+/* Label qui va servir de nouveau lien déclencheur de l'input file qui est masqué. Mise d'un curseur pointeur à cette effet.
+Paramètrage de son deisgn pour qu'il prenne l'apparence voulu sur la maquette c'est à dire, celle d'un bouton  */
+#js-form-loadTitle{
     cursor: pointer;
+    color: #306685;
+    font-family: 'Work Sans';
+    font-weight: 500;
+    background-color: #CBD6DC;
+    padding: 11px 33px;
+    border: none;
+    border-radius: 50px;
+    margin-bottom: 6px;
 }
 
+/* Marge supérieur pour l'icone de représentation d'img au sein de la dropBox */
 .dropBox img{
     margin-top: 13px;
 }
 
+/* Couleur pour la partie information des fichiers de dépôt */
 .dropBox p{
     color: rgba(68, 68, 68, 1);
+    font-size: 10px;
 }
 
+/* Mise en forme du bouton d'envoi de formulaire */
 #js-modal-btnValidate{
     width:237px;
     margin-top: 32px;
+    background-color: #A7A7A7;
 }
 
+/* Nouvelle marge extérieur basse pour le label assigné aux inputs text */
 #js-form-title{
     margin-bottom: 21px;
 }
 
+/* Mise en forme des inputs "text et select" pour correpondre à la maquette, hauteur , absence de bordure et ombre portée */
 .modalFormInput{
     height:51px;
     border: none;
@@ -178,6 +200,7 @@ mise en overflow scroll pour permettre une barre de défilement pour la présenc
     width: 100%;
 }
 
+/* Mise en pos relative pour pouvoir positionner son élément enfant qui est en absolute */
 .dropList{
     position: relative;
 }
