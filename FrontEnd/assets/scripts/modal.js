@@ -1,11 +1,14 @@
 // ************************** FICHIER JS CONCERNANT LA MODALE  ****************************************************
 // ************************************************************************************************************************
 // ************************************************************************************************************************
-// On récupère l'élement DOM de la modale, du contenu modale, du bouton de fermeture et du titre
+import { deleteWork, recupererTravaux } from "./config.js";
+import { genererGallery } from "./script.js";
+// On récupère l'élement DOM de la modale, du contenu modale, du bouton de fermeture, du bouton de retour, du bouton pour aller en page 2
 const modal = document.getElementById("js-modal-wrapper");
 const modalContent = document.querySelector(".modalContent");
 const xMark = document.querySelector(".closeModalWrapper");
 const btnPrev = document.getElementById("js-goto-page1");
+const btnAjouterPhoto = document.getElementById("js-goto-page2");
 
 /** Fonction qui affiche la modale */
 export function showModal(){
@@ -13,13 +16,24 @@ export function showModal(){
     // On modifie les attributs de la modale pour la rendre visible pour tous.
     modal.setAttribute("aria-hidden","false");
     modal.setAttribute("style","display:flex;");
-    
+    // Initialisation d'une variable indiquant la page actuelle
     let page = 1;
-    const btnAjouterPhoto = document.getElementById("js-goto-page2");
 
     // On récupère le titre est on met le focus dessus pour les utilisateurs de sr
     const titleModal = document.getElementById("js-modal-title1");
     titleModal.focus();
+
+    // Fermeture
+    // On écoute le bouton click sur la modale pour initier la première méthode de fermeture
+    // Utilisation de l'écoute double-click, plus stable d'un point de vue UX, permet d'être sûre que c'est la volonté 
+    // de l'utilisateur de vouloir fermer
+    // Attention, ici il est important de transmettre showModal en tant que fonction de rappel (callback) sinon
+    // le fonction se lance directement même sans le double-click
+    modal.addEventListener("dblclick",closeModal);
+    // Appelle de la fonction propagationStop si on double-click sur le contenu
+    modalContent.addEventListener("dblclick", propagationStop);
+    // Ecoute du click sur le bouton fermeture
+    xMark.addEventListener("click",closeModal);
 
     // Appel de la fonction de génération du contenu dynamique en origin
     genererModale(page);
@@ -34,23 +48,14 @@ export function showModal(){
         genererModale(page)
     });
 
-    // Fermeture
-    // On écoute le bouton click sur la modale pour initier la première méthode de fermeture
-    // Utilisation de l'écoute double-click, plus stable d'un point de vue UX, permet d'être sûre que c'est la volonté 
-    // de l'utilisateur de vouloir fermer
-    // Attention, ici il est important de transmettre showModal en tant que fonction de rappel (callback) sinon
-    // le fonction se lance directement même sans le double-click
-    modal.addEventListener("dblclick",closeModal);
-    // Appelle de la fonction propagationStop si on double-click sur le contenu
-    modalContent.addEventListener("dblclick", propagationStop);
-    // Ecoute du click sur le bouton fermeture
-    xMark.addEventListener("click",closeModal);
 };
 
-function genererModale(page){
+async function genererModale(page){
     // On reprends les données works du localStorage et on les parse pour les mettre en info JS
-    const worksModale = window.localStorage.getItem("mes-travaux");
-    const works = JSON.parse(worksModale);
+    // const worksModale = window.localStorage.getItem("mes-travaux");
+    // const works = JSON.parse(worksModale);
+    const works = await recupererTravaux();
+
     const modal1 = document.getElementById("js-modal-page1");
     const modal2 = document.getElementById("js-modal-page2");
 
@@ -64,7 +69,8 @@ function genererModale(page){
         modal2.style.display = "none";
         modal2.setAttribute("aria-hidden","true");
 
-        galleryShow(works);  
+        galleryShow(works);
+        genererGallery(works);  
 
     } else{
         btnPrev.setAttribute("style","display:block;");
@@ -100,12 +106,14 @@ function galleryShow(works){
         imgRecycleBin.alt = `Corbeille de ${works[i].title}`;
         imgRecycleBin.classList.add("imgRecycleBin");
         imgRecycleBin.dataset.id = works[i].id;
-        
+
         // Rattachement des éléments créer et configurer dans le DOM
         figure.appendChild(imgRecycleBin);
         figure.appendChild(img);
-        modalGallery.appendChild(figure);
-    };
+        modalGallery.appendChild(figure); 
+    };  
+    // Appel à la fonction de gestion des corbeilles.
+    binGesture();
 }
 
 /** Fonction permettant de stopper la propagationa au parent donc ici le modalWrapper et éviter la fermeture sur le double-click sur le contenu */ 
@@ -119,4 +127,23 @@ function closeModal(){
     modal.setAttribute("style","display:none;");
     modal.removeEventListener("dblclick", closeModal);
     xMark.removeEventListener("click", closeModal);
+};
+
+// Fonction qui gère les corbeilles et le besoin de supprimer un travail
+function binGesture(){
+    const allBin = document.querySelectorAll(".imgRecycleBin");
+   
+    for(let i = 0; i < allBin.length; i++){
+        allBin[i].addEventListener("click",async(e)=>{
+            e.preventDefault();
+            e.stopPropagation();
+            const binSelect = parseInt(allBin[i].dataset.id);
+            try{
+                await deleteWork(binSelect);
+                genererModale(1);
+            }catch{
+                console.error("Problème de suppresion de projet");
+            }
+        });
+    };
 };
