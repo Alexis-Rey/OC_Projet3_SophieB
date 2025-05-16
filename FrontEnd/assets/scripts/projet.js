@@ -16,20 +16,21 @@ export function dropControl(boxOpen){
 };
 
 function controleImg(file){
+    
     const typeOk = controleType(file.type);
     const sizeOk = controleSize(file.size);
     
     // Si l'image est bonne on charge la miniature sinon on repasse au contrôle format page1
     if (typeOk && sizeOk){
         // On charge le preset page2  
-        presetPage2();
+        toggleDropbox("on");
 
-        // Mise en forme du fond pour montrer à l'utilisateur que tout est conforme
-        dropboxOn.style.backgroundColor = "rgba(144, 238, 159, 0.2)";
-
-        // Supprimer la précédente miniature s'il y en a une
+        // Supprimer la précédente miniature s'il y en a une et on libère la mémoire occupé par l'ancienne url
         const oldImg= dropboxOn.querySelector(".importedImg");
-        if (oldImg) oldImg.remove();
+        if (oldImg && oldImg.src.startsWith("blob:")){
+            URL.revokeObjectURL(oldImg.src);
+            oldImg.remove();  
+        } 
         
         // Création d'une miniature de l'img importé avant validaiton du formulaire pour expérience UX
         const imgImported = document.createElement("img");
@@ -38,7 +39,7 @@ function controleImg(file){
         dropboxOn.appendChild(imgImported);
     }else{
         // On charge le preset page1
-        presetPage();
+        toggleDropbox("off");
     }
 };
 
@@ -61,47 +62,43 @@ function controleType(type){
 
 // Fonction qui vérifie la taille de l'img importé par à la taille max autorisée
 function controleSize(size){
-// Initalisation d'une constante qui contient la taille max autorisé ( 4 Mo )
-  const tailleMax = 4;
-  const sizeCalc = size / 1024 / 1024;
-  let sizeImg = sizeCalc.toFixed(2);
-  if (sizeImg > tailleMax) {
-    alert("L'image est trop lourde (max 4 Mo).");
-    infoImg.innerText = ` Taille :${sizeImg}Mo - L'image  est trop lourde (max 4 Mo)`
-    infoImg.style.color = "red";
-    dropboxOff.style.border = "solid 1px red";
-    formulaire.reset();
-    return false;
-  }else{
-    return true;
-  }
+    // Initalisation d'une constante qui contient la taille max autorisé ( 4 Mo )
+    const tailleMax = 4;
+    const sizeCalc = size / 1024 / 1024;
+
+    // On ajuste la taille en gardant deux chiffre après la virgule
+    let sizeImg = sizeCalc.toFixed(2);
+
+    if (sizeImg > tailleMax) {
+            infoImg.innerText = ` Taille :${sizeImg}Mo - L'image  est trop lourde (max 4 Mo)`
+            infoImg.style.color = "red";
+            dropboxOff.style.border = "solid 1px red";
+            formulaire.reset();
+            return false;
+    }else{
+            return true;
+    }
 };
 
-function presetPage(){
-    formulaire.reset();
-    // On fait réapparaitre la dropbox d'origine
-    dropboxOff.style.display = "flex";
-    dropboxOff.setAttribute("aria-hidden","false");
+/** Fonction pour générer dynamiquement la drop box d'importation d'img qui possède deux état
+ * @param {string} state : l'état de la drop box: "on" = état origine pour importé une img; "off" état avec la miniture de l'img déjà ajouter
+ */
+export function toggleDropbox(state) {
+    const isOn = state === "on";
 
-    // On fait disparaitre la nouvelle dropbox stylisé
-    dropboxOn.style.display = "none";
-    dropboxOn.setAttribute("aria-hidden","true");
-    // On change l'id du bouton d'ajout d'img pour lui appliquer le positionnement d'origine
-    loadFile.setAttribute("id","js-form-loadTitle");
-    // On déplace le bouton dans son parent dropbox On 
-    dropboxOff.appendChild(loadFile);
-};
+    // Suivant l'état actuel on affiche ou non la dropboxOn
+    dropboxOff.style.display = isOn ? "none" : "flex";
+    dropboxOff.setAttribute("aria-hidden", isOn.toString());
 
-function presetPage2(){
-    // On fait disparaitre la dropbox d'origine
-    dropboxOff.style.display = "none";
-    dropboxOff.setAttribute("aria-hidden","true");
+    // Suivant l'état actuel on affiche ou non la dropboxOff et on lui mets un fond vert pour indiquer la bonne importation de l'img
+    dropboxOn.style.display = isOn ? "flex" : "none";
+    dropboxOn.setAttribute("aria-hidden", (!isOn).toString());
+    dropboxOn.style.backgroundColor = isOn ? "rgba(144, 238, 159, 0.2)" : "";
 
-    // On fait apparaitre la nouvelle dropbox stylisé
-    dropboxOn.style.display = "flex";
-    dropboxOn.setAttribute("aria-hidden","false");
-    // On change l'id du bouton d'ajout d'img pour lui appliquer un nouveau positionnement
-    loadFile.setAttribute("id","js-form-loadTitle2");
-    // On déplace le bouton dans son nouveau parent dropboxOn
-    dropboxOn.appendChild(loadFile);
+    // Suivant l'état on change l'id du bouton pour changer son positionnement
+    loadFile.setAttribute("id", isOn ? "js-form-loadTitle2" : "js-form-loadTitle");
+
+    // On déplace le bouton d'ajout d'img dans la bonne dropbox parent suivant l'état
+    (isOn ? dropboxOn : dropboxOff).appendChild(loadFile);
+
 };

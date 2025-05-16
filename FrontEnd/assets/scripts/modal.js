@@ -3,7 +3,7 @@
 // ************************************************************************************************************************
 import { deleteWork, recupererTravaux } from "./config.js";
 import { genererGallery } from "./script.js";
-import { dropControl } from "./projet.js";
+import { dropControl, toggleDropbox } from "./projet.js";
 // On récupère l'élement DOM de la modale, du contenu modale, du bouton de fermeture, du bouton de retour, du bouton pour aller en page 2
 const modal = document.getElementById("js-modal-wrapper");
 const modalContent = document.querySelector(".modalContent");
@@ -136,12 +136,25 @@ const propagationStop = function (e){
     e.stopPropagation();
 };
 
-/** Fonction qui ferme la modale */
+/** Fonction qui ferme la modale et qui reset le formulaire d'import */
 function closeModal(){
+
+    // Disparition de la modale
     modal.setAttribute("aria-hidden","true");
     modal.setAttribute("style","display:none;");
+
+    // Suppression des listeners
     modal.removeEventListener("dblclick", closeModal);
     xMark.removeEventListener("click", closeModal);
+
+    // Passage en page 1 de la dropBox
+    toggleDropbox("off");
+
+    // On efface les comportements de design erreur à la fermeture de la modale
+    const infoImg = document.querySelector("#dropboxOff p");
+    const dropboxOff = document.getElementById("dropboxOff");
+    infoImg.style.color = "black";
+    dropboxOff.style.border ="none";
 };
 
 // Fonction qui gère les corbeilles et le besoin de supprimer un travail
