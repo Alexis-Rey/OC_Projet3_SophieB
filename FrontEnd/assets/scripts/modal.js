@@ -3,6 +3,7 @@
 // ************************************************************************************************************************
 import { deleteWork, recupererTravaux } from "./config.js";
 import { genererGallery } from "./script.js";
+import { dropControl } from "./projet.js";
 // On récupère l'élement DOM de la modale, du contenu modale, du bouton de fermeture, du bouton de retour, du bouton pour aller en page 2
 const modal = document.getElementById("js-modal-wrapper");
 const modalContent = document.querySelector(".modalContent");
@@ -81,6 +82,7 @@ async function genererModale(page){
 
         modal2.style.display = "flex";
         modal2.setAttribute("aria-hidden","false");
+        injectProjectGesture();
     }
 };
 
@@ -115,6 +117,19 @@ function galleryShow(works){
     // Appel à la fonction de gestion des corbeilles.
     binGesture();
 }
+
+function injectProjectGesture(){
+
+    const loadFile = document.getElementById("js-form-loadFile");
+    const btnAddProject = document.getElementById("js-modal-btnValidate");
+    
+    loadFile.addEventListener("cancel",(e)=>{
+        dropControl(e);
+    });
+    loadFile.addEventListener("change",(e)=>{
+        dropControl(e);
+    });
+};
 
 /** Fonction permettant de stopper la propagationa au parent donc ici le modalWrapper et éviter la fermeture sur le double-click sur le contenu */ 
 const propagationStop = function (e){

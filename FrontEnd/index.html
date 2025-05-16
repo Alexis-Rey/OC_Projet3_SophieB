@@ -185,17 +185,23 @@
 
 			<!-- Formulaire pour l'envoi d'un nouveau projet -->
 			<form id="js-modal-form" class="modalBodyForm" method="post" enctype="multipart/form-data">
-				<div id="dropbox" class="dropBox">
-					<img src="./assets/icons/picture-svgrepo-com 1.png" alt="Icone d'une répresentation d'image">
+
+				<!-- Zone d'affichage et d'importation d'une nouvelle image de projet -->
+				<div id="dropboxOff" class="dropBox">
+					<img class="imgIcone" src="./assets/icons/picture-svgrepo-com 1.png" alt="Icone d'une répresentation d'image">
 					<label id="js-form-loadTitle" for="js-form-loadFile">+ Ajouter photo</label>
 					<input id="js-form-loadFile" class="modalFormLoad" name="js-form-loadFile" type="file" accept="image/png, image/jpeg" required>
-					<p>jpg, png: 4mo max</p>
+					<p>jpg, png: 4mo max <br>
+					Glissez/Déposez</p>
 				</div>
+				<div id="dropboxOn" class="dropBox" style="display: none;" aria-hidden="true"></div>
+
+				<!-- Zone pour l'information du titre  -->
 				<label for="js-form-title">Titre</label>
 				<input id="js-form-title" class="modalFormInput" name="js-form-title" type="text" required>
-				<label for="js-form-list">Catégorie</label>
-
+				
 				<!-- Mise en place d'une div pour le comportement du select identique à la maquette et la même mise en page -->
+				 <label for="js-form-list">Catégorie</label>
 				<div class="dropList">
 				<select id="js-form-list" class="modalFormInput" name="choiceCategories" required></select>
 				<img class="dropdownMark" src="./assets/icons/chevron-down-solid 1.png" alt="Faire défiler le menu">
@@ -203,7 +209,7 @@
 
 			</form>
 
-			<input id="js-modal-btnValidate" class="btnForm" type="submit" value="Valider">
+			<input id="js-modal-btnValidate" class="btnForm" type="submit" value="Valider" method="post" action="#" disabled>
 		 </section>
 	</div>
  </div>
