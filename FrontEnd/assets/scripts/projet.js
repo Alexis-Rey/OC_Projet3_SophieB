@@ -3,6 +3,7 @@ const infoImg = document.querySelector("#dropboxOff p");
 const dropboxOff = document.getElementById("dropboxOff");
 const dropboxOn =  document.getElementById("dropboxOn");
 const loadFile = document.getElementById("js-form-loadTitle");
+const inputTitle = document.getElementById("js-form-title");
 
 export function dropControl(boxOpen){
     // Contrôle de l'event reçu en fonction du chargement d'une nouvelle image ou bien d'un cancel utilisateur
@@ -16,7 +17,6 @@ export function dropControl(boxOpen){
 };
 
 function controleImg(file){
-    
     const typeOk = controleType(file.type);
     const sizeOk = controleSize(file.size);
     
@@ -36,9 +36,17 @@ function controleImg(file){
         const imgImported = document.createElement("img");
         imgImported.classList.add("importedImg");
         imgImported.src = URL.createObjectURL(file);
+        // Mise à jour de l'input text en fonction du nom du fichier image
+        const imgTitle = file.name.split(".");
+        inputTitle.value = imgTitle[0];
+        
         dropboxOn.appendChild(imgImported);
+
+        // Appel de la fonction pour initialisé l'écoute drag/drop pour une possible modification de l'img
+        initDragAndDrop(dropboxOn);
+
     }else{
-        // On charge le preset page1
+        // On charge le preset page1 pour retourner à l'état initial
         toggleDropbox("off");
     }
 };
@@ -102,3 +110,40 @@ export function toggleDropbox(state) {
     (isOn ? dropboxOn : dropboxOff).appendChild(loadFile);
 
 };
+
+// Fonction permettant à l'utilisateur de glisser/déposer une img si il préfère
+export function initDragAndDrop(dropBox) {
+
+    // Empêche le comportement par défaut pour tous les événements de drag & drop
+    ["dragenter", "dragover", "dragleave", "drop"].forEach(eventName => {
+        dropBox.addEventListener(eventName, e => e.preventDefault());
+        dropBox.addEventListener(eventName, e => e.stopPropagation());
+    });
+
+    // Highlight quand on entre dans la zone
+    dropBox.addEventListener("dragenter", () => {
+        dropBox.style.border = "2px dashed green";
+        dropBox.style.backgroundColor = "rgba(144, 238, 159, 0.1)";
+    });
+
+    // Supprimer le highlight quand on quitte la zone
+    dropBox.addEventListener("dragleave", () => {
+        dropBox.style.border = "";
+        dropBox.style.backgroundColor = "";
+    });
+
+    // Gestion du drop
+    dropBox.addEventListener("drop", (e) => {
+        const files = e.dataTransfer.files;
+        if (files.length === 1) {
+            controleImg(files[0]);
+        } else {
+            dropBox.style.backgroundColor = "rgba(227, 109, 93, 0.3)";
+            console.error("Vous ne pouvez déposer qu’un seul fichier à la fois."); 
+        } 
+
+        // Reset style
+        dropBox.style.border = "";
+        // dropBox.style.backgroundColor = "";
+    });
+}
