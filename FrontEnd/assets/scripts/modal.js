@@ -3,7 +3,7 @@
 // ************************************************************************************************************************
 import { deleteWork, recupererTravaux } from "./config.js";
 import { genererGallery } from "./script.js";
-import { dropControl, toggleDropbox, initDragAndDrop } from "./projet.js";
+import { dropControl, toggleDropbox, initDragAndDrop, callbackCategories } from "./projet.js";
 // On récupère l'élement DOM de la modale, du contenu modale, du bouton de fermeture, du bouton de retour, du bouton pour aller en page 2
 const modal = document.getElementById("js-modal-wrapper");
 const modalContent = document.querySelector(".modalContent");
@@ -44,6 +44,8 @@ export function showModal(){
     btnAjouterPhoto.addEventListener("click",()=>{
         page = 2;
         genererModale(page)
+        callbackCategories();
+        
     });
     btnPrev.addEventListener("click",()=>{
         page = 1;
@@ -71,7 +73,8 @@ async function genererModale(page){
         modal2.style.display = "none";
         modal2.setAttribute("aria-hidden","true");
 
-        galleryShow(works);
+        // Fonction de la génération gallery photo dans la modale et à l'accueil
+        galleryShow(works); 
         genererGallery(works);  
 
     } else{
@@ -83,6 +86,8 @@ async function genererModale(page){
 
         modal2.style.display = "flex";
         modal2.setAttribute("aria-hidden","false");
+
+        // Appelle fonction de la gestion de nouveau projet et du drag/drop
         injectProjectGesture();
         initDragAndDrop(dropboxOff);
     }

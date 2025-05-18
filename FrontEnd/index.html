@@ -203,8 +203,11 @@
 				<!-- Mise en place d'une div pour le comportement du select identique à la maquette et la même mise en page -->
 				 <label for="js-form-list">Catégorie</label>
 				<div class="dropList">
-				<select id="js-form-list" class="modalFormInput" name="choiceCategories" required></select>
-				<img class="dropdownMark" src="./assets/icons/chevron-down-solid 1.png" alt="Faire défiler le menu">
+					<div class="selected"><p id="enterCategorie"></p><img class="dropdownMark" src="./assets/icons/chevron-down-solid 1.png" alt="Faire défiler le menu"></div>
+					<ul id="js-form-options" class="options" style="display: none;" aria-hidden="true">
+						
+					</ul>
+					<!-- <select id="js-form-list" class="modalFormInput" name="choiceCategories" required></select> -->
 				</div>
 
 			</form>

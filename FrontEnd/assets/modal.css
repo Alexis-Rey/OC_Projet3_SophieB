@@ -231,3 +231,31 @@ Paramètrage de son deisgn pour qu'il prenne l'apparence voulu sur la maquette c
     position: absolute;
     top : 125px;
 }
+
+/* Mise en place d'une liste d'option personnalisé */
+.selected{
+    display: flex;
+    align-items: center;
+    height: 53px;
+    width: 100%;
+    background: white;
+    filter: drop-shadow(0px 4px 14px rgba(0, 0, 0, 0.09));
+}
+
+.selected p, #js-form-title{
+    padding-left: 5px;
+    font-size: 14px;
+}
+
+#js-form-options{
+    background: rgba(48,102,133,0.3);
+    flex-direction: column;
+    gap: 5px;
+    color: white;
+}
+
+.optionsValues:hover{
+    color: rgba(48,102,133,0.3);
+    background-color: white;
+    cursor: pointer;
+}
