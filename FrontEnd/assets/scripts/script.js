@@ -66,7 +66,6 @@ async function localOuApi(){
 };
 
 
-
 /**
  * Fonction permettant de générer notre Gallery de travaux dynamiquement pour l'architecte Sophie Bluel
  * @param {array of object} travaux : les données des travaux issues de l'API

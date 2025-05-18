@@ -1,3 +1,6 @@
+// ************************** FICHIER JS CONCERNANT LE FORMULAIRE DE NOUVEAU PROJET  ****************************************************
+// ************************************************************************************************************************
+// ************************************************************************************************************************
 import { recupererCategories } from "./config.js";
 
 const formulaire = document.getElementById("js-modal-form");
@@ -117,7 +120,9 @@ export function toggleDropbox(state) {
 
 };
 
-// Fonction permettant à l'utilisateur de glisser/déposer une img si il préfère
+/**  Fonction permettant à l'utilisateur de glisser/déposer une img si il préfère
+* @param {var} dropbox: le nom de la variable dropbox que l'on souhaite modifier suivant l'état, soit dropboxOff au moment de l'import
+ soit dropboxOn au moment de la modification de l'import effectué*/
 export function initDragAndDrop(dropBox) {
 
     // Empêche le comportement par défaut pour tous les événements de drag & drop
@@ -154,6 +159,7 @@ export function initDragAndDrop(dropBox) {
     });
 }
 
+// ************************** PARTIE SUR LES CATEGORIES ****************************************************
 // Fonction permettant de faire un choix de catégorie parmis les options proposées par l'Api
 export async function callbackCategories(){
     const arrowList = document.querySelector(".dropdownMark");
@@ -162,10 +168,10 @@ export async function callbackCategories(){
     let isCategoriesLoad = false;
     // Variable pour savoir si la liste est visible ou non
     let isListVisible = false;
-
+    
     // On récupère les catégories depuis l'API
     const apiCategories = await recupererCategories();
-
+    
     // Au clique sur l'icone de la liste , on la fait apparaitre, puis si cette dernière est vide on genère les catégories
     // enfin on appelle la fonction qui gérera le choix de la catégorie par l'utilisateur
     arrowList.addEventListener("click",(e)=>{
@@ -173,9 +179,6 @@ export async function callbackCategories(){
         // Si la liste n'est pas visible on l'affiche sinon on la camoufle
         if(!isListVisible){
             // Affiche la liste
-            listCategories.style.display = isListVisible? "flex":"none";
-            listCategories.setAttribute("aria-hidden",isListVisible?"false":"true");
-            arrowList.style.transform = isListVisible?"rotate(90deg)":"rotate(0)";
             listCategories.style.display = "flex";
             listCategories.setAttribute("aria-hidden","false");
             arrowList.style.transform = "rotate(90deg)"
@@ -217,3 +220,5 @@ function choiceCategories(){
         });
     };
 };
+
+// ************************** PARTIE SUR LE CONTROLE FORMULAIRE ET ENVOI****************************************************

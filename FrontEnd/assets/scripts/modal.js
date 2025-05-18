@@ -44,7 +44,6 @@ export function showModal(){
     btnAjouterPhoto.addEventListener("click",()=>{
         page = 2;
         genererModale(page)
-        callbackCategories();
         
     });
     btnPrev.addEventListener("click",()=>{
@@ -157,6 +156,9 @@ function closeModal(){
     // Passage en page 1 de la dropBox et reset formulaire
     toggleDropbox("off");
     formulaire.reset();
+    // On réinitialise le choix catégorie à la fermeture modal
+    const valeurCategorie = document.getElementById("enterCategorie");
+    valeurCategorie.innerText = "";
 
     // On efface les comportements de design erreur à la fermeture de la modale
     const infoImg = document.querySelector("#dropboxOff p");
@@ -183,3 +185,6 @@ function binGesture(){
         });
     };
 };
+
+// On récupère les catégories depuis l'API une seul fois pour les afficher dans la liste déroulante
+callbackCategories();
