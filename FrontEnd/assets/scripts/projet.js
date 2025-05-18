@@ -154,10 +154,14 @@ export function initDragAndDrop(dropBox) {
     });
 }
 
+// Fonction permettant de faire un choix de catégorie parmis les options proposées par l'Api
 export async function callbackCategories(){
     const arrowList = document.querySelector(".dropdownMark");
     const listCategories = document.getElementById("js-form-options");
+    // Variable pour savoir si la liste est chargé ou non 
     let isCategoriesLoad = false;
+    // Variable pour savoir si la liste est visible ou non
+    let isListVisible = false;
 
     // On récupère les catégories depuis l'API
     const apiCategories = await recupererCategories();
@@ -165,11 +169,21 @@ export async function callbackCategories(){
     // Au clique sur l'icone de la liste , on la fait apparaitre, puis si cette dernière est vide on genère les catégories
     // enfin on appelle la fonction qui gérera le choix de la catégorie par l'utilisateur
     arrowList.addEventListener("click",(e)=>{
-
-        // Affiche la liste
-        listCategories.style.display = "flex";
-        listCategories.setAttribute("aria-hidden","false");
-        listCategories.focus();
+        
+        // Si la liste n'est pas visible on l'affiche sinon on la camoufle
+        if(!isListVisible){
+            // Affiche la liste
+            listCategories.style.display = isListVisible? "flex":"none";
+            listCategories.setAttribute("aria-hidden",isListVisible?"false":"true");
+            arrowList.style.transform = isListVisible?"rotate(90deg)":"rotate(0)";
+            listCategories.style.display = "flex";
+            listCategories.setAttribute("aria-hidden","false");
+            arrowList.style.transform = "rotate(90deg)"
+        }else{
+            listCategories.style.display = "none";
+            listCategories.setAttribute("aria-hidden","true");
+            arrowList.style.transform = "rotate(0)"
+        }
 
         // Si les catégories ne sont pas encore chargées
         if(!isCategoriesLoad){
@@ -182,8 +196,10 @@ export async function callbackCategories(){
                 listCategories.appendChild(optionsValues);
             };
             choiceCategories();
-            isCategoriesLoad = true;
-        };
+            isCategoriesLoad = true;  
+        };   
+        // On indique la liste est désormais lisible ou inlisble
+        isListVisible = !isListVisible;
     });
 };
 
@@ -198,8 +214,6 @@ function choiceCategories(){
             // A chaque choix on efface la valeur de l'input Catégories et on lui affecte le choix utilisateur
             optionSelected.innerText = "";
             optionSelected.innerText = listOptions[o].dataset.name;
-            // Masque la liste de choix après sélection
-            document.getElementById("js-form-options").style.display = "none";
         });
     };
 };
