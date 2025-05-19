@@ -54,9 +54,11 @@ function controleImg(file){
 
         // Appel de la fonction pour initialisé l'écoute drag/drop pour une possible modification de l'img
         initDragAndDrop(dropboxOn);
+        return true;
     }else{
         // On charge le preset page1 pour retourner à l'état initial
         toggleDropbox("off");
+        return false;
     }
 };
 
@@ -146,7 +148,18 @@ export function initDragAndDrop(dropBox) {
     dropBox.addEventListener("drop", (e) => {
         const files = e.dataTransfer.files;
         if (files.length === 1) {
-            controleImg(files[0]);
+            const imgControled = controleImg(files[0]);
+            // On vérifie si l'image en drag&drop est conforme si oui on l'injecte , cela empêche l'utilisateur de forcer une img non conforme à l'envoi formulaire
+            if (imgControled){
+                // On injecte manuellement le fichier dans l'input type="file" grâce à la création d'un objet DataTranser utilisé par input type=file 
+                // pour stocker les fichiers ce qui permet actuellement rien de plus au niveau de la miniature mais permettra au FormData du formulaire
+                // de recupérer l'img même si elle proviens d'ici
+                const fileInput = document.getElementById("js-form-loadFile");
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(files[0]);
+                fileInput.files = dataTransfer.files;
+            }
+
         } else {
             dropBox.style.backgroundColor = "rgba(227, 109, 93, 0.3)";
             console.error("Vous ne pouvez déposer qu’un seul fichier à la fois."); 
@@ -154,7 +167,7 @@ export function initDragAndDrop(dropBox) {
 
         // Reset style
         dropBox.style.border = "";
-        // dropBox.style.backgroundColor = "";
+        
     });
 }
 
@@ -261,4 +274,5 @@ function controleFormulaire(){
     });   
 };
 
+// Appel au contrôle formulaire initiale
 controleFormulaire();
