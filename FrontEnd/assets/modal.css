@@ -125,8 +125,6 @@ label[for="js-form-title"], label[for="js-form-list"]{
     display: flex;
     flex-direction: column;
     width: 100%;
-    border-bottom: solid 1px #B3B3B3;
-    padding-bottom: 47px;
 }
 
 /* Initialisation d'une zone de dépot qui servira de relai et de nouveau input file une fois paramétré ! 
@@ -182,6 +180,11 @@ Paramètrage de son deisgn pour qu'il prenne l'apparence voulu sur la maquette c
     background-color: #A7A7A7;
 }
 
+#js-modal-btnValidate:hover{
+    cursor: pointer;
+    background-color: #1D6154;
+}
+
 /* Nouvelle marge extérieur basse pour le label assigné aux inputs text */
 #js-form-title{
     margin-bottom: 21px;
@@ -201,9 +204,11 @@ Paramètrage de son deisgn pour qu'il prenne l'apparence voulu sur la maquette c
     width: 100%;
 }
 
-/* Mise en pos relative pour pouvoir positionner son élément enfant qui est en absolute */
+/* Mise en position relative pour pouvoir positionner son élément enfant qui est en absolute, ajout de la bordure et de la marge inférieur */
 .dropList{
     position: relative;
+    border-bottom: solid 1px #B3B3B3;
+    padding-bottom: 47px;
 }
 
 /* Positionnement du chevron de la liste catégories par rapport à sa div parent créer à cet effet */
@@ -258,4 +263,9 @@ Paramètrage de son deisgn pour qu'il prenne l'apparence voulu sur la maquette c
     color: rgba(48,102,133,0.3);
     background-color: white;
     cursor: pointer;
+}
+
+#form-error{
+    text-align: center;
+    width: 300px;
 }

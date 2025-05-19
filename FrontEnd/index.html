@@ -190,7 +190,7 @@
 				<div id="dropboxOff" class="dropBox">
 					<img class="imgIcone" src="./assets/icons/picture-svgrepo-com 1.png" alt="Icone d'une répresentation d'image">
 					<label id="js-form-loadTitle" for="js-form-loadFile">+ Ajouter photo</label>
-					<input id="js-form-loadFile" class="modalFormLoad" name="js-form-loadFile" type="file" accept="image/png, image/jpeg" required>
+					<input id="js-form-loadFile" class="modalFormLoad" name="js-form-loadFile" type="file" accept="image/png, image/jpeg" >
 					<p>jpg, png: 4mo max <br>
 					Glissez/Déposez (1 unique fichier)</p>
 				</div>
@@ -198,21 +198,18 @@
 
 				<!-- Zone pour l'information du titre  -->
 				<label for="js-form-title">Titre</label>
-				<input id="js-form-title" class="modalFormInput" name="js-form-title" type="text" required>
+				<input id="js-form-title" class="modalFormInput" name="js-form-title" type="text">
 				
 				<!-- Mise en place d'une div pour le comportement du select identique à la maquette et la même mise en page -->
 				 <label for="js-form-list">Catégorie</label>
 				<div id="dropList" class="dropList">
 					<div class="selected"><p id="enterCategorie"></p><img class="dropdownMark" src="./assets/icons/chevron-down-solid 1.png" alt="Faire défiler le menu"></div>
-					<ul id="js-form-options" class="options" style="display: none;" aria-hidden="true">
-						
-					</ul>
-					<!-- <select id="js-form-list" class="modalFormInput" name="choiceCategories" required></select> -->
+					<ul id="js-form-options" class="options" style="display: none;" aria-hidden="true"></ul>
 				</div>
-
+				<input id="js-modal-btnValidate" class="btnForm" type="submit" value="Valider" method="post" action="#">
 			</form>
+			<p id="form-error" style="color: red;"></p>
 
-			<input id="js-modal-btnValidate" class="btnForm" type="submit" value="Valider" method="post" action="#" disabled>
 		 </section>
 	</div>
  </div>

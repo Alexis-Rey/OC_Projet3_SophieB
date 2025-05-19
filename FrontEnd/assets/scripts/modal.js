@@ -87,9 +87,9 @@ async function genererModale(page){
         modal2.setAttribute("aria-hidden","false");
 
         // Appelle fonction de la gestion de nouveau projet et du drag/drop
-        injectProjectGesture();
-        initDragAndDrop(dropboxOff);
-    }
+            injectProjectGesture();
+            initDragAndDrop(dropboxOff); 
+    };
 };
 
 /** Fonction qui genère la gallery photo */
@@ -127,14 +127,16 @@ function galleryShow(works){
 function injectProjectGesture(){
 
     const loadFile = document.getElementById("js-form-loadFile");
-    const btnAddProject = document.getElementById("js-modal-btnValidate");
     
+    // Ecoute de l'évènement annulation de l'importation par l"utilisateur
     loadFile.addEventListener("cancel",(e)=>{
         dropControl(e);
     });
+    // Ecoute de l'évènement d'import de nouvelle image par l'utilisateur
     loadFile.addEventListener("change",(e)=>{
         dropControl(e);
     });
+
 };
 
 /** Fonction permettant de stopper la propagationa au parent donc ici le modalWrapper et éviter la fermeture sur le double-click sur le contenu */ 
@@ -143,7 +145,7 @@ const propagationStop = function (e){
 };
 
 /** Fonction qui ferme la modale et qui reset le formulaire d'import */
-function closeModal(){
+export function closeModal(){
 
     // Disparition de la modale
     modal.setAttribute("aria-hidden","true");
@@ -156,9 +158,11 @@ function closeModal(){
     // Passage en page 1 de la dropBox et reset formulaire
     toggleDropbox("off");
     formulaire.reset();
-    // On réinitialise le choix catégorie à la fermeture modal
-    const valeurCategorie = document.getElementById("enterCategorie");
-    valeurCategorie.innerText = "";
+    const categorie = document.getElementById("enterCategorie");
+    const errorMessage = document.getElementById("form-error");
+    errorMessage.textContent = "";
+    categorie.innerText = "";
+    categorie.dataset.id = "undefined"
 
     // On efface les comportements de design erreur à la fermeture de la modale
     const infoImg = document.querySelector("#dropboxOff p");

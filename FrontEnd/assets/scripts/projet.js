@@ -2,6 +2,7 @@
 // ************************************************************************************************************************
 // ************************************************************************************************************************
 import { recupererCategories } from "./config.js";
+import {closeModal} from "./modal.js";
 
 const formulaire = document.getElementById("js-modal-form");
 const infoImg = document.querySelector("#dropboxOff p");
@@ -53,7 +54,6 @@ function controleImg(file){
 
         // Appel de la fonction pour initialisé l'écoute drag/drop pour une possible modification de l'img
         initDragAndDrop(dropboxOn);
-
     }else{
         // On charge le preset page1 pour retourner à l'état initial
         toggleDropbox("off");
@@ -98,26 +98,25 @@ function controleSize(size){
 };
 
 /** Fonction pour générer dynamiquement la drop box d'importation d'img qui possède deux état
- * @param {string} state : l'état de la drop box: "on" = état origine pour importé une img; "off" état avec la miniture de l'img déjà ajouter
+ * @param {string} state : l'état de la drop box: "off" = état origine pour importé une img; "on" état avec la miniture de l'img déjà ajouter
  */
 export function toggleDropbox(state) {
     const isOn = state === "on";
 
-    // Suivant l'état actuel on affiche ou non la dropboxOn
+    // Suivant l'état actuel on affiche ou non la dropboxOff
     dropboxOff.style.display = isOn ? "none" : "flex";
     dropboxOff.setAttribute("aria-hidden", isOn.toString());
 
-    // Suivant l'état actuel on affiche ou non la dropboxOff et on lui mets un fond vert pour indiquer la bonne importation de l'img
+    // Suivant l'état actuel on affiche ou non la dropboxOn et on lui mets un fond vert pour indiquer la bonne importation de l'img
     dropboxOn.style.display = isOn ? "flex" : "none";
     dropboxOn.setAttribute("aria-hidden", (!isOn).toString());
     dropboxOn.style.backgroundColor = isOn ? "rgba(144, 238, 159, 0.2)" : "";
 
-    // Suivant l'état on change l'id du bouton pour changer son positionnement
+    // Suivant l'état on change l'id du bouton "ajouter photo" pour changer son positionnement
     loadFile.setAttribute("id", isOn ? "js-form-loadTitle2" : "js-form-loadTitle");
 
     // On déplace le bouton d'ajout d'img dans la bonne dropbox parent suivant l'état
     (isOn ? dropboxOn : dropboxOff).appendChild(loadFile);
-
 };
 
 /**  Fonction permettant à l'utilisateur de glisser/déposer une img si il préfère
@@ -195,13 +194,14 @@ export async function callbackCategories(){
                 const optionsValues = document.createElement("li");
                 optionsValues.innerText = apiCategories[i].name;
                 optionsValues.dataset.name = apiCategories[i].name;
+                optionsValues.dataset.id = apiCategories[i].id;
                 optionsValues.classList.add("optionsValues");
                 listCategories.appendChild(optionsValues);
             };
             choiceCategories();
             isCategoriesLoad = true;  
         };   
-        // On indique la liste est désormais lisible ou inlisble
+        // On indique que la liste est désormais visible ou caché
         isListVisible = !isListVisible;
     });
 };
@@ -217,8 +217,48 @@ function choiceCategories(){
             // A chaque choix on efface la valeur de l'input Catégories et on lui affecte le choix utilisateur
             optionSelected.innerText = "";
             optionSelected.innerText = listOptions[o].dataset.name;
+            optionSelected.dataset.id = listOptions[o].dataset.id;
         });
     };
 };
 
 // ************************** PARTIE SUR LE CONTROLE FORMULAIRE ET ENVOI****************************************************
+
+function controleFormulaire(){
+    const formulaire = document.getElementById("js-modal-form");
+    const errorMessage = document.getElementById("form-error");
+
+    // Ecoute de la tentative d'envoi du formulaire avec l'event submit
+    formulaire.addEventListener("submit", (e)=>{
+        // On empêche le comportement par défault du formulaire pour l'empecher d'actualiser la page et on récupère le form et la catégorie
+        e.preventDefault();
+        errorMessage.textContent = "";
+
+        try{
+            const categorie = document.getElementById("enterCategorie");
+            const imgTitle = document.getElementById("js-form-title").value.trim();
+            const importedImg = document.getElementById("js-form-loadFile");
+            const file = importedImg.files[0];
+
+            // Vérifications globale du formulaire
+            if(!file) throw new Error("Aucune image n'a été importé, merci de sélectionner une image");
+            if(!imgTitle) throw new Error("Le champ Titre est vide, merci de renseigner un titre pour le projet");
+            if(categorie.dataset.id === undefined || categorie.dataset.id === "undefined") throw new Error("Le champ catégorie est vide, merci de choisir une catégorie dans la liste");
+
+            console.log(categorie.dataset.id);
+            if(file && imgTitle && categorie.dataset.id !== undefined && categorie.dataset.id !== "undefined"){
+                // Création d'un nouveau FormData qui contiendra nos informations relative au formulaire
+                const formData = new FormData(formulaire);
+                formData.append("id",categorie.dataset.id);
+                console.log(formData);
+                // Reset formulaire quand il est validé
+                closeModal();
+            } 
+        }catch(error){
+            errorMessage.textContent = error.message;
+            console.error(error);
+        };
+    });   
+};
+
+controleFormulaire();
