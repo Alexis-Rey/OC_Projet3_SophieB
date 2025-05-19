@@ -1,7 +1,7 @@
 // ************************** FICHIER JS CONCERNANT LE FORMULAIRE DE NOUVEAU PROJET  ****************************************************
 // ************************************************************************************************************************
 // ************************************************************************************************************************
-import { recupererCategories } from "./config.js";
+import { recupererCategories, addWork } from "./config.js";
 import {closeModal} from "./modal.js";
 
 const formulaire = document.getElementById("js-modal-form");
@@ -159,15 +159,12 @@ export function initDragAndDrop(dropBox) {
                 dataTransfer.items.add(files[0]);
                 fileInput.files = dataTransfer.files;
             }
-
         } else {
             dropBox.style.backgroundColor = "rgba(227, 109, 93, 0.3)";
             console.error("Vous ne pouvez déposer qu’un seul fichier à la fois."); 
         } 
-
         // Reset style
         dropBox.style.border = "";
-        
     });
 }
 
@@ -258,12 +255,15 @@ function controleFormulaire(){
             if(!imgTitle) throw new Error("Le champ Titre est vide, merci de renseigner un titre pour le projet");
             if(categorie.dataset.id === undefined || categorie.dataset.id === "undefined") throw new Error("Le champ catégorie est vide, merci de choisir une catégorie dans la liste");
 
-            console.log(categorie.dataset.id);
+            // Si tout les champs sont correctes
             if(file && imgTitle && categorie.dataset.id !== undefined && categorie.dataset.id !== "undefined"){
                 // Création d'un nouveau FormData qui contiendra nos informations relative au formulaire
-                const formData = new FormData(formulaire);
-                formData.append("id",categorie.dataset.id);
-                console.log(formData);
+                const formData = new FormData();
+                // On donne les infos du formulaire à à formData comme attendu par l'API
+                formData.append("image",file);
+                formData.append("title",imgTitle);
+                formData.append("category",categorie.dataset.id);
+                addWork(formData);
                 // Reset formulaire quand il est validé
                 closeModal();
             } 

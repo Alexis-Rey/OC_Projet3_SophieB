@@ -151,8 +151,10 @@ nav li {
 	grid-row-gap: 38px;
 }
 
+/* On règle la taille des img des travaux pour qu'elle soit toujours pareil même pour les img importés */
 .gallery img {
 	width: 100%;
+	height: 100%;
 
 }
 #contact {
