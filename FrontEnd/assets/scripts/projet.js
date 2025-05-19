@@ -264,6 +264,7 @@ function controleFormulaire(){
                 formData.append("title",imgTitle);
                 formData.append("category",categorie.dataset.id);
                 addWork(formData);
+                
                 // Reset formulaire quand il est validé
                 closeModal();
             } 
