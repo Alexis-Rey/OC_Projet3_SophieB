@@ -1,10 +1,12 @@
+// Variable indiquant si l'historique est visible ou non
 let isListVisible = false;
+// Variable qui contient la liste <ul> de l'historique
 const list = document.getElementById("js-info-histo-list");
 
 // Initialisation de l'historique depuis le localStorage si existant sinon sous forme de tableau vide.
 const historicalTab =JSON.parse(window.localStorage.getItem("my-historic")) || [];
 
-
+// Fonction permettant de générer dynamiquement un historique des actions effectuer en admin
 export function listenEdition(){
     
     const historicalView = document.getElementById("js-info-title");
@@ -15,7 +17,7 @@ export function listenEdition(){
         if(!isListVisible){
             // On efface la liste avant l'affichage dynamique
             list.innerHTML ="";
-
+            // Pour chaque action enregisté dans le localStorage on créer un li pour l'afficher
             for(let i = 0; i<historicalTab.length; i++){
                 const projet = document.createElement("li");
 
@@ -34,7 +36,7 @@ export function listenEdition(){
 
 
 
-// Fonction de mise à jour de l'historique en local
+// Fonction qui met à jour l'historique dans le localStorage
 function udpateHistoric(){
     window.localStorage.setItem("my-historic",JSON.stringify(historicalTab));
 };
