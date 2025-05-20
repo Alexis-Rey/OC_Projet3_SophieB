@@ -62,7 +62,7 @@ export async function authentication(auth){
     } else if (r.status >= 500) {
         throw new Error("Erreur de communication avec l'API - Vérifier les config sur les users");
     } else {
-        throw new Error("Erreur d'identification, veuillez recommencer.");
+        throw new Error("Vous ne semblez pas avoir de compte chez nous, n'attendez plus et inscrivez-vous !");
     } ;
 };
 

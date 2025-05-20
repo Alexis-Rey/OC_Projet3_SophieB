@@ -295,7 +295,7 @@ function controleFormulaire(){
 // Appel au contrôle formulaire initiale
 controleFormulaire();
 
-//µµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµ RAJOUTER DE QUOI AFFICHER LES INFOS DE SUPPRESION ET AJOUT DE TRAVAUX POUR L'UTILISATEUR
+
 //  Vérifier les formulaires
 // Eventuelllement voir pour le dialog à la place de la modal 
 // Revoir l'intégralité du code, le simplifier ou refaire certaines partie eventuel

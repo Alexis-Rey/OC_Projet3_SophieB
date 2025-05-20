@@ -1,12 +1,14 @@
 // ************************** FICHIER JS CONCERNANT LE FORMULAIRE D'IDENTIFICATION LOGIN  ****************************************************
 // ************************************************************************************************************************
 // ************************************************************************************************************************
-
 import { authentication } from "./config.js";
 
+const errorMess = document.getElementById("infoError");
 //  Ecoute du bouton de la page formulaire pour l'authentification d'utilisateur 
 const form = document.getElementById("contactForm");
-    form.addEventListener("submit", (e) =>{
+
+form.addEventListener("submit", async (e) =>{
+
         e.preventDefault();
         // On enregistre dans une variable la valeur des champs du formulaire.
         const user = {
@@ -23,14 +25,19 @@ const form = document.getElementById("contactForm");
         let regex2 = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[A-Za-z\\d]{2,8}$");
         let pwRegex = regex2.test(user.password);
 
-        if (mailRegex === true && pwRegex === true){
-            const auth = JSON.stringify(user)
-            // Appelle de la fonction d'authentification pour contacter l'api et se connecter en tant que Admin
-            authentication(auth);       
-        }else{
-            // On vide les champs
-            e.target.querySelector("#email").value = "";
-            e.target.querySelector("#pass-word").value ="";
-        }
-         
+        try{
+            if (mailRegex === true && pwRegex === true){
+                const auth = JSON.stringify(user)
+                // Appelle de la fonction d'authentification pour contacter l'api et se connecter en tant que Admin
+                await authentication(auth);       
+            }else{
+                // On vide les champs
+                e.target.querySelector("#email").value = "";
+                e.target.querySelector("#pass-word").value ="";
+                throw new Error("L'email ou le mot de passe sont incorrectes, merci de vérifier");
+            };
+        }catch(error){
+            errorMess.innerText = error.message;
+            console.error(error);
+        };
  });

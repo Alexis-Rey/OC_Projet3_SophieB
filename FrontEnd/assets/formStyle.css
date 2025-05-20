@@ -176,3 +176,9 @@ et centrage */
 	align-items:center;
 	margin-top: 355px;
 }
+
+.infoError{
+	color: red;
+	margin-top: 10px;
+	text-align: center;
+}
