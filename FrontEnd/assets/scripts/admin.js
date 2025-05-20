@@ -38,6 +38,7 @@ form.addEventListener("submit", async (e) =>{
             };
         }catch(error){
             errorMess.innerText = error.message;
+            errorMess.setAttribute("aria-invalide","true");
             console.error(error);
         };
  });
