@@ -87,6 +87,9 @@ export async function addWork(formData){
         headers: {"Authorization": `Bearer ${admin}`},
         body: formData
     });
-    // const data = await r.text();
-    console.log(r);
+    if (r.ok === true && r.status === 201){
+        console.log("Projet ajouté avec succès")
+    }else{
+        throw new Error("Erreur d'ajout de projet: vous n'êtes pas admin ou le serveur rencontre un problème");
+    }
 };

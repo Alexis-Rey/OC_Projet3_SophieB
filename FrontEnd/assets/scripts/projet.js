@@ -2,7 +2,7 @@
 // ************************************************************************************************************************
 // ************************************************************************************************************************
 import { recupererCategories, addWork } from "./config.js";
-import {closeModal} from "./modal.js";
+import {closeModal, genererModale} from "./modal.js";
 
 const formulaire = document.getElementById("js-modal-form");
 const infoImg = document.querySelector("#dropboxOff p");
@@ -239,7 +239,7 @@ function controleFormulaire(){
     const errorMessage = document.getElementById("form-error");
 
     // Ecoute de la tentative d'envoi du formulaire avec l'event submit
-    formulaire.addEventListener("submit", (e)=>{
+    formulaire.addEventListener("submit", async (e)=>{
         // On empêche le comportement par défault du formulaire pour l'empecher d'actualiser la page et on récupère le form et la catégorie
         e.preventDefault();
         errorMessage.textContent = "";
@@ -263,9 +263,9 @@ function controleFormulaire(){
                 formData.append("image",file);
                 formData.append("title",imgTitle);
                 formData.append("category",categorie.dataset.id);
-                addWork(formData);
-                
-                // Reset formulaire quand il est validé
+                 await addWork(formData); 
+                 genererModale(1);
+                // On ferme la modale une fois l'envoie bien effctué
                 closeModal();
             } 
         }catch(error){
@@ -277,3 +277,8 @@ function controleFormulaire(){
 
 // Appel au contrôle formulaire initiale
 controleFormulaire();
+
+//µµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµ RAJOUTER DE QUOI AFFICHER LES INFOS DE SUPPRESION ET AJOUT DE TRAVAUX POUR L'UTILISATEUR
+//  Vérifier les formulaires
+// Eventuelllement voir pour le dialog à la place de la modal 
+// Revoir l'intégralité du code, le simplifier ou refaire certaines partie eventuel

@@ -53,7 +53,7 @@ export function showModal(){
 
 };
 
-async function genererModale(page){
+export async function genererModale(page){
     // On reprends les données works du localStorage et on les parse pour les mettre en info JS
     // const worksModale = window.localStorage.getItem("mes-travaux");
     // const works = JSON.parse(worksModale);
