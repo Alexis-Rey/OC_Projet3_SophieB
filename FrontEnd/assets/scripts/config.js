@@ -1,7 +1,7 @@
 // ************************** FICHIER JS CONCERNANT LES CONNEXIONS API  ****************************************************
 // ************************************************************************************************************************
 // ************************************************************************************************************************
-
+import { historicUpdate, showChange } from "./historique.js";
 // Paramètrage de la config API en créant un objet JSON contenant l'URI des différentes collection et le nom de domaine (Host)
 //  afin de permettre une stabilité de la connexion API si un des élements venaient à changer. 
 // Bonne habitude pour des éventuels futures projets plus conséquent.
@@ -74,7 +74,7 @@ export async function deleteWork(bin){
      });
    
     if(r.status === 204){
-        console.log("Projet supprimé avec succès");
+        showChange(r);
     }else{
         throw new Error("Erreur de suppresion: vous n'êtes pas admin ou le serveur rencontre un problème");
     }
@@ -88,7 +88,9 @@ export async function addWork(formData){
         body: formData
     });
     if (r.ok === true && r.status === 201){
-        console.log("Projet ajouté avec succès")
+        showChange(r);
+        const data = await r.json();
+        historicUpdate(data,"add");
     }else{
         throw new Error("Erreur d'ajout de projet: vous n'êtes pas admin ou le serveur rencontre un problème");
     }

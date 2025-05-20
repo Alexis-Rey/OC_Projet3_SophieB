@@ -4,6 +4,7 @@
 import { deleteWork, recupererTravaux } from "./config.js";
 import { genererGallery } from "./script.js";
 import { dropControl, toggleDropbox, initDragAndDrop, callbackCategories } from "./projet.js";
+import { historicUpdate } from "./historique.js";
 // On récupère l'élement DOM de la modale, du contenu modale, du bouton de fermeture, du bouton de retour, du bouton pour aller en page 2
 const modal = document.getElementById("js-modal-wrapper");
 const modalContent = document.querySelector(".modalContent");
@@ -174,15 +175,20 @@ export function closeModal(){
 // Fonction qui gère les corbeilles et le besoin de supprimer un travail
 function binGesture(){
     const allBin = document.querySelectorAll(".imgRecycleBin");
-   
+
     for(let i = 0; i < allBin.length; i++){
         allBin[i].addEventListener("click",async(e)=>{
             e.preventDefault();
             e.stopPropagation();
             const binSelect = parseInt(allBin[i].dataset.id);
+
+            // On récupère l'image associé à la poubelle séléctionné
+            const imgDelete = allBin[i].nextElementSibling;
+
             try{
                 await deleteWork(binSelect);
                 genererModale(1);
+                historicUpdate(imgDelete,"delete");
             }catch{
                 console.error("Problème de suppresion de projet");
             }
