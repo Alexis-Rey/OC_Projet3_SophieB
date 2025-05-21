@@ -6,7 +6,7 @@ import {closeModal, genererModale} from "./modal.js";
 
 const formulaire = document.getElementById("js-modal-form");
 const infoImg = document.querySelector("#dropboxOff p");
-const dropboxOff = document.getElementById("dropboxOff");
+export const dropboxOff = document.getElementById("dropboxOff");
 const dropboxOn =  document.getElementById("dropboxOn");
 const loadFile = document.getElementById("js-form-loadTitle");
 const inputTitle = document.getElementById("js-form-title");

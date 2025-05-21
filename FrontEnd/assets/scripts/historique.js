@@ -37,7 +37,7 @@ export function listenEdition(){
 
 
 // Fonction qui met à jour l'historique dans le localStorage
-function udpateHistoric(){
+function updateHistoric(){
     window.localStorage.setItem("my-historic",JSON.stringify(historicalTab));
 };
 
@@ -78,8 +78,11 @@ let category;
         dateStyle: "full",
         timeStyle: "short"
     })
-
-    // En fonction de l'action en présence, "supprimer" ou "ajouter" on mets à jour le tableau d'historique puis le localStorage
+    console.log(project);
+    
+    /** En fonction de l'action en présence, "supprimer" ou "ajouter" on mets à jour le tableau d'historique puis le localStorage
+    Explications: Ici on utilise project.alt pour le cas d'une suppresion de projet car la réponse de l'API pour un delete ne contient pas d'information
+    si ce n'est le code status. Je vais donc prendre directement l'image concerné dans la fonction binGesture du modal.js et j'obtient alors une image avec src et alt.*/
     switch(action){
 
         case "delete":
@@ -94,7 +97,7 @@ let category;
         break;
          
     };
-    udpateHistoric();
+    updateHistoric();
 };
 
 

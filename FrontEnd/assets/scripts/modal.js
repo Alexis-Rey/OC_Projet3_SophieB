@@ -3,7 +3,7 @@
 // ************************************************************************************************************************
 import { deleteWork, recupererTravaux} from "./config.js";
 import { genererGallery} from "./script.js";
-import { dropControl, toggleDropbox, initDragAndDrop, callbackCategories } from "./projet.js";
+import { dropControl, toggleDropbox, initDragAndDrop, callbackCategories, dropboxOff } from "./projet.js";
 import { historicUpdate } from "./historique.js";
 
 /** Initialisation des variables globales DOM.
@@ -161,6 +161,7 @@ export function closeModal(){
     // Suppression des listeners
     modal.removeEventListener("dblclick", closeModal);
     xMark.removeEventListener("click", closeModal);
+    modalContent.removeEventListener("dblclick", propagationStop);
 
     // Passage en page 1 de la dropBox et reset formulaire
     toggleDropbox("off");
@@ -179,6 +180,7 @@ export function closeModal(){
     dropboxOff.style.border ="none";
 };
 
+
 // Fonction qui gère les corbeilles et le besoin de supprimer un travail
 function binGesture(){
     // On récupère les éléments DOM de chaque corbeilles
@@ -190,10 +192,10 @@ function binGesture(){
             e.preventDefault();
             e.stopPropagation();
             // On convertit la valeur string de la corbeille en int 
-            const binSelect = parseInt(allBin[i].dataset.id);
+            const binSelect = e.currentTarget.dataset.id;
 
             // On récupère l'image associé à la poubelle séléctionné pour l'historique
-            const imgDelete = allBin[i].nextElementSibling;
+            const imgDelete = e.currentTarget.nextElementSibling;
 
             try{
                 await deleteWork(binSelect);
@@ -205,6 +207,7 @@ function binGesture(){
         });
     };
 };
+
 
 // On récupère les catégories depuis l'API une seul fois pour les afficher dans la liste déroulante
 callbackCategories();
