@@ -291,7 +291,7 @@ une mise en couleur verte pour les textes, sizing à 16px et ajout des marges in
 }
 
 /* Mise en forme du bouton Tous pour correspondre à son propre style maquette avec fond vert et couleur de texte blanche */
-.js-btn-maj{
+#js-btn-maj{
 	font-family: 'Syne';
 	font-weight: 700;
 	width: 100px;
@@ -409,7 +409,7 @@ button:hover, #portfolio i{
     margin: 20px;
   }
 
-  .js-btn-maj, .btn-filter{
+  #js-btn-maj, .btn-filter{
 	width: 80%;
 	height: 2.5rem;
 	margin: auto;
