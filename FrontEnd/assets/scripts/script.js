@@ -1,21 +1,19 @@
 // ************************** FICHIER JS CONCERNANT LE FONCTIONNEMENT GLOBALE DU SITE  ****************************************************
 // ************************************************************************************************************************
 // ************************************************************************************************************************
-
 // Import des fonctions issus de config.js
 import { recupererTravaux, recupererCategories} from "./config.js";
 import { filterWorks } from "./filtre.js";
 import { showModal } from "./modal.js";
 import { deleteHisto, listenEdition } from "./historique.js";
  
-/**
- * Initialisation des variables globales.
+/** Initialisation des variables globales.
  * @param {string} key : la clé du localStorage
  * @param {object} works : les données des travaux
  * @param {object} categories : les données des catégories
- * @param {array} buttons : un tableau pour les boutons
- */
+ * @param {array} buttons : un tableau pour les boutons */
 const key = "mes-travaux";
+const keyc = "mes-categories";
 let works;
 let categories; 
 const buttons = [];
@@ -37,14 +35,14 @@ function genererPage(works, categories){
 
 // Fonction permettant de récupérer nos travaux et catégories depuis l'API ou depuis le localStorage si cette dernière n'est
 // pas accessible
-async function localOuApi(){
-    // Récupération d'info du localStroage correpondant à la clé
+export async function localOuApi(){
+    // Récupération des données  du localStroage correpondant aux clés présentes
     let worksStorage = window.localStorage.getItem(key);
-    // Tets API
-    // Appelle à la fonction de récupération des travaux de l'API, gestion de l'erreur et 
-    // retourner null si jamais une erreur est survenu.
+    let categoriesStorage = window.localStorage.getItem(keyc);
+
+    // Test API : Appelle à la fonction de récupération des travaux de l'API, on gère les erreurs et on  retourne null si jamais une erreur est survenu.
     works = await recupererTravaux().catch(e=>{ console.error(e);
-        console.error("Connexion API échoué, récupération des données du cache . . . ")
+        console.error("Connexion API échoué, récupération des travaux depuis le cache . . . ")
         return null;
     });
 
@@ -55,6 +53,7 @@ async function localOuApi(){
     } else if (worksStorage !== null) {
         // Si l'API a échoué mais qu'on a quelque chose en localStorage
         works = JSON.parse(worksStorage);
+        console.error("Merci de patienter, les données proviennent du cache, les images resteront indisponibles")
     } else {
         // Rien dans l'API et rien dans le localStorage
         works = [];
@@ -62,9 +61,26 @@ async function localOuApi(){
     }
 
     // Test API - Récupération des catégories 
-    categories = await recupererCategories().catch(e=>{ console.error(e)});
+    categories = await recupererCategories().catch(e=>{ console.error(e)
+        console.error("Connexion API échoué, récupération des catégories depuis le cache . . . ")
+        return null;
+    });
+
+    if (categories) {
+        // Si l'API a répondu, on enregistre et utilise ses données
+        const categoriesValues = JSON.stringify(categories);
+        window.localStorage.setItem(keyc, categoriesValues);
+    } else if (worksStorage !== null) {
+        // Si l'API a échoué mais qu'on a quelque chose en localStorage
+        categories = JSON.parse(categoriesStorage);
+    } else {
+        // Rien dans l'API et rien dans le localStorage
+        categories = [];
+        console.error("Le cache est vide, nous travaillons sur le problème, revenez vers nous dans quelques temps")
+    };
     return {works, categories}; 
 };
+
 
 
 /**
@@ -77,7 +93,6 @@ export function genererGallery(travaux){
     // Suppresion dans un second temps de son contenu car l'affichage se fait dynamiquement.
     const gallery =  document.querySelector(".gallery");
     gallery.innerHTML="";
-
     // Initialisation d'une boucle qui va parcourir l'ensemble de nos travaux un à un pour créer notre gallery 
     for( let i = 0; i < travaux.length; i++){
         // Création d'une balises figure dédié à un travail

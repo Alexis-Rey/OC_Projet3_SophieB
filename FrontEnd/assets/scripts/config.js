@@ -12,36 +12,40 @@ const config = {
     "Users": "/users/login"
 };
 
-/**
- * Fonction permettant de communiquer en envoyant une requête à l'API afin de recevoir les travaux.
- */
+/** Fonction permettant de communiquer en envoyant une requête à l'API afin de recevoir les travaux.*/
 export async function recupererTravaux(){
-    const r = await fetch(config.Host + config.Works);
-    // Si le requête c'est bien passé on renvoie les données en format js sinon on informe de l'erreur
-    if (r.ok === true){
-        const data = await r.json();
-        return data;
-    }else {
-        throw new Error("Erreur de communication avec l'API - Vérifier les config sur les travaux");
-    }  
+    try{
+        const r = await fetch(config.Host + config.Works);
+            // Si le requête c'est bien passé on renvoie les données en format js sinon on informe de l'erreur
+            if (r.ok === true){
+                const data = await r.json();
+                return data;
+            }else {
+                throw new Error("Erreur de communication avec l'API - Vérifier les config sur les travaux");
+            }  
+    }catch(error){
+        console.error( "Connexion Api échoué, l'API est indisponible ")
+    }
 };
 
-/**
- * Fonction permettant de communiquer en envoyant une requête à l'API afin de recevoir les catégories.
- */
+/**Fonction permettant de communiquer en envoyant une requête à l'API afin de recevoir les catégories.*/
 export async function recupererCategories(){
-    const r = await fetch(config.Host + config.Categories);
-    // Si le requête c'est bien passé on renvoie les données en format js sinon on informe de l'erreur
-    if (r.ok === true){
-        const data = await r.json();
-        return data;
-    }else {
-        throw new Error("Erreur de communication avec l'API - Vérifier les config sur les catégories");
-    }  
+    try{
+        const r = await fetch(config.Host + config.Categories);
+            // Si le requête c'est bien passé on renvoie les données en format js sinon on informe de l'erreur
+            if (r.ok === true){
+                const data = await r.json();
+                return data;
+            }else {
+                throw new Error("Erreur de communication avec l'API - Vérifier les config sur les catégories");
+            }  
+    }catch(error){
+        console.error( "Connexion Api échoué, l'API est indisponible ")
+    }
+    
 };
 
-/**
- * Fonction permettant de communiquer en envoyant une requête à l'API afin de s'identifier en tant qu'administrateur.
+/** Fonction permettant de communiquer en envoyant une requête à l'API afin de s'identifier en tant qu'administrateur.
  * @param  {JSON} auth : les infos mail et password provenant du formulaire.
  */
 export async function authentication(auth){

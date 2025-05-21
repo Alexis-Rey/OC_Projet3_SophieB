@@ -1,11 +1,18 @@
 // ************************** FICHIER JS CONCERNANT LA MODALE  ****************************************************
 // ************************************************************************************************************************
 // ************************************************************************************************************************
-import { deleteWork, recupererTravaux } from "./config.js";
-import { genererGallery } from "./script.js";
+import { deleteWork, recupererTravaux} from "./config.js";
+import { genererGallery} from "./script.js";
 import { dropControl, toggleDropbox, initDragAndDrop, callbackCategories } from "./projet.js";
 import { historicUpdate } from "./historique.js";
-// On récupère l'élement DOM de la modale, du contenu modale, du bouton de fermeture, du bouton de retour, du bouton pour aller en page 2
+
+/** Initialisation des variables globales DOM.
+ * @param {HTMLElement} modal: La modale
+ * @param {HTMLElement} modalContent : Contenu de la modale
+ * @param {HTMLElement} xMark : bouton de fermeture
+ * @param {HTMLElement} btnPrev : bouton de retour en arrière 
+ * @param {HTMLElement} btnAjouterPhoto : bouton pour aller en page modale 2 
+ * @param {HTMLElement} formulaire : formulaire de la modale */
 const modal = document.getElementById("js-modal-wrapper");
 const modalContent = document.querySelector(".modalContent");
 const xMark = document.querySelector(".closeModalWrapper");
@@ -13,7 +20,7 @@ const btnPrev = document.getElementById("js-goto-page1");
 const btnAjouterPhoto = document.getElementById("js-goto-page2");
 const formulaire = document.getElementById("js-modal-form");
 
-/** Fonction qui affiche la modale */
+/** Fonction qui permet d'afficher la modale */
 export function showModal(){
 
     // On modifie les attributs de la modale pour la rendre visible pour tous.
@@ -27,18 +34,16 @@ export function showModal(){
     titleModal.focus();
 
     // Fermeture
-    // On écoute le bouton click sur la modale pour initier la première méthode de fermeture
-    // Utilisation de l'écoute double-click, plus stable d'un point de vue UX, permet d'être sûre que c'est la volonté 
-    // de l'utilisateur de vouloir fermer
-    // Attention, ici il est important de transmettre showModal en tant que fonction de rappel (callback) sinon
-    // le fonction se lance directement même sans le double-click
+    // On écoute le bouton click sur la modale pour initier la première méthode de fermeture.
+    // Utilisation de l'écoute double-click, plus stable d'un point de vue UX, permet d'être sûre que c'est la volonté de l'utilisateur de vouloir fermer
+    // Attention, ici il est important de transmettre closeModal ou propagationStop en tant que fonction de rappel (callback) sinon la fonction se lance directement même sans le double-click.
     modal.addEventListener("dblclick",closeModal);
     // Appelle de la fonction propagationStop si on double-click sur le contenu
     modalContent.addEventListener("dblclick", propagationStop);
     // Ecoute du click sur le bouton fermeture
     xMark.addEventListener("click",closeModal);
 
-    // Appel de la fonction de génération du contenu dynamique en origin
+    // Appel de la fonction de génération du contenu dynamique en origine
     genererModale(page);
 
     // En fonction de la page voulu "aller en page 2" ou "retour en page 1" on regenère le bonne page
@@ -54,15 +59,17 @@ export function showModal(){
 
 };
 
+/** Fonction qui genère la page modale appropriée*/
+/**  @param {int} page : numéro de la page que l'on souhaite atteindre*/
 export async function genererModale(page){
-    // On reprends les données works du localStorage et on les parse pour les mettre en info JS
-    // const worksModale = window.localStorage.getItem("mes-travaux");
-    // const works = JSON.parse(worksModale);
+   
+    // On récupère les données depuis l'API
     const works = await recupererTravaux();
-
+    // Récupèration des éléments du DOM correpondant respectivement à la page 1 ou 2 du modal 
     const modal1 = document.getElementById("js-modal-page1");
     const modal2 = document.getElementById("js-modal-page2");
 
+    // Si on est sur la page 1 on genère la gallery avec les projet supprimable sinon on génère le formulaire d'ajout de projet
     if(page === 1){
         btnPrev.setAttribute("style","display:none;");
         btnPrev.setAttribute("aria-hidden","true");
@@ -73,7 +80,7 @@ export async function genererModale(page){
         modal2.style.display = "none";
         modal2.setAttribute("aria-hidden","true");
 
-        // Fonction de la génération gallery photo dans la modale et à l'accueil
+        // Appel des fonctions pour générer la gallerie photo dans la modale et actualiser celle de l'accueil en cas de suppresion
         galleryShow(works); 
         genererGallery(works);  
 
@@ -87,14 +94,14 @@ export async function genererModale(page){
         modal2.style.display = "flex";
         modal2.setAttribute("aria-hidden","false");
 
-        // Appelle fonction de la gestion de nouveau projet et du drag/drop
+        // Appelle fonction de la gestion de nouveau projet et du drag&drop sur la dropBox d'origine
             injectProjectGesture();
             initDragAndDrop(dropboxOff); 
     };
 };
 
 /** Fonction qui genère la gallery photo */
-/**  @param {array of object JS} works : données sur les travaux récupérées depuis le localStorage*/
+/**  @param {array of object JS} works : données sur les travaux récupérées depuis l'Api*/
 function galleryShow(works){
     const modalGallery = document.getElementById("js-modal-bodyGallery");
     modalGallery.innerHTML= "";
@@ -103,7 +110,7 @@ function galleryShow(works){
         // Création d'une balises figure dédié à un travail
         const figure = document.createElement("figure");
 
-        // Création des informations de chaque travail grâce aux info issu du localStorage
+        // Création des informations de chaque travail grâce aux données récoltées
         const img = document.createElement("img");
         img.src = works[i].imageUrl;
         img.alt = works[i].title;
@@ -125,8 +132,8 @@ function galleryShow(works){
     binGesture();
 }
 
+/** Fonction qui gère la demande d'ajout de nouveau projet */
 function injectProjectGesture(){
-
     const loadFile = document.getElementById("js-form-loadFile");
     
     // Ecoute de l'évènement annulation de l'importation par l"utilisateur
@@ -137,10 +144,9 @@ function injectProjectGesture(){
     loadFile.addEventListener("change",(e)=>{
         dropControl(e);
     });
-
 };
 
-/** Fonction permettant de stopper la propagationa au parent donc ici le modalWrapper et éviter la fermeture sur le double-click sur le contenu */ 
+/** Fonction permettant de stopper la propagation au parent donc ici le modalWrapper et éviter la fermeture sur le double-click sur le contenu */ 
 const propagationStop = function (e){
     e.stopPropagation();
 };
@@ -159,13 +165,14 @@ export function closeModal(){
     // Passage en page 1 de la dropBox et reset formulaire
     toggleDropbox("off");
     formulaire.reset();
+    // On remets en état initiale les messages d'erreur et la liste catégories
     const categorie = document.getElementById("enterCategorie");
     const errorMessage = document.getElementById("form-error");
     errorMessage.textContent = "";
     categorie.innerText = "";
     categorie.dataset.id = "undefined"
 
-    // On efface les comportements de design erreur à la fermeture de la modale
+    // On efface les comportements de design erreur qui apparaisse sur une mauvaise importation à la fermeture de la modale
     const infoImg = document.querySelector("#dropboxOff p");
     const dropboxOff = document.getElementById("dropboxOff");
     infoImg.style.color = "black";
@@ -174,15 +181,18 @@ export function closeModal(){
 
 // Fonction qui gère les corbeilles et le besoin de supprimer un travail
 function binGesture(){
+    // On récupère les éléments DOM de chaque corbeilles
     const allBin = document.querySelectorAll(".imgRecycleBin");
 
+    // On écoute chacune d'entre elle détécter celle qui doit envoyer une demande de suppresion
     for(let i = 0; i < allBin.length; i++){
         allBin[i].addEventListener("click",async(e)=>{
             e.preventDefault();
             e.stopPropagation();
+            // On convertit la valeur string de la corbeille en int 
             const binSelect = parseInt(allBin[i].dataset.id);
 
-            // On récupère l'image associé à la poubelle séléctionné
+            // On récupère l'image associé à la poubelle séléctionné pour l'historique
             const imgDelete = allBin[i].nextElementSibling;
 
             try{

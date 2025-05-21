@@ -296,6 +296,5 @@ function controleFormulaire(){
 controleFormulaire();
 
 
-//  Vérifier les formulaires
-// Eventuelllement voir pour le dialog à la place de la modal 
+// Vérifier l'intégralité du site , verif W3C HMTL,CSS et JS
 // Revoir l'intégralité du code, le simplifier ou refaire certaines partie eventuel

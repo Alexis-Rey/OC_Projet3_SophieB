@@ -59,21 +59,18 @@ table {
 	border-spacing: 0;
 }
 /** end reset css**/
+/* Mise en place de la couleur de fond du site */
 body {
 	max-width: 100%;
 	font-family: 'Work Sans' ;
 	font-size: var(--info-size);
+	background-color: var(--main-bg-color);
 }
 header {
 	display: flex;
 	justify-content: space-between;
 	margin: 50px 0;
 	align-items: center;
-}
-
-/* Modif du margin pour correspondre à la maquette */
-#introduction {
-	margin: 139px 0
 }
 
 h1{
@@ -110,11 +107,12 @@ nav li {
 	font-size: 1.2em;
 }
 
-/* Rajout du gap entre l'image et l'article */
+/* Rajout du gap entre l'image et l'article, modification du margin pour corresponde à la maquette */
 #introduction {
 	display: flex;
 	align-items: center;
 	gap: 72px;
+	margin: 139px 0
 }
 #introduction figure {
 	flex: 1
@@ -252,11 +250,6 @@ input[type="submit"]:hover{
 main{
 	width: 83.35%;
 	margin: auto;
-}
-
-/* Mise en place de la couleur de fond du site */
-body{
-	background-color: var(--main-bg-color);
 }
 
 /* Mise en place du fond blanc pour le footer */
@@ -403,3 +396,49 @@ button:hover, #portfolio i{
 .deleteHisto{
 	cursor: pointer;
 }
+
+/* Media queries mobile */
+
+@media (max-width: 768px) {
+  .gallery {
+    grid-template-columns: 1fr;
+	place-items: center;
+  }
+  .menu-filter {
+    flex-direction: column;
+    margin: 20px;
+  }
+
+  .js-btn-maj, .btn-filter{
+	width: 80%;
+	height: 2.5rem;
+	margin: auto;
+}
+
+.gallery figure{
+	width:75%;
+}
+
+.gallery figure figcaption{
+	text-align: center;
+}
+
+header{
+	margin: 50px 20px;
+}
+
+#introduction img{
+	width: 100%;
+	height: 321px;
+	object-fit: cover;
+}
+
+#introduction p{
+	text-align: justify;
+}
+
+#introduction h2{
+	text-align: center;
+}
+}
+
