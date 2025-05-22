@@ -290,6 +290,11 @@ une mise en couleur verte pour les textes, sizing à 16px et ajout des marges in
 	padding: 9px;
 }
 
+.btn-filter:hover, #js-btn-maj:hover{
+	background-color: var(--filter-hover);
+	color: white;
+}
+
 /* Mise en forme du bouton Tous pour correspondre à son propre style maquette avec fond vert et couleur de texte blanche */
 #js-btn-maj{
 	font-family: 'Syne';
@@ -343,6 +348,7 @@ button:hover, #portfolio i{
 .titleMore{
 	display: flex;
 	justify-content: center;
+	position: relative;
 }
 
 /* Sizing et police pour le texte modifier en admin */
@@ -357,8 +363,8 @@ button:hover, #portfolio i{
 	display: none;
 	font-weight: 400;
 	position: relative;
-	bottom: 50px;
-	left: 600px;
+	top: 10px;
+	left: 15px;
 	width: fit-content;
 }
 
@@ -397,8 +403,63 @@ button:hover, #portfolio i{
 	cursor: pointer;
 }
 
-/* Media queries mobile */
+/************************************ MEDIA QUERIES*********************************************/
+/************************************ Tablette*********************************************/
+@media (max-width: 1100px) {
 
+	header{
+		margin: 50px 20px;
+	}
+
+	#introduction p{
+	text-align: justify;
+}
+
+	#introduction h2{
+	text-align: center;
+}
+
+#introduction img{
+	width: 100%;
+	height: 350px;
+	object-fit: cover;
+}
+
+.titleMore{
+	position: relative;
+	align-items: center;
+}
+
+#portfolio i {
+	position: relative;
+	bottom: 0px;
+	left: 15px;
+	top:0px;
+}
+
+#portfolio h2{
+	margin-bottom: 0;
+}
+
+.btn-filter{
+	max-height: 39px;
+}
+
+.menu-filter{
+	margin: 51px auto;
+	justify-content: center;
+}
+
+.gallery{
+	grid-template-columns: 1fr 1fr;
+}
+
+.gallery figure{
+	width:100%;
+}
+
+}
+/************************************ MOBILE*********************************************/
 @media (max-width: 768px) {
   .gallery {
     grid-template-columns: 1fr;
@@ -433,12 +494,5 @@ header{
 	object-fit: cover;
 }
 
-#introduction p{
-	text-align: justify;
-}
-
-#introduction h2{
-	text-align: center;
-}
 }
 
