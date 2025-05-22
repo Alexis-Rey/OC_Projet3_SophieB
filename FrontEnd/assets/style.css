@@ -313,6 +313,7 @@ une mise en couleur verte pour les textes, sizing à 16px et ajout des marges in
 
 #portfolio i.active, .editionMode.active{
 	display:flex;
+	z-index: 1;
 }
 
 /* Sizing, mise en forme et positionnement sur sticky pour le garder dans le flux normal de la page et le régle sur fixed au scroll */

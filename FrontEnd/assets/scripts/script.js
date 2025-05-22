@@ -11,13 +11,11 @@ import { deleteHisto, listenEdition } from "./historique.js";
  * @param {string} key : la clé du localStorage
  * @param {object} works : les données des travaux
  * @param {object} categories : les données des catégories
- * @param {array} buttons : un tableau pour les boutons
  * @param {HTMLElement} gallery : Element DOM de la gallery d'accueil */
 const key = "mes-travaux";
 const keyc = "mes-categories";
 let works;
 let categories; 
-const buttons = [];
 const gallery =  document.querySelector(".gallery");
 
 

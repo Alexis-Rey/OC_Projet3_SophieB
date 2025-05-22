@@ -55,6 +55,8 @@ export function showModal(){
     btnPrev.addEventListener("click",()=>{
         page = 1;
         genererModale(page)
+        showOrHideList(false);
+        dropDownList.isListVisible = false;
     });
 
 };
