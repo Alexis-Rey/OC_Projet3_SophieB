@@ -4,9 +4,9 @@
 import { authentication } from "./config.js";
 
 const errorMess = document.getElementById("infoError");
-//  Ecoute du bouton de la page formulaire pour l'authentification d'utilisateur 
 const form = document.getElementById("js-form-auth");
 
+//  Ecoute du formulaire pour l'authentification d'utilisateur
 form.addEventListener("submit", async (e) =>{
 
         e.preventDefault();

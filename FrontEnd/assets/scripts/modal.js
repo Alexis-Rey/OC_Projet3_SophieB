@@ -1,9 +1,9 @@
 // ************************** FICHIER JS CONCERNANT LA MODALE  ****************************************************
 // ************************************************************************************************************************
 // ************************************************************************************************************************
-import { deleteWork, recupererTravaux} from "./config.js";
-import { genererGallery} from "./script.js";
-import { dropControl, toggleDropbox, initDragAndDrop, callbackCategories, dropboxOff } from "./projet.js";
+import { deleteWork, recupererTravaux } from "./config.js";
+import { genererGallery } from "./script.js";
+import { dropControl, toggleDropbox, initDragAndDrop, callbackCategories, dropboxOff, showOrHideList, dropDownList } from "./projet.js";
 import { historicUpdate } from "./historique.js";
 
 /** Initialisation des variables globales DOM.
@@ -166,12 +166,15 @@ export function closeModal(){
     // Passage en page 1 de la dropBox et reset formulaire
     toggleDropbox("off");
     formulaire.reset();
+
     // On remets en état initiale les messages d'erreur et la liste catégories
     const categorie = document.getElementById("enterCategorie");
     const errorMessage = document.getElementById("form-error");
     errorMessage.textContent = "";
     categorie.innerText = "";
     categorie.dataset.id = "undefined"
+    showOrHideList(false);
+    dropDownList.isListVisible = false;
 
     // On efface les comportements de design erreur qui apparaisse sur une mauvaise importation à la fermeture de la modale
     const infoImg = document.querySelector("#dropboxOff p");
