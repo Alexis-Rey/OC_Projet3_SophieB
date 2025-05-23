@@ -1,4 +1,8 @@
-import { recupererCategories } from "./config.js";
+// ************************** FICHIER JS CONCERNANT LE FORMULAIRE DE NOUVEAU PROJET  ****************************************************
+// ************************************************************************************************************************
+// ************************************************************************************************************************
+import { recupererCategories, addWork } from "./config.js";
+import {closeModal} from "./modal.js";
 
 const formulaire = document.getElementById("js-modal-form");
 const infoImg = document.querySelector("#dropboxOff p");
@@ -50,10 +54,11 @@ function controleImg(file){
 
         // Appel de la fonction pour initialisé l'écoute drag/drop pour une possible modification de l'img
         initDragAndDrop(dropboxOn);
-
+        return true;
     }else{
         // On charge le preset page1 pour retourner à l'état initial
         toggleDropbox("off");
+        return false;
     }
 };
 
@@ -95,29 +100,30 @@ function controleSize(size){
 };
 
 /** Fonction pour générer dynamiquement la drop box d'importation d'img qui possède deux état
- * @param {string} state : l'état de la drop box: "on" = état origine pour importé une img; "off" état avec la miniture de l'img déjà ajouter
+ * @param {string} state : l'état de la drop box: "off" = état origine pour importé une img; "on" état avec la miniture de l'img déjà ajouter
  */
 export function toggleDropbox(state) {
     const isOn = state === "on";
 
-    // Suivant l'état actuel on affiche ou non la dropboxOn
+    // Suivant l'état actuel on affiche ou non la dropboxOff
     dropboxOff.style.display = isOn ? "none" : "flex";
     dropboxOff.setAttribute("aria-hidden", isOn.toString());
 
-    // Suivant l'état actuel on affiche ou non la dropboxOff et on lui mets un fond vert pour indiquer la bonne importation de l'img
+    // Suivant l'état actuel on affiche ou non la dropboxOn et on lui mets un fond vert pour indiquer la bonne importation de l'img
     dropboxOn.style.display = isOn ? "flex" : "none";
     dropboxOn.setAttribute("aria-hidden", (!isOn).toString());
     dropboxOn.style.backgroundColor = isOn ? "rgba(144, 238, 159, 0.2)" : "";
 
-    // Suivant l'état on change l'id du bouton pour changer son positionnement
+    // Suivant l'état on change l'id du bouton "ajouter photo" pour changer son positionnement
     loadFile.setAttribute("id", isOn ? "js-form-loadTitle2" : "js-form-loadTitle");
 
     // On déplace le bouton d'ajout d'img dans la bonne dropbox parent suivant l'état
     (isOn ? dropboxOn : dropboxOff).appendChild(loadFile);
-
 };
 
-// Fonction permettant à l'utilisateur de glisser/déposer une img si il préfère
+/**  Fonction permettant à l'utilisateur de glisser/déposer une img si il préfère
+* @param {var} dropbox: le nom de la variable dropbox que l'on souhaite modifier suivant l'état, soit dropboxOff au moment de l'import
+ soit dropboxOn au moment de la modification de l'import effectué*/
 export function initDragAndDrop(dropBox) {
 
     // Empêche le comportement par défaut pour tous les événements de drag & drop
@@ -142,18 +148,27 @@ export function initDragAndDrop(dropBox) {
     dropBox.addEventListener("drop", (e) => {
         const files = e.dataTransfer.files;
         if (files.length === 1) {
-            controleImg(files[0]);
+            const imgControled = controleImg(files[0]);
+            // On vérifie si l'image en drag&drop est conforme si oui on l'injecte , cela empêche l'utilisateur de forcer une img non conforme à l'envoi formulaire
+            if (imgControled){
+                // On injecte manuellement le fichier dans l'input type="file" grâce à la création d'un objet DataTranser utilisé par input type=file 
+                // pour stocker les fichiers ce qui permet actuellement rien de plus au niveau de la miniature mais permettra au FormData du formulaire
+                // de recupérer l'img même si elle proviens d'ici
+                const fileInput = document.getElementById("js-form-loadFile");
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(files[0]);
+                fileInput.files = dataTransfer.files;
+            }
         } else {
             dropBox.style.backgroundColor = "rgba(227, 109, 93, 0.3)";
             console.error("Vous ne pouvez déposer qu’un seul fichier à la fois."); 
         } 
-
         // Reset style
         dropBox.style.border = "";
-        // dropBox.style.backgroundColor = "";
     });
 }
 
+// ************************** PARTIE SUR LES CATEGORIES ****************************************************
 // Fonction permettant de faire un choix de catégorie parmis les options proposées par l'Api
 export async function callbackCategories(){
     const arrowList = document.querySelector(".dropdownMark");
@@ -162,10 +177,10 @@ export async function callbackCategories(){
     let isCategoriesLoad = false;
     // Variable pour savoir si la liste est visible ou non
     let isListVisible = false;
-
+    
     // On récupère les catégories depuis l'API
     const apiCategories = await recupererCategories();
-
+    
     // Au clique sur l'icone de la liste , on la fait apparaitre, puis si cette dernière est vide on genère les catégories
     // enfin on appelle la fonction qui gérera le choix de la catégorie par l'utilisateur
     arrowList.addEventListener("click",(e)=>{
@@ -173,9 +188,6 @@ export async function callbackCategories(){
         // Si la liste n'est pas visible on l'affiche sinon on la camoufle
         if(!isListVisible){
             // Affiche la liste
-            listCategories.style.display = isListVisible? "flex":"none";
-            listCategories.setAttribute("aria-hidden",isListVisible?"false":"true");
-            arrowList.style.transform = isListVisible?"rotate(90deg)":"rotate(0)";
             listCategories.style.display = "flex";
             listCategories.setAttribute("aria-hidden","false");
             arrowList.style.transform = "rotate(90deg)"
@@ -192,13 +204,14 @@ export async function callbackCategories(){
                 const optionsValues = document.createElement("li");
                 optionsValues.innerText = apiCategories[i].name;
                 optionsValues.dataset.name = apiCategories[i].name;
+                optionsValues.dataset.id = apiCategories[i].id;
                 optionsValues.classList.add("optionsValues");
                 listCategories.appendChild(optionsValues);
             };
             choiceCategories();
             isCategoriesLoad = true;  
         };   
-        // On indique la liste est désormais lisible ou inlisble
+        // On indique que la liste est désormais visible ou caché
         isListVisible = !isListVisible;
     });
 };
@@ -214,6 +227,53 @@ function choiceCategories(){
             // A chaque choix on efface la valeur de l'input Catégories et on lui affecte le choix utilisateur
             optionSelected.innerText = "";
             optionSelected.innerText = listOptions[o].dataset.name;
+            optionSelected.dataset.id = listOptions[o].dataset.id;
         });
     };
 };
+
+// ************************** PARTIE SUR LE CONTROLE FORMULAIRE ET ENVOI****************************************************
+
+function controleFormulaire(){
+    const formulaire = document.getElementById("js-modal-form");
+    const errorMessage = document.getElementById("form-error");
+
+    // Ecoute de la tentative d'envoi du formulaire avec l'event submit
+    formulaire.addEventListener("submit", (e)=>{
+        // On empêche le comportement par défault du formulaire pour l'empecher d'actualiser la page et on récupère le form et la catégorie
+        e.preventDefault();
+        errorMessage.textContent = "";
+
+        try{
+            const categorie = document.getElementById("enterCategorie");
+            const imgTitle = document.getElementById("js-form-title").value.trim();
+            const importedImg = document.getElementById("js-form-loadFile");
+            const file = importedImg.files[0];
+
+            // Vérifications globale du formulaire
+            if(!file) throw new Error("Aucune image n'a été importé, merci de sélectionner une image");
+            if(!imgTitle) throw new Error("Le champ Titre est vide, merci de renseigner un titre pour le projet");
+            if(categorie.dataset.id === undefined || categorie.dataset.id === "undefined") throw new Error("Le champ catégorie est vide, merci de choisir une catégorie dans la liste");
+
+            // Si tout les champs sont correctes
+            if(file && imgTitle && categorie.dataset.id !== undefined && categorie.dataset.id !== "undefined"){
+                // Création d'un nouveau FormData qui contiendra nos informations relative au formulaire
+                const formData = new FormData();
+                // On donne les infos du formulaire à à formData comme attendu par l'API
+                formData.append("image",file);
+                formData.append("title",imgTitle);
+                formData.append("category",categorie.dataset.id);
+                addWork(formData);
+                
+                // Reset formulaire quand il est validé
+                closeModal();
+            } 
+        }catch(error){
+            errorMessage.textContent = error.message;
+            console.error(error);
+        };
+    });   
+};
+
+// Appel au contrôle formulaire initiale
+controleFormulaire();

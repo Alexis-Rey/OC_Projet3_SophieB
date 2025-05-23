@@ -79,3 +79,14 @@ export async function deleteWork(bin){
         throw new Error("Erreur de suppresion: vous n'êtes pas admin ou le serveur rencontre un problème");
     }
 };
+
+export async function addWork(formData){
+    const admin = window.sessionStorage.getItem("admin");
+    const r = await fetch(config.Host + config.Works, {
+        method: "POST",
+        headers: {"Authorization": `Bearer ${admin}`},
+        body: formData
+    });
+    // const data = await r.text();
+    console.log(r);
+};
