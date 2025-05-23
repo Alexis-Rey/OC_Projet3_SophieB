@@ -71,7 +71,8 @@ async function localOuApi(){
  * Fonction permettant de générer notre Gallery de travaux dynamiquement pour l'architecte Sophie Bluel
  * @param {array of object} travaux : les données des travaux issues de l'API
  */
-function genererGallery(travaux){
+// Tentative d'export de la fonction pour affichage en temps réel d'une suppresion dans modal.js
+export function genererGallery(travaux){
     // Récupération de l'élément DOM parent nécessaire - ici la gallery qui va contenir les travaux
     // Suppresion dans un second temps de son contenu car l'affichage se fait dynamiquement.
     const gallery =  document.querySelector(".gallery");
@@ -213,11 +214,10 @@ function isAdmin(){
         })
 
         // Modification de logout à login une fois que l'on clique pour se déconnecter avec clear du sessionStorage admin
-        // et de l'eventListener et remis en place des aria grâce au toogle précédant
+        // et de l'eventListener
         log.addEventListener("click", (e) => {
             e.target.innerText = "login";
             window.sessionStorage.removeItem("admin");        
-            log.removeEventListener(e);
             // Pour la sécurité on enlève le listenerEvent du modal à la deconnexion
             modify.removeEventListener("click", showModal);
         });
@@ -225,4 +225,3 @@ function isAdmin(){
 };
 
 isAdmin();
-

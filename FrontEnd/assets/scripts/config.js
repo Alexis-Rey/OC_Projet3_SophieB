@@ -65,3 +65,17 @@ export async function authentication(auth){
         throw new Error("Erreur d'identification, veuillez recommencer.");
     } ;
 };
+
+export async function deleteWork(bin){
+    const admin = window.sessionStorage.getItem("admin");
+    const r = await fetch(config.Host + config.Works + "/" + bin,{
+        method: "DELETE",
+        headers: {"Authorization": `Bearer ${admin}`}
+     });
+   
+    if(r.status === 204){
+        console.log("Projet supprimé avec succès");
+    }else{
+        throw new Error("Erreur de suppresion: vous n'êtes pas admin ou le serveur rencontre un problème");
+    }
+};
