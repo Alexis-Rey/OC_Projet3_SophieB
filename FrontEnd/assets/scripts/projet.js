@@ -2,7 +2,7 @@
 // ************************************************************************************************************************
 // ************************************************************************************************************************
 import { recupererCategories, addWork } from "./config.js";
-import {closeModal} from "./modal.js";
+import {closeModal, genererModale} from "./modal.js";
 
 const formulaire = document.getElementById("js-modal-form");
 const infoImg = document.querySelector("#dropboxOff p");
@@ -54,10 +54,12 @@ function controleImg(file){
 
         // Appel de la fonction pour initialisé l'écoute drag/drop pour une possible modification de l'img
         initDragAndDrop(dropboxOn);
+        // on retourne true si l'image drag/drop est conforme
         return true;
     }else{
         // On charge le preset page1 pour retourner à l'état initial
         toggleDropbox("off");
+        // on retourne false si l'image drag/drop n'est pas conforme
         return false;
     }
 };
@@ -147,28 +149,41 @@ export function initDragAndDrop(dropBox) {
     // Gestion du drop
     dropBox.addEventListener("drop", (e) => {
         const files = e.dataTransfer.files;
+        const fileInput = document.getElementById("js-form-loadFile");
         if (files.length === 1) {
             const imgControled = controleImg(files[0]);
+
             // On vérifie si l'image en drag&drop est conforme si oui on l'injecte , cela empêche l'utilisateur de forcer une img non conforme à l'envoi formulaire
             if (imgControled){
                 // On injecte manuellement le fichier dans l'input type="file" grâce à la création d'un objet DataTranser utilisé par input type=file 
                 // pour stocker les fichiers ce qui permet actuellement rien de plus au niveau de la miniature mais permettra au FormData du formulaire
                 // de recupérer l'img même si elle proviens d'ici
-                const fileInput = document.getElementById("js-form-loadFile");
                 const dataTransfer = new DataTransfer();
                 dataTransfer.items.add(files[0]);
                 fileInput.files = dataTransfer.files;
-            }
+                
+            }else{
+                // Sinon si l'image n'est pas valide on vide l'input type=file pour supprimer les anciennes données enregisté, permet d'éviter le cas ou un fichier
+                // importé est valide puis on décide de changer l'image mais que cette dernière est invalid et on force l'envoie formulaire avec les anciennes données
+                const emptyTransfer = new DataTransfer();
+                fileInput.files = emptyTransfer.files;
+            };
+
         } else {
             dropBox.style.backgroundColor = "rgba(227, 109, 93, 0.3)";
             console.error("Vous ne pouvez déposer qu’un seul fichier à la fois."); 
+            const emptyTransfer = new DataTransfer();
+            fileInput.files = emptyTransfer.files;
         } 
         // Reset style
         dropBox.style.border = "";
     });
 }
 
-// ************************** PARTIE SUR LES CATEGORIES ****************************************************
+// ****************************************** PARTIE SUR LES CATEGORIES ****************************************************
+// *************************************************************************************************************************
+// *************************************************************************************************************************
+
 // Fonction permettant de faire un choix de catégorie parmis les options proposées par l'Api
 export async function callbackCategories(){
     const arrowList = document.querySelector(".dropdownMark");
@@ -233,13 +248,15 @@ function choiceCategories(){
 };
 
 // ************************** PARTIE SUR LE CONTROLE FORMULAIRE ET ENVOI****************************************************
+// *************************************************************************************************************************
+// *************************************************************************************************************************
 
 function controleFormulaire(){
     const formulaire = document.getElementById("js-modal-form");
     const errorMessage = document.getElementById("form-error");
 
     // Ecoute de la tentative d'envoi du formulaire avec l'event submit
-    formulaire.addEventListener("submit", (e)=>{
+    formulaire.addEventListener("submit", async (e)=>{
         // On empêche le comportement par défault du formulaire pour l'empecher d'actualiser la page et on récupère le form et la catégorie
         e.preventDefault();
         errorMessage.textContent = "";
@@ -263,9 +280,9 @@ function controleFormulaire(){
                 formData.append("image",file);
                 formData.append("title",imgTitle);
                 formData.append("category",categorie.dataset.id);
-                addWork(formData);
-                
-                // Reset formulaire quand il est validé
+                 await addWork(formData); 
+                 genererModale(1);
+                // On ferme la modale une fois l'envoie bien effctué
                 closeModal();
             } 
         }catch(error){
@@ -277,3 +294,8 @@ function controleFormulaire(){
 
 // Appel au contrôle formulaire initiale
 controleFormulaire();
+
+
+//  Vérifier les formulaires
+// Eventuelllement voir pour le dialog à la place de la modal 
+// Revoir l'intégralité du code, le simplifier ou refaire certaines partie eventuel

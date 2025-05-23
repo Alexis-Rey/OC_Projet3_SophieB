@@ -369,3 +369,37 @@ button:hover, #portfolio i{
 	width: fit-content;
 }
 
+/************************************* PARTIE HISTORIQUE EDITION *****************************************/
+
+.infoTitle{
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	cursor: pointer;
+	position: sticky;
+	top: 21px;
+}
+
+.editionMode.active{
+	flex-direction: column;
+	max-height: fit-content;
+	gap: 60px;
+}
+
+.infoHistoric{
+	display: flex;
+  	flex-direction: column;
+ 	color: white;
+  	gap: 15px;
+	margin-bottom: 30px;
+}
+
+.infoList{
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+}
+
+.deleteHisto{
+	cursor: pointer;
+}

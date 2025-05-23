@@ -10,24 +10,35 @@
 	<meta name="description" content="">
 	<link rel="stylesheet" href="./assets/style.css">
 	<link rel="stylesheet" href="./assets/modal.css">
-	<link rel="icon" type="image/x-icon" href="/Portfolio-architecte-sophie-bluel/FrontEnd/assets/icons/oc-icon.png">
+	<link rel="icon" type="image/x-icon" href="assets/icons/oc-icon.png">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
           integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
           crossorigin="anonymous" referrerpolicy="no-referrer" />
 	<script type="module" src="./assets/scripts/modal.js" defer></script>
-	<script type="module" src="/Portfolio-architecte-sophie-bluel/FrontEnd/assets/scripts/script.js" defer></script>
+	<script type="module" src="assets/scripts/script.js" defer></script>
 	<script type="module" src="assets/scripts/filtre.js" defer></script>
 	<script type="module" src="assets/scripts/config.js" defer></script>
 	<script type="module" src="assets/scripts/projet.js" defer></script>
+	<script type="module" src="assets/scripts/historique.js" defer></script>
 </head>
 
 <body>
 
 	<!-- Ajout de la partie déstiné à informer que le mode édition administrateur est accessible -->
-	<div class="editionMode" aria-hidden="true">
-		<i class=" fa-regular fa-pen-to-square" aria-hidden="true"></i>
-		<span class="editionModeTxt">Mode édition</span>
-	</div>
+	<section class="editionMode" aria-hidden="true">
+		<div id="js-info-title" class="infoTitle">
+			<i class=" fa-regular fa-pen-to-square" aria-hidden="true"></i>
+			<span class="editionModeTxt">Mode édition</span>
+			<p id="js-info-edit" class="infoEdit" aria-hidden="true"> ICI</p>
+		</div>
+		<div id="js-info-histo" class="infoHistoric"aria-hidden="true" style="display: none;">
+			<p> Historique des projets:</p>
+			<ul id="js-info-histo-list" class="infoList">
+
+			</ul>
+			<p id="js-delete-histo" class="deleteHisto">Supprimer l'historique</p>
+		</div>
+	</section>
 
 	<div class="contenuP">
 
@@ -189,7 +200,7 @@
 				<!-- Zone d'affichage et d'importation d'une nouvelle image de projet -->
 				<div id="dropboxOff" class="dropBox">
 					<img class="imgIcone" src="./assets/icons/picture-svgrepo-com 1.png" alt="Icone d'une répresentation d'image">
-					<label id="js-form-loadTitle" for="js-form-loadFile">+ Ajouter photo</label>
+					<label id="js-form-loadTitle" for="js-form-loadFile" tabindex="0" role="button">+ Ajouter photo</label>
 					<input id="js-form-loadFile" class="modalFormLoad" name="image" type="file" accept="image/png, image/jpeg" >
 					<p>jpg, png: 4mo max <br>
 					Glissez/Déposez (1 unique fichier)</p>
@@ -203,7 +214,7 @@
 				<!-- Mise en place d'une div pour le comportement du select identique à la maquette et la même mise en page -->
 				 <label for="js-form-list">Catégorie</label>
 				<div id="dropList" class="dropList">
-					<div class="selected"><p id="enterCategorie"></p><img class="dropdownMark" src="./assets/icons/chevron-down-solid 1.png" alt="Faire défiler le menu"></div>
+					<div class="selected"><p id="enterCategorie"></p><img class="dropdownMark" src="./assets/icons/chevron-down-solid 1.png" alt="Faire défiler le menu" tabindex="0" role="button"></div>
 					<ul id="js-form-options" class="options" style="display: none;" aria-hidden="true"></ul>
 				</div>
 				<input id="js-modal-btnValidate" class="btnForm" type="submit" value="Valider" method="post" action="#">

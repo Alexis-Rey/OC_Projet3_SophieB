@@ -6,6 +6,7 @@
 import { recupererTravaux, recupererCategories} from "./config.js";
 import { filterWorks } from "./filtre.js";
 import { showModal } from "./modal.js";
+import { deleteHisto, listenEdition } from "./historique.js";
  
 /**
  * Initialisation des variables globales.
@@ -201,6 +202,10 @@ function isAdmin(){
         editionMode.classList.toggle("active");
         editionMode.toggleAttribute("aria-hidden");
         log.innerText = "logout";
+        // Initialisation de la fonction édition qui permet d'avoir l'historique Admin
+        listenEdition();
+        // Initalisation de la fonction de suppresion d'historique
+        deleteHisto();
 
         modify.addEventListener("click", (e)=>{
             showModal();
