@@ -6,10 +6,13 @@ import {closeModal, genererModale} from "./modal.js";
 
 const formulaire = document.getElementById("js-modal-form");
 const infoImg = document.querySelector("#dropboxOff p");
-const dropboxOff = document.getElementById("dropboxOff");
+export const dropboxOff = document.getElementById("dropboxOff");
 const dropboxOn =  document.getElementById("dropboxOn");
 const loadFile = document.getElementById("js-form-loadTitle");
 const inputTitle = document.getElementById("js-form-title");
+
+// Variable mise en objet pour savoir si la liste est visible ou non et pour permettre sa mutabilité même après export.
+export const dropDownList = {isListVisible: false} ;
 
 export function dropControl(boxOpen){
     // Contrôle de l'event reçu en fonction du chargement d'une nouvelle image ou bien d'un cancel utilisateur
@@ -190,27 +193,16 @@ export async function callbackCategories(){
     const listCategories = document.getElementById("js-form-options");
     // Variable pour savoir si la liste est chargé ou non 
     let isCategoriesLoad = false;
-    // Variable pour savoir si la liste est visible ou non
-    let isListVisible = false;
+    
     
     // On récupère les catégories depuis l'API
     const apiCategories = await recupererCategories();
-    
     // Au clique sur l'icone de la liste , on la fait apparaitre, puis si cette dernière est vide on genère les catégories
     // enfin on appelle la fonction qui gérera le choix de la catégorie par l'utilisateur
     arrowList.addEventListener("click",(e)=>{
         
-        // Si la liste n'est pas visible on l'affiche sinon on la camoufle
-        if(!isListVisible){
-            // Affiche la liste
-            listCategories.style.display = "flex";
-            listCategories.setAttribute("aria-hidden","false");
-            arrowList.style.transform = "rotate(90deg)"
-        }else{
-            listCategories.style.display = "none";
-            listCategories.setAttribute("aria-hidden","true");
-            arrowList.style.transform = "rotate(0)"
-        }
+         // Si la liste n'est pas visible on l'affiche sinon on la camoufle
+        showOrHideList(!dropDownList.isListVisible);
 
         // Si les catégories ne sont pas encore chargées
         if(!isCategoriesLoad){
@@ -226,12 +218,30 @@ export async function callbackCategories(){
             choiceCategories();
             isCategoriesLoad = true;  
         };   
-        // On indique que la liste est désormais visible ou caché
-        isListVisible = !isListVisible;
+        // On inverse l'état de la liste à chaque click tant qu'aucun choix n'est fait, une liste ouverte se ferme, une liste fermé s'ouvre
+        dropDownList.isListVisible = !dropDownList.isListVisible;
     });
 };
 
-// Fonction qui affecte la catégorie sélectioné par l'utilisateur dans l'input catégorie 
+// Fonction qui affiche la liste catégories ou non suivant son état "ouverte" ou"fermer".
+export function showOrHideList(state){
+    const arrowList = document.querySelector(".dropdownMark");
+    const listCategories = document.getElementById("js-form-options");
+    if (state){
+        // Affiche la liste
+            listCategories.style.display = "flex";
+            listCategories.setAttribute("aria-hidden","false");
+            arrowList.style.transform = "rotate(90deg)";
+    }else{
+            listCategories.style.display = "none";
+            listCategories.setAttribute("aria-hidden","true");
+            arrowList.style.transform = "rotate(0)";
+    };
+};
+
+
+
+// Fonction qui affecte la catégorie sélectioné par l'utilisateur dans l'input catégorie et referme la liste.
 function choiceCategories(){
     const listOptions = document.querySelectorAll(".optionsValues");
     const optionSelected = document.getElementById("enterCategorie");
@@ -239,10 +249,12 @@ function choiceCategories(){
     // On écoute chaque options
     for (let o=0; o<listOptions.length; o++){
         listOptions[o].addEventListener("click",()=>{
-            // A chaque choix on efface la valeur de l'input Catégories et on lui affecte le choix utilisateur
+            // A chaque choix on efface la valeur de l'input Catégories, on lui affecte le choix utilisateur et on ferme la liste en remettant sa variable d'état en origine.
             optionSelected.innerText = "";
             optionSelected.innerText = listOptions[o].dataset.name;
             optionSelected.dataset.id = listOptions[o].dataset.id;
+            showOrHideList(false);
+            dropDownList.isListVisible = false;
         });
     };
 };
@@ -296,6 +308,5 @@ function controleFormulaire(){
 controleFormulaire();
 
 
-//  Vérifier les formulaires
-// Eventuelllement voir pour le dialog à la place de la modal 
+// Vérifier l'intégralité du site , verif W3C HMTL,CSS et JS
 // Revoir l'intégralité du code, le simplifier ou refaire certaines partie eventuel

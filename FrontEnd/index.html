@@ -7,38 +7,39 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap" rel="stylesheet">
-	<meta name="description" content="">
+	<meta name="description" content="Portfolio de Sophie Bluel, architecte d'intérieur. Découvrez ses projets de décoration et rénovation.">
 	<link rel="stylesheet" href="./assets/style.css">
 	<link rel="stylesheet" href="./assets/modal.css">
 	<link rel="icon" type="image/x-icon" href="assets/icons/oc-icon.png">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
           integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
           crossorigin="anonymous" referrerpolicy="no-referrer" />
-	<script type="module" src="./assets/scripts/modal.js" defer></script>
-	<script type="module" src="assets/scripts/script.js" defer></script>
-	<script type="module" src="assets/scripts/filtre.js" defer></script>
-	<script type="module" src="assets/scripts/config.js" defer></script>
-	<script type="module" src="assets/scripts/projet.js" defer></script>
-	<script type="module" src="assets/scripts/historique.js" defer></script>
+	 <!-- Comme les scripts sont en module pour autorisé l'import et exports, ils rendent les script asynchrones donc pas besoin de defer ici --> 
+	<script type="module" src="./assets/scripts/modal.js"></script>
+	<script type="module" src="assets/scripts/script.js"></script>
+	<script type="module" src="assets/scripts/filtre.js"></script>
+	<script type="module" src="assets/scripts/config.js"></script>
+	<script type="module" src="assets/scripts/projet.js"></script>
+	<script type="module" src="assets/scripts/historique.js"></script>
 </head>
 
 <body>
 
-	<!-- Ajout de la partie déstiné à informer que le mode édition administrateur est accessible -->
-	<section class="editionMode" aria-hidden="true">
+	<!-- Ajout de la partie destiné à informer que le mode édition administrateur est accessible -->
+	<div class="editionMode" aria-hidden="true">
 		<div id="js-info-title" class="infoTitle">
 			<i class=" fa-regular fa-pen-to-square" aria-hidden="true"></i>
 			<span class="editionModeTxt">Mode édition</span>
 			<p id="js-info-edit" class="infoEdit" aria-hidden="true"> ICI</p>
 		</div>
-		<div id="js-info-histo" class="infoHistoric"aria-hidden="true" style="display: none;">
+		<div id="js-info-histo" class="infoHistoric" aria-hidden="true" style="display: none;">
 			<p> Historique des projets:</p>
 			<ul id="js-info-histo-list" class="infoList">
 
 			</ul>
 			<p id="js-delete-histo" class="deleteHisto">Supprimer l'historique</p>
 		</div>
-	</section>
+	</div>
 
 	<div class="contenuP">
 
@@ -61,7 +62,7 @@
 			<section id="introduction">
 				<!-- Element permettant de representer un contenu autonome possiblement accompagné d'une légende, ici mettre en avant sophie bluel -->
 				<figure>
-					<img src="./assets/images/sophie-bluel.png" alt="Image de l'architecte et propriétaire du site 'Sophie Bluel'">
+					<h2><img src="./assets/images/sophie-bluel.png" alt="Image de l'architecte et propriétaire du site 'Sophie Bluel'"></h2>
 				</figure>
 				<!-- Partie informative sur le travail et les services proposés par sophie bluel, contenu indépendant  -->
 				<article>
@@ -72,68 +73,26 @@
 				</article>
 			</section>
 
-			<!-- Contenu principale du Site contenant les projets et composé du titre, des boutons de filtrage et de la galerie photo des travaux effectués -->
+			<!-- Contenu principale du site contenant les projets et composé du titre, des boutons de filtrage et de la galerie photo des travaux effectués -->
 			<section id="portfolio">
 				<div class="titleMore">
-				<h2>Mes projets</h2>
-				</div>
-				<!-- Contenu de modification de la galerie est d'ouverture du modale et ajout informaiton pour les screen reader -->
+					<h2>Mes projets</h2>
+					<!-- Contenu de modification de la galerie est d'ouverture du modale et ajout information pour les screen reader -->
 				<i class=" fa-regular fa-pen-to-square" aria-hidden="true"><span class="sr-only">Modifier le contenu</span><span id="js-modif" tabindex="0">modifier</span></i>
-				<!-- Div qui permet de regrouper, délimiter et agencer la partie contenant les différents boutons de filtrage galerie photo -->
-				<div class="menu-filter">
-					<button class="js-btn-maj">Tous</button>
 				</div>
 				
-				<!-- Conteneur parent pour la mise en dispotion Grid qui sera utilisée en CSS par l'agencement des photos mise en place avec figure -->
+				<!-- Div qui permet de regrouper, délimiter et agencer la partie contenant les différents boutons de filtrage galerie photo -->
+				<div class="menu-filter">
+					<!-- Bouton qui seront générés dynamiquement -->
+				</div>
+				
+				<!-- Conteneur parent pour la mise en disposition Grid qui sera utilisée en CSS par l'agencement des photos mise en place avec figure -->
 				<div class="gallery">
-					<figure>
-						<img src="assets/images/abajour-tahina.png" alt="Abajour Tahina">
-						<figcaption>Aba-jour Tahina</figcaption>
-					</figure>
-					<figure>
-						<img src="assets/images/appartement-paris-v.png" alt="Appartement Paris V">
-						<figcaption>Appartement Paris V</figcaption>
-					</figure>
-					<figure>
-						<img src="assets/images/restaurant-sushisen-londres.png" alt="Restaurant Sushisen - Londres">
-						<figcaption>Restaurant Sushisen - Londres</figcaption>
-					</figure>
-					<figure>
-						<img src="assets/images/la-balisiere.png" alt="Villa “La Balisiere” - Port Louis">
-						<figcaption>Villa “La Balisiere” - Port Louis</figcaption>
-					</figure>
-					<figure>
-						<img src="assets/images/structures-thermopolis.png" alt="Structures Thermopolis">
-						<figcaption>Structures Thermopolis</figcaption>
-					</figure>
-					<figure>
-						<img src="assets/images/appartement-paris-x.png" alt="Appartement Paris X">
-						<figcaption>Appartement Paris X</figcaption>
-					</figure>
-					<figure>
-						<img src="assets/images/le-coteau-cassis.png" alt="Pavillon “Le coteau” - Cassis">
-						<figcaption>Pavillon “Le coteau” - Cassis</figcaption>
-					</figure>
-					<figure>
-						<img src="assets/images/villa-ferneze.png" alt="Villa Ferneze - Isola d’Elba">
-						<figcaption>Villa Ferneze - Isola d’Elba</figcaption>
-					</figure>
-					<figure>
-						<img src="assets/images/appartement-paris-xviii.png" alt="Appartement Paris XVIII">
-						<figcaption>Appartement Paris XVIII</figcaption>
-					</figure>
-					<figure>
-						<img src="assets/images/bar-lullaby-paris.png" alt="Bar “Lullaby” - Paris">
-						<figcaption>Bar “Lullaby” - Paris</figcaption>
-					</figure>
-					<figure>
-						<img src="assets/images/hotel-first-arte-new-delhi.png" alt="Hotel First Arte - New Delhi">
-						<figcaption>Hotel First Arte - New Delhi</figcaption>
-					</figure>
+					<!-- Le contenu sera généré dynamiquement dans script.js -->
 				</div>
 			</section>
 
-			<!-- Section déstiné à representer le formulaire de contact et d'informations à déstination de sophie -->
+			<!-- Section destiné à representer le formulaire de contact et d'informations à destination de sophie -->
 			<section id="contact">
 				<h2>Contact</h2>
 				<p>Vous avez un projet ? Discutons-en !</p>
@@ -154,31 +113,31 @@
 <footer class="footerContent">
 	<nav>
 		<ul>
-			<li><a href="#">Mentions Légales</a></li>
+			<li><a href="javascript:void(0)">Mentions Légales</a></li>
 		</ul>
 	</nav>
 </footer>
 
-<!-- Gestion du modal Administateur -->
-<!-- choix d'un modal classique over dialog instauré sur HTML5 pour les modal pour permettre un fonctionnement adapté aux anciens navigateurs -->
+<!-- Gestion du modal Administateur -- Choix d'un modal classique over dialog instauré sur HTML5 pour les modal pour permettre un fonctionnement adapté aux anciens navigateurs -->
 <!-- Instauration du conteneur modal qui apparait en administrateur avec en param : 
   - 1 id pour l'indentification JS
   - 1 class pour l'indentification CSS 
   - 1 aria-hidden sur true pour le camoufler au sr
   - 1 style display none pour camoufler le modal
   - 1 role dialog pour informer à son apparition qu'une fenêtre s'est ouverte par dessus le contenu principal au sr
-  - 1 aria-modal true pour indiquer au sr un modal et que le contenu princiapl n'est plus accessible durant ce temps
+  - 1 aria-modal true pour indiquer au sr un modal et que le contenu princiapal n'est plus accessible durant ce temps
 -->
 <div id="js-modal-wrapper" class="modalWrapper" style="display: none;" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="js-modal-title1">
 
 	<!-- Contenu du modal avec role sur document pour indiquer au sr qu'il peut lire normalement avec les commandes standard le contenu -->
 	<div id="js-modal-content" class="modalContent" role="document">
 		
-		<div class="modalMenu">
+		<!-- Menu de la modale -->
+		<nav class="modalMenu">
 			<!-- Bouton qui vont permettre de quitter le modale ou de revenir à l'ancienne page -->
 			<button class="closeModalWrapper"><img src="./assets/icons/xmark.png" alt="Fermer la fenêtre"></button>
 			<button id="js-goto-page1" class="prevModalPage" style="display: none;" aria-hidden="true"><img src="./assets/icons/arrow-left.png" alt="Revenir à la Galerie"></button>
-		</div>
+		</nav>
 
 		<!-- Partie 1 : Galerie Photo -->
 		 <section id="js-modal-page1" class="modalPage" aria-labelledby="js-modal-title1">
@@ -199,25 +158,27 @@
 
 				<!-- Zone d'affichage et d'importation d'une nouvelle image de projet -->
 				<div id="dropboxOff" class="dropBox">
-					<img class="imgIcone" src="./assets/icons/picture-svgrepo-com 1.png" alt="Icone d'une répresentation d'image">
-					<label id="js-form-loadTitle" for="js-form-loadFile" tabindex="0" role="button">+ Ajouter photo</label>
+					<img class="imgIcone" src="assets/icons/picture-svgrepo-com-1.png" alt="Icone d'une répresentation d'image">
+					<label id="js-form-loadTitle" for="js-form-loadFile" tabindex="0">+ Ajouter photo</label>
 					<input id="js-form-loadFile" class="modalFormLoad" name="image" type="file" accept="image/png, image/jpeg" >
 					<p>jpg, png: 4mo max <br>
 					Glissez/Déposez (1 unique fichier)</p>
 				</div>
-				<div id="dropboxOn" class="dropBox" style="display: none;" aria-hidden="true"></div>
+				<div id="dropboxOn" class="dropBox" style="display: none;" aria-hidden="true">
+					<!-- Générer dynamiquement en js -->
+				</div>
 
 				<!-- Zone pour l'information du titre  -->
 				<label for="js-form-title">Titre</label>
 				<input id="js-form-title" class="modalFormInput" name="js-form-title" type="text">
 				
 				<!-- Mise en place d'une div pour le comportement du select identique à la maquette et la même mise en page -->
-				 <label for="js-form-list">Catégorie</label>
+				 <p id="dropListTitle">Catégorie</p>
 				<div id="dropList" class="dropList">
-					<div class="selected"><p id="enterCategorie"></p><img class="dropdownMark" src="./assets/icons/chevron-down-solid 1.png" alt="Faire défiler le menu" tabindex="0" role="button"></div>
+					<div class="selected"><p id="enterCategorie"></p><img class="dropdownMark" src="assets/icons/chevron-down-solid-1.png" alt="Faire défiler le menu" tabindex="0" role="button"></div>
 					<ul id="js-form-options" class="options" style="display: none;" aria-hidden="true"></ul>
 				</div>
-				<input id="js-modal-btnValidate" class="btnForm" type="submit" value="Valider" method="post" action="#">
+				<input id="js-modal-btnValidate" class="btnForm" type="submit" value="Valider">
 			</form>
 			<p id="form-error" style="color: red;"></p>
 

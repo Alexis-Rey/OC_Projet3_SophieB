@@ -59,21 +59,18 @@ table {
 	border-spacing: 0;
 }
 /** end reset css**/
+/* Mise en place de la couleur de fond du site */
 body {
 	max-width: 100%;
 	font-family: 'Work Sans' ;
 	font-size: var(--info-size);
+	background-color: var(--main-bg-color);
 }
 header {
 	display: flex;
 	justify-content: space-between;
 	margin: 50px 0;
 	align-items: center;
-}
-
-/* Modif du margin pour correspondre à la maquette */
-#introduction {
-	margin: 139px 0
 }
 
 h1{
@@ -110,11 +107,12 @@ nav li {
 	font-size: 1.2em;
 }
 
-/* Rajout du gap entre l'image et l'article */
+/* Rajout du gap entre l'image et l'article, modification du margin pour corresponde à la maquette */
 #introduction {
 	display: flex;
 	align-items: center;
 	gap: 72px;
+	margin: 139px 0
 }
 #introduction figure {
 	flex: 1
@@ -254,11 +252,6 @@ main{
 	margin: auto;
 }
 
-/* Mise en place de la couleur de fond du site */
-body{
-	background-color: var(--main-bg-color);
-}
-
 /* Mise en place du fond blanc pour le footer */
 .footerContent{
 	background-color: white;
@@ -297,8 +290,13 @@ une mise en couleur verte pour les textes, sizing à 16px et ajout des marges in
 	padding: 9px;
 }
 
+.btn-filter:hover, #js-btn-maj:hover{
+	background-color: var(--filter-hover);
+	color: white;
+}
+
 /* Mise en forme du bouton Tous pour correspondre à son propre style maquette avec fond vert et couleur de texte blanche */
-.js-btn-maj{
+#js-btn-maj{
 	font-family: 'Syne';
 	font-weight: 700;
 	width: 100px;
@@ -315,6 +313,7 @@ une mise en couleur verte pour les textes, sizing à 16px et ajout des marges in
 
 #portfolio i.active, .editionMode.active{
 	display:flex;
+	z-index: 1;
 }
 
 /* Sizing, mise en forme et positionnement sur sticky pour le garder dans le flux normal de la page et le régle sur fixed au scroll */
@@ -350,6 +349,7 @@ button:hover, #portfolio i{
 .titleMore{
 	display: flex;
 	justify-content: center;
+	position: relative;
 }
 
 /* Sizing et police pour le texte modifier en admin */
@@ -364,8 +364,8 @@ button:hover, #portfolio i{
 	display: none;
 	font-weight: 400;
 	position: relative;
-	bottom: 50px;
-	left: 600px;
+	top: 10px;
+	left: 15px;
 	width: fit-content;
 }
 
@@ -403,3 +403,97 @@ button:hover, #portfolio i{
 .deleteHisto{
 	cursor: pointer;
 }
+
+/************************************ MEDIA QUERIES*********************************************/
+/************************************ Tablette*********************************************/
+@media (max-width: 1100px) {
+
+	header{
+		margin: 50px 20px;
+	}
+
+	#introduction p{
+	text-align: justify;
+}
+
+	#introduction h2{
+	text-align: center;
+}
+
+#introduction img{
+	width: 100%;
+	height: 350px;
+	object-fit: cover;
+}
+
+.titleMore{
+	position: relative;
+	align-items: center;
+}
+
+#portfolio i {
+	position: relative;
+	bottom: 0px;
+	left: 15px;
+	top:0px;
+}
+
+#portfolio h2{
+	margin-bottom: 0;
+}
+
+.btn-filter{
+	max-height: 39px;
+}
+
+.menu-filter{
+	margin: 51px auto;
+	justify-content: center;
+}
+
+.gallery{
+	grid-template-columns: 1fr 1fr;
+}
+
+.gallery figure{
+	width:100%;
+}
+
+}
+/************************************ MOBILE*********************************************/
+@media (max-width: 768px) {
+  .gallery {
+    grid-template-columns: 1fr;
+	place-items: center;
+  }
+  .menu-filter {
+    flex-direction: column;
+    margin: 20px;
+  }
+
+  #js-btn-maj, .btn-filter{
+	width: 80%;
+	height: 2.5rem;
+	margin: auto;
+}
+
+.gallery figure{
+	width:75%;
+}
+
+.gallery figure figcaption{
+	text-align: center;
+}
+
+header{
+	margin: 50px 20px;
+}
+
+#introduction img{
+	width: 100%;
+	height: 321px;
+	object-fit: cover;
+}
+
+}
+

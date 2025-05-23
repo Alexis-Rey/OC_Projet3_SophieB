@@ -12,37 +12,40 @@ const config = {
     "Users": "/users/login"
 };
 
-/**
- * Fonction permettant de communiquer en envoyant une requête à l'API afin de recevoir les travaux.
- */
+/** Fonction permettant de communiquer en envoyant une requête à l'API afin de recevoir les travaux.*/
 export async function recupererTravaux(){
-    const r = await fetch(config.Host + config.Works);
-    // Si le requête c'est bien passé on renvoie les données en format js sinon on informe de l'erreur
-    if (r.ok === true){
-        const data = await r.json();
-        return data;
-    }else {
-        throw new Error("Erreur de communication avec l'API - Vérifier les config sur les travaux");
-    }  
+    try{
+        const r = await fetch(config.Host + config.Works);
+            // Si le requête s'est bien passé on renvoie les données en format js sinon on informe de l'erreur
+            if (r.ok){
+                const data = await r.json();
+                return data;
+            }else {
+                throw new Error("Erreur de communication avec l'API - Vérifier les config sur les travaux");
+            }  
+    }catch(error){
+        console.error( "Connexion Api échoué, l'API est indisponible ")
+    };
 };
 
-/**
- * Fonction permettant de communiquer en envoyant une requête à l'API afin de recevoir les catégories.
- */
+/**Fonction permettant de communiquer en envoyant une requête à l'API afin de recevoir les catégories.*/
 export async function recupererCategories(){
-    const r = await fetch(config.Host + config.Categories);
-    // Si le requête c'est bien passé on renvoie les données en format js sinon on informe de l'erreur
-    if (r.ok === true){
-        const data = await r.json();
-        return data;
-    }else {
-        throw new Error("Erreur de communication avec l'API - Vérifier les config sur les catégories");
-    }  
+    try{
+        const r = await fetch(config.Host + config.Categories);
+            // Si le requête s'est bien passé on renvoie les données en format js sinon on informe de l'erreur
+            if (r.ok){
+                const data = await r.json();
+                return data;
+            }else {
+                throw new Error("Erreur de communication avec l'API - Vérifier les config sur les catégories");
+            }  
+    }catch(error){
+        console.error( "Connexion Api échoué, l'API est indisponible ")
+    };
 };
 
-/**
- * Fonction permettant de communiquer en envoyant une requête à l'API afin de s'identifier en tant qu'administrateur.
- * @param  {JSON} auth : les infos mail et password provenant du formulaire.
+/** Fonction permettant de communiquer en envoyant une requête à l'API afin de s'identifier en tant qu'administrateur.
+ * @param  {string} auth : Chaîne JSON contenant les infos mail et password provenant du formulaire.
  */
 export async function authentication(auth){
     // Initialisation d'une clé pour la sessionStorage
@@ -53,9 +56,9 @@ export async function authentication(auth){
             headers: { "Content-type": "application/json" },
             body: auth
     });
-    // Si le requête c'est bien passé et que les identifiants sont les bons on enregistre le token reçu dans la sessionStorage 
+    // Si le requête s'est bien passé et que les identifiants sont les bons on enregistre le token reçu dans la sessionStorage 
     // et on renvoie sur la page d'accueil sinon on gère les erreurs.
-    if (r.ok === true && r.status === 200) {
+    if (r.ok && r.status === 200) {
         const data = await r.json();
         window.sessionStorage.setItem(keyAuth, data.token);
         window.location.href= "././index.html";
@@ -63,7 +66,7 @@ export async function authentication(auth){
         throw new Error("Erreur de communication avec l'API - Vérifier les config sur les users");
     } else {
         throw new Error("Vous ne semblez pas avoir de compte chez nous, n'attendez plus et inscrivez-vous !");
-    } ;
+    };
 };
 
 export async function deleteWork(bin){
@@ -76,8 +79,8 @@ export async function deleteWork(bin){
     if(r.status === 204){
         showChange(r);
     }else{
-        throw new Error("Erreur de suppresion: vous n'êtes pas admin ou le serveur rencontre un problème");
-    }
+        throw new Error("Erreur de suppression: vous n'êtes pas admin ou le serveur rencontre un problème");
+    };
 };
 
 export async function addWork(formData){
@@ -87,11 +90,11 @@ export async function addWork(formData){
         headers: {"Authorization": `Bearer ${admin}`},
         body: formData
     });
-    if (r.ok === true && r.status === 201){
+    if (r.ok && r.status === 201){
         showChange(r);
         const data = await r.json();
         historicUpdate(data,"add");
     }else{
         throw new Error("Erreur d'ajout de projet: vous n'êtes pas admin ou le serveur rencontre un problème");
-    }
+    };
 };

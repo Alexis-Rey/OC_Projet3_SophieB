@@ -1,24 +1,22 @@
 // ************************** FICHIER JS CONCERNANT LE FONCTIONNEMENT GLOBALE DU SITE  ****************************************************
 // ************************************************************************************************************************
 // ************************************************************************************************************************
-
 // Import des fonctions issus de config.js
 import { recupererTravaux, recupererCategories} from "./config.js";
 import { filterWorks } from "./filtre.js";
 import { showModal } from "./modal.js";
 import { deleteHisto, listenEdition } from "./historique.js";
  
-/**
- * Initialisation des variables globales.
+/** Initialisation des variables globales.
  * @param {string} key : la clé du localStorage
  * @param {object} works : les données des travaux
  * @param {object} categories : les données des catégories
- * @param {array} buttons : un tableau pour les boutons
- */
+ * @param {HTMLElement} gallery : Element DOM de la gallery d'accueil */
 const key = "mes-travaux";
+const keyc = "mes-categories";
 let works;
 let categories; 
-const buttons = [];
+const gallery =  document.querySelector(".gallery");
 
 
 /**
@@ -30,21 +28,21 @@ function genererPage(works, categories){
     try{
     genererGallery(works); 
     genererFilter(categories);
-    }catch{
-        console.log("Problème dans la génération de la page: voir error console")
+    }catch(error){
+        console.log("Problème dans la génération de la page:", error);
     };
 }
 
 // Fonction permettant de récupérer nos travaux et catégories depuis l'API ou depuis le localStorage si cette dernière n'est
 // pas accessible
-async function localOuApi(){
-    // Récupération d'info du localStroage correpondant à la clé
+export async function localOuApi(){
+    // Récupération des données  du localStroage correpondant aux clés présentes
     let worksStorage = window.localStorage.getItem(key);
-    // Tets API
-    // Appelle à la fonction de récupération des travaux de l'API, gestion de l'erreur et 
-    // retourner null si jamais une erreur est survenu.
+    let categoriesStorage = window.localStorage.getItem(keyc);
+
+    // Test API : Appelle à la fonction de récupération des travaux de l'API, on gère les erreurs et on  retourne null si jamais une erreur est survenu.
     works = await recupererTravaux().catch(e=>{ console.error(e);
-        console.error("Connexion API échoué, récupération des données du cache . . . ")
+        console.error("Connexion API échoué, récupération des travaux depuis le cache . . . ")
         return null;
     });
 
@@ -55,6 +53,7 @@ async function localOuApi(){
     } else if (worksStorage !== null) {
         // Si l'API a échoué mais qu'on a quelque chose en localStorage
         works = JSON.parse(worksStorage);
+        console.error("Merci de patienter, les données proviennent du cache, les images resteront indisponibles")
     } else {
         // Rien dans l'API et rien dans le localStorage
         works = [];
@@ -62,9 +61,26 @@ async function localOuApi(){
     }
 
     // Test API - Récupération des catégories 
-    categories = await recupererCategories().catch(e=>{ console.error(e)});
+    categories = await recupererCategories().catch(e=>{ console.error(e)
+        console.error("Connexion API échoué, récupération des catégories depuis le cache . . . ")
+        return null;
+    });
+
+    if (categories) {
+        // Si l'API a répondu, on enregistre et utilise ses données
+        const categoriesValues = JSON.stringify(categories);
+        window.localStorage.setItem(keyc, categoriesValues);
+    } else if (categoriesStorage !== null) {
+        // Si l'API a échoué mais qu'on a quelque chose en localStorage
+        categories = JSON.parse(categoriesStorage);
+    } else {
+        // Rien dans l'API et rien dans le localStorage
+        categories = [];
+        console.error("Le cache est vide, nous travaillons sur le problème, revenez vers nous dans quelques temps")
+    };
     return {works, categories}; 
 };
+
 
 
 /**
@@ -73,11 +89,8 @@ async function localOuApi(){
  */
 // Tentative d'export de la fonction pour affichage en temps réel d'une suppresion dans modal.js
 export function genererGallery(travaux){
-    // Récupération de l'élément DOM parent nécessaire - ici la gallery qui va contenir les travaux
-    // Suppresion dans un second temps de son contenu car l'affichage se fait dynamiquement.
-    const gallery =  document.querySelector(".gallery");
+    // Suppresion du contenu de la gallery car l'affichage se fait dynamiquement.
     gallery.innerHTML="";
-
     // Initialisation d'une boucle qui va parcourir l'ensemble de nos travaux un à un pour créer notre gallery 
     for( let i = 0; i < travaux.length; i++){
         // Création d'une balises figure dédié à un travail
@@ -99,30 +112,47 @@ export function genererGallery(travaux){
 
 };
 
+//*********** GESTION AFFICHAGE DES FILTRES ET DES TRAVAUX EN FONCTION DU FILTRE SELECTIONE PAR L'UTILISATEUR ****************************//
 
-/** Fonction pour générer dynamiquement les filtres et les afficher
+/** Fonction pour générer dynamiquement les filtres et les afficher ainsi que de permettre le rafraississement de la gallery dynamiquement en fonction du choix utilisateur
  * @param {array of object} Filtres : les données des catégories de filtre issues de l'API
  */
 function genererFilter(Filtres){
-
     const menuFilter = document.querySelector(".menu-filter");
 
-    // Initialisation d'une boucle qui va parcourir l'ensemble de nos catégories un à un pour créer nos boutons filtres 
+    // Gestion du bouton "TOUS" qui réiniatilise le filtre et affiche l'ensemble des projets.
+    const boutonMettreAJour = document.createElement("button");
+    boutonMettreAJour.setAttribute("id","js-btn-maj");
+    boutonMettreAJour.innerText = "Tous";
+    boutonMettreAJour.addEventListener("click", function () {
+        gallery.innerHTML="";
+        genererGallery(worksEtCategories.works);
+    });
+    // Ajout bouton dans le DOM
+    menuFilter.appendChild(boutonMettreAJour);
+
+    // Gestion des autres boutons : Initialisation d'une boucle qui va parcourir l'ensemble de nos catégories un à un pour créer nos boutons filtres 
     for ( let i = 0; i < Filtres.length; i++){
         // Création d'une balise button dédié à un filtre
         const buttonCategories = document.createElement("button");
         // Création des informations de chaque catégories grâce aux données issues de l'API
         buttonCategories.dataset.id = Filtres[i].id;
-        buttonCategories.innerText = Filtres[i].name
+        buttonCategories.innerText = Filtres[i].name;
         // Ajout d'une classe pour la partie design CSS
-        buttonCategories.classList = "btn-filter"
+        buttonCategories.classList = "btn-filter";
+
+        buttonCategories.addEventListener("click", () => {
+        // Ici on recupère category.id et category.name directement
+        const categoryName = Filtres[i].name;
+        const worksFiltered = filterWorks(worksEtCategories.works, categoryName);
+        // Rafraichissement de la page et nouvelle génération dynamique des travaux filtrés
+        gallery.innerHTML="";
+        genererGallery(worksFiltered);
+        });
 
         // Ajout des boutons dans le DOM 
         menuFilter.appendChild(buttonCategories);
-        //  Stockage des boutons pour un accès en dehors de la fonction en créant un tableau
-        buttons.push(buttonCategories);
     };
-    
 };
 
 // Première Génération de la page d'accueil du Site, on test d'abord si les données sont issus de l'API
@@ -130,52 +160,6 @@ function genererFilter(Filtres){
 const worksEtCategories = await localOuApi();
 genererPage(worksEtCategories.works, worksEtCategories.categories);
 
-
-//*********** GESTION DES TRAVAUX EN FONCTION DU FILTRE sélectioné par l'utilisateur ****************************//
-// On utilise ici une boucle for pour parcourir le tableau de boutons issu de la fonction genererFilter qui génère dynamiquement les catégories reçu par API
-for ( let b = 0; b < buttons.length; b++){
-
-    /**  @param {string} buttonClicked : le bouton qui est cliqué */
-    /**  @param {array} worksFiltered : tableau contenant les travaux filtés issu de filtre.js suivant le choix utilisateur */
-    let buttonClicked;
-    let worksFiltered;
-    const gallery =  document.querySelector(".gallery");
-
-    // Ajout d'un écouter d'évènement au click sur chaque bouton
-    buttons[b].addEventListener("click",(e) => { 
-        // Lorsqu'un' bouton est cliqué, on affecte le data-id du bouton à la variable
-        buttonClicked = buttons[b].dataset.id;
-        // Gestion suivant la valeur data-id de la variable avec :
-        // Cas 1 : recherche des travaux correpondant à la catégorie "Objets"
-        // Cas 2 : recherche des travaux correpondant à la catégorie "Appartements"
-        // Cas 3 : recherche des travaux correpondant à la catégorie "Hotels & restaurants"
-        switch(buttonClicked){
-            case "1": 
-            worksFiltered = filterWorks(worksEtCategories.works,"Objets");
-            break;
-            case "2": 
-            worksFiltered = filterWorks(worksEtCategories.works,"Appartements");
-            break;
-            case "3": 
-            worksFiltered = filterWorks(worksEtCategories.works,"Hotels & restaurants");
-            break;
-            default: console.log("aucun appuie bouton");
-            break;
-        }
-        // Rafraichissement de la page et nouvelle génération dynamique des travaux en fonction du choix effectuer par l'utilisateur
-        gallery.innerHTML="";
-        genererGallery(worksFiltered)
-    });
-};
-
-// Ajout du listener sur le boutton Tous des filtres  pour mettre à jour les données du localStorage
-// Nouvelle Génération des travaux à l'appuie du bouton 
-const boutonMettreAJour = document.querySelector(".js-btn-maj");
-const gallery =  document.querySelector(".gallery");
-boutonMettreAJour.addEventListener("click", function () {
-    gallery.innerHTML="";
-    genererGallery(worksEtCategories.works);
-});
 
 
 //********************************** GESTION ADMIN ****************************************************//
