@@ -1,3 +1,5 @@
+import { recupererCategories } from "./config.js";
+
 const formulaire = document.getElementById("js-modal-form");
 const infoImg = document.querySelector("#dropboxOff p");
 const dropboxOff = document.getElementById("dropboxOff");
@@ -16,6 +18,9 @@ export function dropControl(boxOpen){
     }
 };
 
+/** Fonction pour importer permettre l'import d'une image conforme pour le formulaire
+ * @param {object} file : L'image séléctionné par l'utilisateur soit avec l'input file soit en drag&drop
+ */
 function controleImg(file){
     const typeOk = controleType(file.type);
     const sizeOk = controleSize(file.size);
@@ -35,6 +40,7 @@ function controleImg(file){
         // Création d'une miniature de l'img importé avant validaiton du formulaire pour expérience UX
         const imgImported = document.createElement("img");
         imgImported.classList.add("importedImg");
+        // Création d'une url à partir d'un objet 
         imgImported.src = URL.createObjectURL(file);
         // Mise à jour de l'input text en fonction du nom du fichier image
         const imgTitle = file.name.split(".");
@@ -147,3 +153,67 @@ export function initDragAndDrop(dropBox) {
         // dropBox.style.backgroundColor = "";
     });
 }
+
+// Fonction permettant de faire un choix de catégorie parmis les options proposées par l'Api
+export async function callbackCategories(){
+    const arrowList = document.querySelector(".dropdownMark");
+    const listCategories = document.getElementById("js-form-options");
+    // Variable pour savoir si la liste est chargé ou non 
+    let isCategoriesLoad = false;
+    // Variable pour savoir si la liste est visible ou non
+    let isListVisible = false;
+
+    // On récupère les catégories depuis l'API
+    const apiCategories = await recupererCategories();
+
+    // Au clique sur l'icone de la liste , on la fait apparaitre, puis si cette dernière est vide on genère les catégories
+    // enfin on appelle la fonction qui gérera le choix de la catégorie par l'utilisateur
+    arrowList.addEventListener("click",(e)=>{
+        
+        // Si la liste n'est pas visible on l'affiche sinon on la camoufle
+        if(!isListVisible){
+            // Affiche la liste
+            listCategories.style.display = isListVisible? "flex":"none";
+            listCategories.setAttribute("aria-hidden",isListVisible?"false":"true");
+            arrowList.style.transform = isListVisible?"rotate(90deg)":"rotate(0)";
+            listCategories.style.display = "flex";
+            listCategories.setAttribute("aria-hidden","false");
+            arrowList.style.transform = "rotate(90deg)"
+        }else{
+            listCategories.style.display = "none";
+            listCategories.setAttribute("aria-hidden","true");
+            arrowList.style.transform = "rotate(0)"
+        }
+
+        // Si les catégories ne sont pas encore chargées
+        if(!isCategoriesLoad){
+            // Création des options de listes
+            for(let i=0; i<apiCategories.length; i++){
+                const optionsValues = document.createElement("li");
+                optionsValues.innerText = apiCategories[i].name;
+                optionsValues.dataset.name = apiCategories[i].name;
+                optionsValues.classList.add("optionsValues");
+                listCategories.appendChild(optionsValues);
+            };
+            choiceCategories();
+            isCategoriesLoad = true;  
+        };   
+        // On indique la liste est désormais lisible ou inlisble
+        isListVisible = !isListVisible;
+    });
+};
+
+// Fonction qui affecte la catégorie sélectioné par l'utilisateur dans l'input catégorie 
+function choiceCategories(){
+    const listOptions = document.querySelectorAll(".optionsValues");
+    const optionSelected = document.getElementById("enterCategorie");
+
+    // On écoute chaque options
+    for (let o=0; o<listOptions.length; o++){
+        listOptions[o].addEventListener("click",()=>{
+            // A chaque choix on efface la valeur de l'input Catégories et on lui affecte le choix utilisateur
+            optionSelected.innerText = "";
+            optionSelected.innerText = listOptions[o].dataset.name;
+        });
+    };
+};
