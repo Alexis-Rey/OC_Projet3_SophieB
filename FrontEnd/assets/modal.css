@@ -151,7 +151,7 @@ masquer */
 
 /* Label qui va servir de nouveau lien déclencheur de l'input file qui est masqué. Mise d'un curseur pointeur à cette effet.
 Paramètrage de son deisgn pour qu'il prenne l'apparence voulu sur la maquette c'est à dire, celle d'un bouton  */
-#js-form-loadTitle{
+#js-form-loadTitle, #js-form-loadTitle2{
     cursor: pointer;
     color: #306685;
     font-family: 'Work Sans';
@@ -164,7 +164,7 @@ Paramètrage de son deisgn pour qu'il prenne l'apparence voulu sur la maquette c
 }
 
 /* Marge supérieur pour l'icone de représentation d'img au sein de la dropBox */
-.dropBox img{
+.imgIcone{
     margin-top: 13px;
 }
 
@@ -172,6 +172,7 @@ Paramètrage de son deisgn pour qu'il prenne l'apparence voulu sur la maquette c
 .dropBox p{
     color: rgba(68, 68, 68, 1);
     font-size: 10px;
+    text-align: center;
 }
 
 /* Mise en forme du bouton d'envoi de formulaire */
@@ -211,4 +212,22 @@ Paramètrage de son deisgn pour qu'il prenne l'apparence voulu sur la maquette c
     top: 20px;
     right: 32px;
     cursor: pointer;
+}
+
+/* Pisitionnement de la miniature img importé depuis la modale */
+#dropboxOn{
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+/* Sizing de la miniture d'img */
+.importedImg{
+    width: 50%;
+    height: 100%;
+}
+
+#js-form-loadTitle2{
+    position: absolute;
+    top : 125px;
 }

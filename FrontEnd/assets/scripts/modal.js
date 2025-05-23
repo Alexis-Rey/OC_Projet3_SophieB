@@ -3,12 +3,14 @@
 // ************************************************************************************************************************
 import { deleteWork, recupererTravaux } from "./config.js";
 import { genererGallery } from "./script.js";
+import { dropControl, toggleDropbox, initDragAndDrop } from "./projet.js";
 // On récupère l'élement DOM de la modale, du contenu modale, du bouton de fermeture, du bouton de retour, du bouton pour aller en page 2
 const modal = document.getElementById("js-modal-wrapper");
 const modalContent = document.querySelector(".modalContent");
 const xMark = document.querySelector(".closeModalWrapper");
 const btnPrev = document.getElementById("js-goto-page1");
 const btnAjouterPhoto = document.getElementById("js-goto-page2");
+const formulaire = document.getElementById("js-modal-form");
 
 /** Fonction qui affiche la modale */
 export function showModal(){
@@ -81,6 +83,8 @@ async function genererModale(page){
 
         modal2.style.display = "flex";
         modal2.setAttribute("aria-hidden","false");
+        injectProjectGesture();
+        initDragAndDrop(dropboxOff);
     }
 };
 
@@ -116,17 +120,44 @@ function galleryShow(works){
     binGesture();
 }
 
+function injectProjectGesture(){
+
+    const loadFile = document.getElementById("js-form-loadFile");
+    const btnAddProject = document.getElementById("js-modal-btnValidate");
+    
+    loadFile.addEventListener("cancel",(e)=>{
+        dropControl(e);
+    });
+    loadFile.addEventListener("change",(e)=>{
+        dropControl(e);
+    });
+};
+
 /** Fonction permettant de stopper la propagationa au parent donc ici le modalWrapper et éviter la fermeture sur le double-click sur le contenu */ 
 const propagationStop = function (e){
     e.stopPropagation();
 };
 
-/** Fonction qui ferme la modale */
+/** Fonction qui ferme la modale et qui reset le formulaire d'import */
 function closeModal(){
+
+    // Disparition de la modale
     modal.setAttribute("aria-hidden","true");
     modal.setAttribute("style","display:none;");
+
+    // Suppression des listeners
     modal.removeEventListener("dblclick", closeModal);
     xMark.removeEventListener("click", closeModal);
+
+    // Passage en page 1 de la dropBox et reset formulaire
+    toggleDropbox("off");
+    formulaire.reset();
+
+    // On efface les comportements de design erreur à la fermeture de la modale
+    const infoImg = document.querySelector("#dropboxOff p");
+    const dropboxOff = document.getElementById("dropboxOff");
+    infoImg.style.color = "black";
+    dropboxOff.style.border ="none";
 };
 
 // Fonction qui gère les corbeilles et le besoin de supprimer un travail
