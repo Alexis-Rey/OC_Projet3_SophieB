@@ -182,6 +182,8 @@ export function closeModal(){
     const infoImg = document.querySelector("#dropboxOff p");
     const dropboxOff = document.getElementById("dropboxOff");
     infoImg.style.color = "black";
+    infoImg.innerText = `jpg, png: 4mo max
+     Glissez/Déposez (1 unique fichier)`;
     dropboxOff.style.border ="none";
 };
 
