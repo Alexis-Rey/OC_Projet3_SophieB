@@ -265,7 +265,7 @@ function choiceCategories(){
 
 function controleFormulaire(){
     const formulaire = document.getElementById("js-modal-form");
-    const errorMessage = document.getElementById("form-error");
+    const errorMessage = document.getElementById("form-error-2");
 
     // Ecoute de la tentative d'envoi du formulaire avec l'event submit
     formulaire.addEventListener("submit", async (e)=>{

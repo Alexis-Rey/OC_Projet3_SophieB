@@ -261,7 +261,7 @@ Paramètrage de son deisgn pour qu'il prenne l'apparence voulu sur la maquette c
     cursor: pointer;
 }
 
-#form-error{
+#form-error, #form-error-2{
     text-align: center;
     width: 300px;
 }

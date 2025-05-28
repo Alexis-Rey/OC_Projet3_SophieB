@@ -186,6 +186,13 @@ function isAdmin(){
         editionMode.classList.toggle("active");
         editionMode.toggleAttribute("aria-hidden");
         log.innerText = "logout";
+
+        // Suppression de la zone de filtres en cachant sa visibilité en mode Admin et modification marge pour cohérence design de la maquette
+        const menuFilter = document.querySelector(".menu-filter");
+        const galeryTitle = document.querySelector("#portfolio h2");
+        menuFilter.style.display = "none";
+        galeryTitle.setAttribute("style", "margin-bottom: 4.5em");
+
         // Initialisation de la fonction édition qui permet d'avoir l'historique Admin
         listenEdition();
         // Initalisation de la fonction de suppresion d'historique

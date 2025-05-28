@@ -171,7 +171,7 @@ export function closeModal(){
 
     // On remets en état initiale les messages d'erreur et la liste catégories
     const categorie = document.getElementById("enterCategorie");
-    const errorMessage = document.getElementById("form-error");
+    const errorMessage = document.getElementById("form-error-2");
     errorMessage.textContent = "";
     categorie.innerText = "";
     categorie.dataset.id = "undefined"
