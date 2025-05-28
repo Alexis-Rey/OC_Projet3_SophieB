@@ -111,6 +111,10 @@ mise en overflow scroll pour permettre une barre de défilement pour la présenc
     border: none;
 }
 
+.gotoPage2{
+    margin-bottom: 15px;
+}
+
 /**************************************************** MODAL PAGE 2  *******************************************************/
 /**************************************************************************************************************************/
 /**************************************************************************************************************************/
@@ -261,7 +265,7 @@ Paramètrage de son deisgn pour qu'il prenne l'apparence voulu sur la maquette c
     cursor: pointer;
 }
 
-#form-error{
+#form-error, #form-error-2{
     text-align: center;
     width: 300px;
 }

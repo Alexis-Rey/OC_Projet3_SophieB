@@ -84,6 +84,7 @@ export async function deleteWork(bin){
 };
 
 export async function addWork(formData){
+    
     const admin = window.sessionStorage.getItem("admin");
     const r = await fetch(config.Host + config.Works, {
         method: "POST",
@@ -96,5 +97,5 @@ export async function addWork(formData){
         historicUpdate(data,"add");
     }else{
         throw new Error("Erreur d'ajout de projet: vous n'êtes pas admin ou le serveur rencontre un problème");
-    };
+    }; 
 };
