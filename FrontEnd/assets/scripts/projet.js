@@ -298,8 +298,8 @@ function controleFormulaire(){
                     // On ferme la modale une fois l'envoie bien effctué
                     closeModal();
                 }catch(e){
-                    errorMessage.textContent = `${e.message} Problème d'ajout de projet: impossible d'atteindre l'API.`;
-                    console.error(e);
+                    errorMessage.textContent = "Problème d'ajout de projet: impossible d'atteindre l'API.";
+                    console.error(`${e.message} Problème d'ajout de projet: impossible d'atteindre l'API.`);
                 }
             } 
         }catch(error){
