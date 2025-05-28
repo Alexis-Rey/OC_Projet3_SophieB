@@ -292,10 +292,15 @@ function controleFormulaire(){
                 formData.append("image",file);
                 formData.append("title",imgTitle);
                 formData.append("category",categorie.dataset.id);
-                 await addWork(formData); 
-                 genererModale(1);
-                // On ferme la modale une fois l'envoie bien effctué
-                closeModal();
+                try{
+                    await addWork(formData); 
+                    genererModale(1);
+                    // On ferme la modale une fois l'envoie bien effctué
+                    closeModal();
+                }catch(e){
+                    errorMessage.textContent = `${e.message} Problème d'ajout de projet: impossible d'atteindre l'API.`;
+                    console.error(e);
+                }
             } 
         }catch(error){
             errorMessage.textContent = error.message;

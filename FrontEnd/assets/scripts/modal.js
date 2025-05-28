@@ -171,8 +171,8 @@ export function closeModal(){
 
     // On remets en état initiale les messages d'erreur et la liste catégories
     const categorie = document.getElementById("enterCategorie");
-    const errorMessage = document.getElementById("form-error-2");
-    errorMessage.textContent = "";
+    const errorMessage2= document.getElementById("form-error-2");
+    errorMessage2.textContent = "";
     categorie.innerText = "";
     categorie.dataset.id = "undefined"
     showOrHideList(false);
@@ -193,6 +193,9 @@ function binGesture(){
     // On récupère les éléments DOM de chaque corbeilles
     const allBin = document.querySelectorAll(".imgRecycleBin");
 
+    // On récupèle les éléments DOM du message erreur 
+    const errorMessage = document.getElementById("form-error");
+
     // On écoute chacune d'entre elle détécter celle qui doit envoyer une demande de suppresion
     for(let i = 0; i < allBin.length; i++){
         allBin[i].addEventListener("click",async(e)=>{
@@ -208,8 +211,9 @@ function binGesture(){
                 await deleteWork(binSelect);
                 genererModale(1);
                 historicUpdate(imgDelete,"delete");
-            }catch{
-                console.error("Problème de suppresion de projet");
+            }catch(error){
+                console.error(`${error.message} Problème de suppresion de projet: impossible d'atteindre l'API.`);
+                errorMessage.innerText = "Problème de suppresion de projet: impossible d'atteindre l'API.";
             }
         });
     };
